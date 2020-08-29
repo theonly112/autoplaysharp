@@ -3,7 +3,6 @@ using autoplaysharp.Game;
 using autoplaysharp.Game.UI;
 using autoplaysharp.Overlay.Windows;
 using ImGuiNET;
-using System;
 using System.Collections.Generic;
 using Veldrid;
 
@@ -11,7 +10,6 @@ namespace autoplaysharp.Overlay
 {
     internal class ImGuiOverlay : ImGuiOverlayBase
     {
-        private readonly IGame _game;
         private List<IOverlaySubWindow> _subWindows = new List<IOverlaySubWindow>();
 
         public ImGuiOverlay(ITaskExecutioner taskExecutioner, IGame game, NoxWindow window, Repository repository) : base(window)

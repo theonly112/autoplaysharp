@@ -24,16 +24,27 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             for (int i = 0; i < status.Available; i++)
             {
-                await RunMission();
+                if(!await RunMission())
+                {
+                    Console.WriteLine("Failed...");
+                    break;
+                }
             }
 
             Console.WriteLine($"Done running {MissionName}");
         }
 
-        private async Task RunMission()
+        private async Task<bool> RunMission()
         {
-            await StartContentBoardMission(MissionName);
+            if(!await StartContentBoardMission(MissionName))
+            {
+                Console.WriteLine($"Cannot start mission {MissionName}");
+                return false;
+            }
+
+            await WaitUntil(() => { return Game.GetText("EPIC_QUEST_DUAL_MISSION_LEFT").Contains("/"); });
             await Task.Delay(1000);
+
             var text = Game.GetText("EPIC_QUEST_DUAL_MISSION_LEFT");
             var statusMatch = ContentStatus.StatusRegex.Match(text);
             if (int.TryParse(statusMatch.Groups[1].Value, out var num))
@@ -41,25 +52,31 @@ namespace autoplaysharp.Game.Tasks.Missions
                 if (num > 0)
                 {
                     Game.Click("EPIC_QUEST_DUAL_MISSION_LEFT");
-                    await RunMissionCore();
+                    return await RunMissionCore();
                 }
             }
 
             text = Game.GetText("EPIC_QUEST_DUAL_MISSION_RIGHT");
             statusMatch = ContentStatus.StatusRegex.Match(text);
-            if (!int.TryParse(statusMatch.Groups[2].Value, out num))
+            if (int.TryParse(statusMatch.Groups[1].Value, out num))
             {
                 if (num > 0)
                 {
                     Game.Click("EPIC_QUEST_DUAL_MISSION_RIGHT");
-                    await RunMissionCore();
+                    return await RunMissionCore();
                 }
             }
+
+            return true;
         }
 
-        private async Task RunMissionCore()
+        private async Task<bool> RunMissionCore()
         {
-            await WaitUntilVisible("GENERIC_MISSION_START");
+            if(!await WaitUntilVisible("GENERIC_MISSION_START"))
+            {
+                return false;
+            }
+            await Task.Delay(1000);
             Game.Click("GENERIC_MISSION_START");
             await Task.Delay(1000);
             if (Game.IsVisible("GENERIC_MISSION_ITEM_LIMIT_REACHED_NOTICE"))
@@ -71,7 +88,7 @@ namespace autoplaysharp.Game.Tasks.Missions
             {
                 // TODO: doesnt work for stupid x-men... need to find other solution.
                 // Guess we have to wait for "MISSION SUCCESS" text.
-                var missionCompleted = Game.GetText("EPIC_QUEST_ENDSCREEN_MISION_NAME") == MissionName;
+                var missionCompleted = Game.IsVisible("EPIC_QUEST_ENDSCREEN_HOME_BUTTON_IMAGE");
                 if (!missionCompleted)
                 {
                     Console.WriteLine($"Waiting for mission {MissionName} to be completed");
@@ -79,8 +96,17 @@ namespace autoplaysharp.Game.Tasks.Missions
                 return missionCompleted;
             }, 120, 1);
 
-            Game.Click("EPIC_QUEST_ENDSCREEN_HOME_BUTTON");
-            await Task.Delay(1000);
+            await Task.Delay(3000);
+
+            if(Game.IsVisible("EPIC_QUEST_ENDSCREEN_NOTICE_ALL_ENTRIES_USED"))
+            {
+                Game.Click("EPIC_QUEST_ENDSCREEN_NOTICE_ALL_ENTRIES_USED_OK_BUTTON");
+                await Task.Delay(1000);
+            }
+
+            Game.Click("EPIC_QUEST_ENDSCREEN_HOME_BUTTON_IMAGE");
+            await Task.Delay(3000);
+            return true;
         }
     }
 }

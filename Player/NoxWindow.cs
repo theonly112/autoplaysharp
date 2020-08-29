@@ -23,9 +23,13 @@ namespace autoplaysharp.Game
             int x_relative = (int)(x * Width);
             int y_realtive = (int)(y * Height);
             var lparam = MakeLong(x_relative, y_realtive);
+            Thread.Sleep(_random.Next(10, 50));
+            User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_MOUSEMOVE, IntPtr.Zero, new IntPtr(lparam));
             User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONDOWN, new IntPtr(1), new IntPtr(lparam));
             Thread.Sleep(_random.Next(10, 50));
             User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONUP, new IntPtr(0), new IntPtr(lparam));
+
+            User32.SetCursorPos(X + x_relative, Y + y_realtive);
         }
 
         internal void Drag(Vector2 vectorStart, Vector2 vectorEnd)

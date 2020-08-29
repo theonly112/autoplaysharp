@@ -1,17 +1,19 @@
 [
   {
     "Id": "EPIC_QUEST_DUAL_MISSION_LEFT",
-    "X": 0.324,
+    "X": 0.338,
     "Y": 0.684,
-    "W": 0.058,
-    "H": 0.044
+    "W": 0.031,
+    "H": 0.044,
+    "Threshold": 150
   },
   {
     "Id": "EPIC_QUEST_DUAL_MISSION_RIGHT",
     "X": 0.627,
     "Y": 0.684,
     "W": 0.04,
-    "H": 0.044
+    "H": 0.044,
+    "Threshold": 150
   },
   {
     "Id": "EPIC_QUEST_ENDSCREEN_MISION_NAME",
@@ -34,5 +36,21 @@
     "W": 0.044,
     "H": 0.071,
     "Image": "ui\\HomeButton_EpicQuest.bmp"
+  },
+  {
+    "Id": "EPIC_QUEST_ENDSCREEN_NOTICE_ALL_ENTRIES_USED",
+    "X": 0.427,
+    "Y": 0.48,
+    "W": 0.142,
+    "H": 0.049,
+    "Text": "All entries used."
+  },
+  {
+    "Id": "EPIC_QUEST_ENDSCREEN_NOTICE_ALL_ENTRIES_USED_OK_BUTTON",
+    "X": 0.476,
+    "Y": 0.733,
+    "W": 0.049,
+    "H": 0.049,
+    "Text": "OK"
   }
 ]

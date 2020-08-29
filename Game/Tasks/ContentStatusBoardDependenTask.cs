@@ -72,8 +72,8 @@ namespace autoplaysharp.Game.Tasks
             }
             _contentStatusList.Clear();
 
-            // For now draging 3 times seems sufficent.
-            for (int i = 0; i < 3; i++)
+            // For now draging 1 times seems sufficent.
+            for (int i = 0; i < 1; i++)
             {
                 for (var col = 0; col < 3; col++)
                 {
@@ -94,20 +94,25 @@ namespace autoplaysharp.Game.Tasks
             }
 
             Game.Click("CONTENT_STATUS_BOARD_GOTO_MAINSCREEN");
-            await Task.Delay(500);
+            await WaitUntilVisible("MAIN_MENU_ENTER");
         }
 
-        protected async Task StartContentBoardMission(string name)
+        protected async Task<bool> StartContentBoardMission(string name)
         {
             // TODO refactor this ...
-
+            if(!await WaitUntilVisible("MAIN_MENU_ENTER"))
+            {
+                Console.WriteLine("Cannot find enter button.. Not on main screen?");
+                return false;
+            }
+            await Task.Delay(500);
             Game.Click("CONTENT_STATUS_BOARD_BUTTON");
             if (!await WaitUntilVisible("CONTENT_STATUS_BOARD_MENU_HEADER"))
             {
                 Console.WriteLine("Failed to navigati to content status board");
-                return;
+                return false;
             }
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 1; i++)
             {
                 for (var col = 0; col < 3; col++)
                 {
@@ -118,13 +123,14 @@ namespace autoplaysharp.Game.Tasks
                         if(mission_name == name)
                         {
                             Game.Click(element);
-                            return;
+                            return true;
                         }
                     }
                 }
                 Game.Drag("CONTENT_STATUS_BOARD_DRAG_START", "CONTENT_STATUS_BOARD_DRAG_END");
                 await Task.Delay(500);
             }
+            return false;
         }
 
         protected ContentStatus GetMissionStatus(string id)

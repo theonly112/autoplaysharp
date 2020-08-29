@@ -42,7 +42,7 @@ namespace autoplaysharp.Game
                 y += element.H.Value / 2f;
             }
 
-            _window.ClickAt(element.X.Value, element.Y.Value);
+            _window.ClickAt(x, y);
         }
 
         public void Drag(string idStart, string IdEnd)

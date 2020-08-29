@@ -22,6 +22,9 @@ namespace autoplaysharp.Overlay.Windows
             _taskToggleButtons.Add(new TaskToggleButton(() => new VeiledSecret(_game, _repository), "Veiled Secret", taskExecutioner));
             _taskToggleButtons.Add(new TaskToggleButton(() => new StupidXMen(_game, _repository), "Stupid X-Men", taskExecutioner));
             _taskToggleButtons.Add(new TaskToggleButton(() => new TheBigTwin(_game, _repository), "The Big Twin", taskExecutioner));
+            _taskToggleButtons.Add(new TaskToggleButton(() => new TwistedWorld(_game, _repository), "Twisted World", taskExecutioner));
+            _taskToggleButtons.Add(new TaskToggleButton(() => new TheFault(_game, _repository), "The Fault", taskExecutioner));
+
             _taskToggleButtons.Add(new TaskToggleButton(() => new ShieldLab(_game), "Shield Lab", taskExecutioner));
             _taskToggleButtons.Add(new TaskToggleButton(() => new AutoFight(_game), "Auto Fight++", taskExecutioner));
         }
