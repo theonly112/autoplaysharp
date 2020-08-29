@@ -1,0 +1,43 @@
+﻿using autoplaysharp.Contracts;
+using autoplaysharp.Game.Tasks;
+using autoplaysharp.Game.Tasks.Missions;
+using autoplaysharp.Overlay.Windows.Task;
+using ImGuiNET;
+using System.Collections.Generic;
+
+namespace autoplaysharp.Overlay.Windows
+{
+    class TaskWindow : IOverlaySubWindow
+    {
+        private readonly IGame _game;
+        private readonly IUiRepository _repository;
+
+        private List<TaskToggleButton> _taskToggleButtons = new List<TaskToggleButton>();
+
+        public TaskWindow(ITaskExecutioner taskExecutioner, IGame game, IUiRepository repository)
+        {
+            _game = game;
+            _repository = repository;
+
+            _taskToggleButtons.Add(new TaskToggleButton(() => new VeiledSecret(_game, _repository), "Veiled Secret", taskExecutioner));
+            _taskToggleButtons.Add(new TaskToggleButton(() => new StupidXMen(_game, _repository), "Stupid X-Men", taskExecutioner));
+            _taskToggleButtons.Add(new TaskToggleButton(() => new ShieldLab(_game), "Shield Lab", taskExecutioner));
+            _taskToggleButtons.Add(new TaskToggleButton(() => new AutoFight(_game), "Auto Fight++", taskExecutioner));
+        }
+
+        public void Render()
+        {
+            ShowTasks();
+        }
+
+        private void ShowTasks()
+        {
+            ImGui.Begin("Tasks");
+            foreach(var b in _taskToggleButtons)
+            {
+                b.Render();
+            }
+            ImGui.End();
+        }
+    }
+}
