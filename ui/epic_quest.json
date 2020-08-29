@@ -26,5 +26,13 @@
     "Y": 0.893,
     "W": 0.116,
     "H": 0.071
+  },
+  {
+    "Id": "EPIC_QUEST_ENDSCREEN_HOME_BUTTON_IMAGE",
+    "X": 0.756,
+    "Y": 0.893,
+    "W": 0.044,
+    "H": 0.071,
+    "Image": "ui\\HomeButton_EpicQuest.bmp"
   }
 ]

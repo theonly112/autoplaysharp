@@ -23,9 +23,9 @@ namespace autoplaysharp.Game
             int x_relative = (int)(x * Width);
             int y_realtive = (int)(y * Height);
             var lparam = MakeLong(x_relative, y_realtive);
-            User32.PostMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONDOWN, new IntPtr(1), new IntPtr(lparam));
+            User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONDOWN, new IntPtr(1), new IntPtr(lparam));
             Thread.Sleep(_random.Next(10, 50));
-            User32.PostMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONUP, new IntPtr(0), new IntPtr(lparam));
+            User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONUP, new IntPtr(0), new IntPtr(lparam));
         }
 
         internal void Drag(Vector2 vectorStart, Vector2 vectorEnd)
@@ -33,7 +33,7 @@ namespace autoplaysharp.Game
             int x_start = (int)(vectorStart.X * Width);
             int y_start = (int)(vectorStart.Y * Height);
             var lparam = MakeLong(x_start, y_start);
-            User32.PostMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONDOWN, new IntPtr(1), new IntPtr(lparam));
+            User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONDOWN, new IntPtr(1), new IntPtr(lparam));
             int duration = 500;
             int steps = 10;
             for(int i = 0; i < steps; i++)
@@ -42,10 +42,10 @@ namespace autoplaysharp.Game
                 x_start += (int)(delta.X * Width);
                 y_start += (int)(delta.Y * Height);
                 lparam = MakeLong(x_start, y_start);
-                User32.PostMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_MOUSEMOVE, new IntPtr(1), new IntPtr(lparam));
+                User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_MOUSEMOVE, new IntPtr(1), new IntPtr(lparam));
                 Thread.Sleep(duration / steps);
             }
-            User32.PostMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONUP, new IntPtr(0), new IntPtr(lparam));
+            User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONUP, new IntPtr(0), new IntPtr(lparam));
         }
 
         private int MakeLong(int lo, int hi)

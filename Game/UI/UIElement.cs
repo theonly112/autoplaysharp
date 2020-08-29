@@ -62,5 +62,10 @@
         /// Scale image for better OCR
         /// </summary>
         public int? Scale { get; set; }
+
+        /// <summary>
+        /// File path to image.
+        /// </summary>
+        public string Image { get; set; }
     }
 }

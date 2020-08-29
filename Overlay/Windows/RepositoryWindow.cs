@@ -71,6 +71,12 @@ namespace autoplaysharp.Overlay.Windows
             }
 
 
+            if(element.Image != null)
+            {
+                ImGui.Text($"Is Visible: {_game.IsVisible(items[_selectedUiElement])}");
+            }
+
+
             ImGui.Combo("UIElements", ref _selectedUiElement, items, items.Length, 30);
 
 

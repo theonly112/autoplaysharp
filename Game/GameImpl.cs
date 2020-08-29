@@ -5,6 +5,7 @@ using autoplaysharp.OCR;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Numerics;
 
@@ -28,6 +29,19 @@ namespace autoplaysharp.Game
 
         public void Click(UIElement element)
         {
+            var x = element.X.Value;
+            var y = element.Y.Value;
+
+            if (element.W.HasValue)
+            {
+                x += element.W.Value / 2f;
+            }
+
+            if(element.H.HasValue)
+            {
+                y += element.H.Value / 2f;
+            }
+
             _window.ClickAt(element.X.Value, element.Y.Value);
         }
 
@@ -44,12 +58,7 @@ namespace autoplaysharp.Game
 
         public string GetText(UIElement element)
         {
-            var x = element.X.Value * _window.Width;
-            var y = element.Y.Value * _window.Height;
-            var w = element.W.Value * _window.Width;
-            var h = element.H.Value * _window.Height;
-
-            using var section = _window.GrabScreen((int)x, (int)y, (int)w, (int)h);
+            System.Drawing.Bitmap section = GrabElement(element);
 
 
             // Preprocessing for OCR.
@@ -59,7 +68,7 @@ namespace autoplaysharp.Game
             if (element.Scale.HasValue)
             {
                 var scale = element.Scale.Value;
-                Cv2.Resize(section_mat, scaled_section_mat, new Size(section.Width * scale, section.Height * scale));
+                Cv2.Resize(section_mat, scaled_section_mat, new OpenCvSharp.Size(section.Width * scale, section.Height * scale));
             }
 
             using var grayscale_mat = new Mat();
@@ -79,10 +88,20 @@ namespace autoplaysharp.Game
                 SaveImage(element.Id, pix);
             }
 
-        
+
 
             var result = TextRecognition.GetText(pix, element.PSM.HasValue ? element.PSM.Value : 3);
             return result.TrimStart().TrimEnd();
+        }
+
+        private Bitmap GrabElement(UIElement element)
+        {
+            var x = element.X.Value * _window.Width;
+            var y = element.Y.Value * _window.Height;
+            var w = element.W.Value * _window.Width;
+            var h = element.H.Value * _window.Height;
+            var section = _window.GrabScreen((int)x, (int)y, (int)w, (int)h);
+            return section;
         }
 
         public string GetText(string id)
@@ -109,9 +128,42 @@ namespace autoplaysharp.Game
 
         public bool IsVisible(UIElement element)
         {
+            if(element.Image != null)
+            {
+                return IsImageVisible(element);
+            }
+
             Debug.Assert(!string.IsNullOrWhiteSpace(element.Text));
             var text = GetText(element).TrimStart().TrimEnd();
             return text == element.Text;
+        }
+
+        private bool IsImageVisible(UIElement element, float confidence = 0.90f)
+        {
+            using var uielement = GrabElement(element);
+
+            if(Program.SaveImages)
+            {
+                Directory.CreateDirectory($"logs\\{Path.GetDirectoryName(element.Image)}");
+                uielement.Save($"logs\\{element.Image}");
+            }
+
+            using var uielement_mat = uielement.ToMat();
+            using var template_mat = Cv2.ImRead(element.Image);
+            using var uielement_mat_gray = new Mat();
+            using var tempalte_mat_gray = new Mat();
+            Cv2.CvtColor(uielement_mat, uielement_mat_gray, ColorConversionCodes.BGR2GRAY);
+            Cv2.CvtColor(template_mat, tempalte_mat_gray, ColorConversionCodes.BGR2GRAY);
+            using var uielement_mat_gray_scaled = new Mat();
+            Cv2.Resize(uielement_mat_gray, uielement_mat_gray_scaled, template_mat.Size());
+
+            using var result = new Mat();
+            Cv2.MatchTemplate(uielement_mat_gray_scaled, tempalte_mat_gray, result, TemplateMatchModes.CCoeffNormed);
+            Cv2.MinMaxLoc(result, out var _, out var maxval, out var _, out var maxloc);
+
+            if (maxval > confidence)
+                return true;
+            return false;
         }
 
         public bool IsVisible(string id)

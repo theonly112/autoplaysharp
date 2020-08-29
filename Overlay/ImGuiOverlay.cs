@@ -3,6 +3,7 @@ using autoplaysharp.Game;
 using autoplaysharp.Game.UI;
 using autoplaysharp.Overlay.Windows;
 using ImGuiNET;
+using System;
 using System.Collections.Generic;
 using Veldrid;
 
@@ -10,7 +11,7 @@ namespace autoplaysharp.Overlay
 {
     internal class ImGuiOverlay : ImGuiOverlayBase
     {
-
+        private readonly IGame _game;
         private List<IOverlaySubWindow> _subWindows = new List<IOverlaySubWindow>();
 
         public ImGuiOverlay(ITaskExecutioner taskExecutioner, IGame game, NoxWindow window, Repository repository) : base(window)
@@ -23,7 +24,7 @@ namespace autoplaysharp.Overlay
         {
             // TODO mouse pos even interessting?
             ImGui.Begin("Debug");
-            ImGui.Text($"MousePos: {snapshot.MousePosition}");
+            ImGui.Text($"MousePos: {snapshot.MousePosition}");        
             ImGui.End();
 
             foreach(var w in _subWindows)
