@@ -1,0 +1,25 @@
+[
+  {
+    "Id": "SQUAD_BATTLE_CURRENT_ROUND",
+    "X": 0.453,
+    "Y": 0.013,
+    "W": 0.098,
+    "H": 0.04,
+    "PSM": 3
+  },
+  {
+    "Id": "SQUAD_BATTLE_OWNED_PROTECTIVE_LIGHT",
+    "X": 0.818,
+    "Y": 0.151,
+    "W": 0.164,
+    "H": 0.036,
+    "PSM": 3
+  },
+  {
+    "Id": "SQUAD_BATTLE_END_BATTLE_MESSAGE",
+    "X": 0.36,
+    "Y": 0.071,
+    "W": 0.298,
+    "H": 0.089
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "Id": "MAIN_MENU_ENTER",
+    "X": 0.853,
+    "Y": 0.911,
+    "W": 0.071,
+    "H": 0.054,
+    "Text": "ENTER"
+  },
+  {
+    "Id": "MAIN_MENU_USERNAME",
+    "X": 0.004,
+    "Y": 0.004,
+    "W": 0.124,
+    "H": 0.044
+  },
+  {
+    "Id": "MAIN_MENU_GOLD",
+    "X": 0.465,
+    "Y": 0.031,
+    "W": 0.073,
+    "H": 0.035
+  },
+  {
+    "Id": "MAIN_MENU_ENERGY",
+    "X": 0.329,
+    "Y": 0.031,
+    "W": 0.062,
+    "H": 0.031,
+    "PSM": 11,
+    "Threshold": 161
+  },
+  {
+    "Id": "MAIN_MENU_CONTENT_STATUS_BOARD_BUTTON",
+    "X": 0.724,
+    "Y": 0.893,
+    "W": 0.053,
+    "H": 0.089
+  },
+  {
+    "Id": "MAIN_MENU_HOME",
+    "X": 0.912,
+    "Y": 0.05
+  },
+  {
+    "Id": "MAIN_MENU_MENU_HEADER",
+    "X": 0.551,
+    "Y": 0.04,
+    "W": 0.044,
+    "H": 0.036,
+    "Text": "MENU"
+  },
+  {
+    "Id": "MAIN_MENU_MENU_BOTTON",
+    "X": 0.951,
+    "Y": 0.013,
+    "W": 0.04,
+    "H": 0.076
+  },
+  {
+    "Id": "MAIN_MENU_SHIELD_LAB_BUTTON",
+    "X": 0.756,
+    "Y": 0.484,
+    "W": 0.111,
+    "H": 0.164
+  }
+]

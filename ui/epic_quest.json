@@ -1,0 +1,30 @@
+[
+  {
+    "Id": "EPIC_QUEST_DUAL_MISSION_LEFT",
+    "X": 0.324,
+    "Y": 0.684,
+    "W": 0.058,
+    "H": 0.044
+  },
+  {
+    "Id": "EPIC_QUEST_DUAL_MISSION_RIGHT",
+    "X": 0.627,
+    "Y": 0.684,
+    "W": 0.04,
+    "H": 0.044
+  },
+  {
+    "Id": "EPIC_QUEST_ENDSCREEN_MISION_NAME",
+    "X": 0.009,
+    "Y": 0.009,
+    "W": 0.129,
+    "H": 0.044
+  },
+  {
+    "Id": "EPIC_QUEST_ENDSCREEN_HOME_BUTTON",
+    "X": 0.72,
+    "Y": 0.893,
+    "W": 0.116,
+    "H": 0.071
+  }
+]

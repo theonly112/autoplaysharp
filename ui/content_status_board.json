@@ -1,0 +1,53 @@
+[
+  {
+    "Id": "CONTENT_STATUS_BOARD_ITEM_NAME_DYN",
+    "X": 0.062,
+    "Y": 0.249,
+    "W": 0.267,
+    "H": 0.053,
+    "XOffset": 0.299,
+    "YOffset": 0.158
+  },
+  {
+    "Id": "CONTENT_STATUS_BOARD_ITEM_STATUS_DYN",
+    "X": 0.253,
+    "Y": 0.311,
+    "W": 0.053,
+    "H": 0.049,
+    "XOffset": 0.299,
+    "YOffset": 0.16,
+    "Scale": 4
+  },
+  {
+    "Id": "CONTENT_STATUS_BOARD_BUTTON",
+    "X": 0.724,
+    "Y": 0.893,
+    "W": 0.053,
+    "H": 0.093
+  },
+  {
+    "Id": "CONTENT_STATUS_BOARD_MENU_HEADER",
+    "X": 0.053,
+    "Y": 0.004,
+    "W": 0.147,
+    "H": 0.084,
+    "Text": "CONTENT STATUS\nBOARD"
+  },
+  {
+    "Id": "CONTENT_STATUS_BOARD_DRAG_END",
+    "X": 0.493,
+    "Y": 0.591
+  },
+  {
+    "Id": "CONTENT_STATUS_BOARD_DRAG_START",
+    "X": 0.493,
+    "Y": 0.751
+  },
+  {
+    "Id": "CONTENT_STATUS_BOARD_GOTO_MAINSCREEN",
+    "X": 0.902,
+    "Y": 0.018,
+    "W": 0.04,
+    "H": 0.071
+  }
+]

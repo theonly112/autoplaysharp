@@ -1,0 +1,49 @@
+[
+  {
+    "Id": "DANGER_ROOM_MENU_NAME",
+    "X": 0.38,
+    "Y": 0.073,
+    "W": 0.244,
+    "H": 0.068,
+    "Text": "DANGER ROOM"
+  },
+  {
+    "Id": "DANGER_ROOM_WAITING",
+    "X": 0.38,
+    "Y": 0.073,
+    "W": 0.244,
+    "H": 0.068,
+    "Text": "Danger Room"
+  },
+  {
+    "Id": "DANGER_ROOM_WAITING_FOR_HEROES",
+    "X": 0.38,
+    "Y": 0.073,
+    "W": 0.244,
+    "H": 0.068,
+    "Text": "Waiting for other heroes"
+  },
+  {
+    "Id": "DANGER_ROOM_REVIVE_IN_X_SECONDS",
+    "X": 0.38,
+    "Y": 0.073,
+    "W": 0.244,
+    "H": 0.068
+  },
+  {
+    "Id": "DANGER_ROOM_HIGHEST_EXCLUSIV_SKILL_COUNT",
+    "X": 0.413,
+    "Y": 0.649,
+    "W": 0.178,
+    "H": 0.044,
+    "Text": "Highest Exclusive Skill Count"
+  },
+  {
+    "Id": "DANGER_ROOM_BATTLE_INFO",
+    "X": 0.564,
+    "Y": 0.067,
+    "W": 0.08,
+    "H": 0.04,
+    "Text": "Battle Info"
+  }
+]

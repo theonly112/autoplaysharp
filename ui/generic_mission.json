@@ -1,0 +1,29 @@
+[
+  {
+    "Id": "GENERIC_MISSION_START",
+    "X": 0.773,
+    "Y": 0.911,
+    "W": 0.071,
+    "H": 0.044,
+    "Threshold": 150,
+    "Text": "START"
+  },
+  {
+    "Id": "GENERIC_MISSION_ITEM_LIMIT_REACHED_NOTICE",
+    "X": 0.32,
+    "Y": 0.391,
+    "W": 0.36,
+    "H": 0.044,
+    "Threshold": 150,
+    "Text": "One of your items has reached its max limit."
+  },
+  {
+    "Id": "GENERIC_MISSION_ITEM_LIMIT_REACHED_NOTICE_OK_BUTTON",
+    "X": 0.547,
+    "Y": 0.733,
+    "W": 0.062,
+    "H": 0.044,
+    "Threshold": 150,
+    "Text": "OK"
+  }
+]
