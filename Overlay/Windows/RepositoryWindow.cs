@@ -99,17 +99,11 @@ namespace autoplaysharp.Overlay.Windows
         {
             var drawList = ImGui.GetBackgroundDrawList();
 
-            var absoluteLoc = new Vector2(x, y) * new Vector2(_noxWindow.Width, _noxWindow.Height);
+            var absoluteLoc = GetAbsoluteLocation(element);
 
             if (element.H.HasValue && element.W.HasValue)
             {
-                if (_previewText)
-                {
-                    ImGui.Text($"Current Text: {_game.GetText(items[_selectedUiElement])}");
-                }
-
-                var absoluteSize = new Vector2(element.W.Value, element.H.Value) * new Vector2(_noxWindow.Width, _noxWindow.Height);
-                drawList.AddRect(absoluteLoc, absoluteLoc + absoluteSize, 0xff00ff00);
+                DrawElement(drawList, element);
 
                 ImGui.BeginGroup();
 
@@ -117,16 +111,9 @@ namespace autoplaysharp.Overlay.Windows
                 {
                     var xOffset = element.XOffset.Value;
                     ImGui.SliderFloat("XOffset", ref xOffset, 0, 1);
-                    element.XOffset = xOffset;
-
-                    int i = 0;
-                    while (true && element.XOffset.Value > 0)
+                    if(xOffset != 0)
                     {
-                        var loc = absoluteLoc + new Vector2(element.XOffset.Value * i, 0) * new Vector2(_noxWindow.Width, _noxWindow.Height);
-                        if (loc.X + absoluteSize.X > _noxWindow.Width)
-                            break;
-                        drawList.AddRect(loc, loc + absoluteSize, 0xff00ff00);
-                        i++;
+                        element.XOffset = xOffset;
                     }
                 }
 
@@ -134,17 +121,18 @@ namespace autoplaysharp.Overlay.Windows
                 {
                     var yOffset = element.YOffset.Value;
                     ImGui.SliderFloat("YOffset", ref yOffset, 0, 1);
-                    element.YOffset = yOffset;
-                    int i = 0;
-                    while (true && element.YOffset.Value > 0)
+                    if(yOffset != 0)
                     {
-                        var loc = absoluteLoc + new Vector2(0, element.YOffset.Value * i) * new Vector2(_noxWindow.Width, _noxWindow.Height);
-                        if (loc.Y + absoluteSize.Y > _noxWindow.Height)
-                            break;
-                        drawList.AddRect(loc, loc + absoluteSize, 0xff00ff00);
-                        i++;
+                        element.YOffset = yOffset;
                     }
                 }
+
+                if((element.XOffset.HasValue && element.XOffset.Value > 0) 
+                    || (element.YOffset.HasValue && element.YOffset.Value > 0))
+                {
+                    DrawElementGrid(drawList, element);
+                }
+
                 ImGui.EndGroup();
 
 
@@ -156,11 +144,79 @@ namespace autoplaysharp.Overlay.Windows
                     ImGui.SliderInt("Threshold", ref thresh, 0, 255);
                     element.Threshold = thresh;
                 }
+
+  
             }
             else
             {
                 drawList.AddCircleFilled(absoluteLoc, 15, 0xff0000ff);
             }
+        }
+
+        private void DrawElementGrid(ImDrawListPtr drawList, UIElement element)
+        {
+            int x = 0;
+            int y = 0;
+            while (true)
+            {
+                var dynUiElement = _repository[element.Id, x, y];
+                if (!IsVisible(dynUiElement))
+                    break;
+
+                while (true)
+                {
+                    dynUiElement = _repository[element.Id, x, y];
+                    if (!IsVisible(dynUiElement))
+                    {
+                        x = 0;
+                        break;
+                    }
+
+                    DrawElement(drawList, dynUiElement);
+
+                    if (element.XOffset.HasValue && element.XOffset.Value > 0)
+                    {
+                        x++;
+                    }
+                }
+
+                if (element.YOffset.HasValue && element.YOffset.Value > 0)
+                {
+                    y++;
+                }
+            }
+        }
+
+        private void DrawElement(ImDrawListPtr drawList, UIElement uiElement)
+        {
+            Vector2 size = GetAbsoluteSize(uiElement);
+            Vector2 loc = GetAbsoluteLocation(uiElement);
+
+            drawList.AddRect(loc, loc + size, 0xff00ff00);
+
+            if (_previewText)
+            {
+                var fontSize = 18;
+                var fontVec = new Vector2(0, fontSize);
+                var textLoc = Vector2.Max(new Vector2(loc.X, 0), (loc - fontVec));
+                var text = _game.GetText(uiElement);
+                drawList.AddText(ImGui.GetFont(), 18, textLoc, 0xFF0000FF, text);
+            }
+        }
+
+        private bool IsVisible(UIElement element)
+        {
+            return element.Y + element.H <= 1 && element.X + element.W <= 1;
+        }
+
+        private Vector2 GetAbsoluteSize(UIElement dynUiElement)
+        {
+            return new Vector2(dynUiElement.W.Value, dynUiElement.H.Value) * new Vector2(_noxWindow.Width, _noxWindow.Height);
+        }
+
+        private Vector2 GetAbsoluteLocation(UIElement dynUiElement)
+        {
+            return new Vector2(dynUiElement.X.Value, dynUiElement.Y.Value) * new Vector2(_noxWindow.Width, _noxWindow.Height);
         }
     }
 }
