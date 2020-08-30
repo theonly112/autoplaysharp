@@ -18,18 +18,19 @@ namespace autoplaysharp.Game
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool EnumChildWindows(IntPtr hwndParent, User32.WNDENUMPROC lpEnumFunc, IntPtr lParam);
 
-        internal void ClickAt(double x, double y)
+        public Vector2 VirtualMousePosition { get; set; } = Vector2.Zero;
+
+        internal void ClickAt(float x, float y)
         {
             int x_relative = (int)(x * Width);
             int y_realtive = (int)(y * Height);
             var lparam = MakeLong(x_relative, y_realtive);
             Thread.Sleep(_random.Next(10, 50));
+            VirtualMousePosition = new Vector2(x, y);
             User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_MOUSEMOVE, IntPtr.Zero, new IntPtr(lparam));
             User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONDOWN, new IntPtr(1), new IntPtr(lparam));
             Thread.Sleep(_random.Next(10, 50));
             User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONUP, new IntPtr(0), new IntPtr(lparam));
-
-            User32.SetCursorPos(X + x_relative, Y + y_realtive);
         }
 
         internal void Drag(Vector2 vectorStart, Vector2 vectorEnd)
@@ -37,6 +38,7 @@ namespace autoplaysharp.Game
             int x_start = (int)(vectorStart.X * Width);
             int y_start = (int)(vectorStart.Y * Height);
             var lparam = MakeLong(x_start, y_start);
+            VirtualMousePosition = new Vector2(vectorStart.X, vectorStart.Y);
             User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONDOWN, new IntPtr(1), new IntPtr(lparam));
             int duration = 500;
             int steps = 10;
@@ -46,6 +48,8 @@ namespace autoplaysharp.Game
                 x_start += (int)(delta.X * Width);
                 y_start += (int)(delta.Y * Height);
                 lparam = MakeLong(x_start, y_start);
+
+                VirtualMousePosition = new Vector2(x_start / (float)Width, y_start / (float)Height);
                 User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_MOUSEMOVE, new IntPtr(1), new IntPtr(lparam));
                 Thread.Sleep(duration / steps);
             }
@@ -90,6 +94,8 @@ namespace autoplaysharp.Game
             {
 
             }
+
+            User32.SetForegroundWindow(_noxMainWindow);
 
         }
 

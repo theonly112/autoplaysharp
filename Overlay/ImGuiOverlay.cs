@@ -10,19 +10,24 @@ namespace autoplaysharp.Overlay
 {
     internal class ImGuiOverlay : ImGuiOverlayBase
     {
+        private readonly NoxWindow _window;
         private List<IOverlaySubWindow> _subWindows = new List<IOverlaySubWindow>();
 
         public ImGuiOverlay(ITaskExecutioner taskExecutioner, IGame game, NoxWindow window, Repository repository) : base(window)
         {
             _subWindows.Add(new TaskWindow(taskExecutioner, game, repository));
             _subWindows.Add(new RepositoryWindow(repository, window, game));
+            _window = window;
         }
 
         protected override void SubmitUI(InputSnapshot snapshot)
         {
             // TODO mouse pos even interessting?
             ImGui.Begin("Debug");
-            ImGui.Text($"MousePos: {snapshot.MousePosition}");        
+            var drawList = ImGui.GetForegroundDrawList();
+            var absPos = _window.VirtualMousePosition * new System.Numerics.Vector2(_window.Width, _window.Height);
+            drawList.AddCircleFilled(absPos, 25, 0xff0000ff);
+            ImGui.Text($"MousePos: {_window.VirtualMousePosition}");
             ImGui.End();
 
             foreach(var w in _subWindows)
