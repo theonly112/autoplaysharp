@@ -5,7 +5,8 @@
     "Y": 0.588,
     "W": 0.038,
     "H": 0.077,
-    "PSM": 8
+    "PSM": 8,
+    "Threshold": 150
   },
   {
     "Id": "BATTLE_SKILL_2",
@@ -13,8 +14,8 @@
     "Y": 0.712,
     "W": 0.031,
     "H": 0.077,
-    "PSM": 7,
-    "PSM": 8
+    "PSM": 8,
+    "Threshold": 150
   },
   {
     "Id": "BATTLE_SKILL_3",
@@ -22,7 +23,8 @@
     "Y": 0.596,
     "W": 0.038,
     "H": 0.077,
-    "PSM": 8
+    "PSM": 8,
+    "Threshold": 150
   },
   {
     "Id": "BATTLE_SKILL_4",
@@ -30,7 +32,8 @@
     "Y": 0.873,
     "W": 0.038,
     "H": 0.077,
-    "PSM": 8
+    "PSM": 8,
+    "Threshold": 150
   },
   {
     "Id": "BATTLE_SKILL_5",
@@ -38,7 +41,8 @@
     "Y": 0.873,
     "W": 0.038,
     "H": 0.077,
-    "PSM": 8
+    "PSM": 8,
+    "Threshold": 150
   },
   {
     "Id": "BATTLE_SKILL_T3",
@@ -46,7 +50,8 @@
     "Y": 0.881,
     "W": 0.047,
     "H": 0.053,
-    "PSM": 8
+    "PSM": 8,
+    "Threshold": 150
   },
   {
     "Id": "BATTLE_SKILL_T3_LOCKED",
@@ -55,5 +60,13 @@
     "W": 0.047,
     "H": 0.026,
     "Text": "Tier-3"
+  },
+  {
+    "Id": "BATTLE_END_BATTLE_NOTICE",
+    "X": 0.413,
+    "Y": 0.084,
+    "W": 0.173,
+    "H": 0.062,
+    "Text": "End Battle"
   }
 ]

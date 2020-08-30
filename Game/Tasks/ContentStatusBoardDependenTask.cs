@@ -3,13 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Vulkan.Wayland;
 
 namespace autoplaysharp.Game.Tasks
 {
     internal abstract class ContentStatusBoardDependenTask : GameTask
     {
-        private readonly IUiRepository _repository;
+        protected readonly IUiRepository Repository;
         private Dictionary<string, ContentStatus> _contentStatusList = new Dictionary<string, ContentStatus>();
 
         protected class ContentStatus
@@ -62,7 +61,7 @@ namespace autoplaysharp.Game.Tasks
 
         protected ContentStatusBoardDependenTask(IGame game, IUiRepository repository) : base(game)
         {
-            _repository = repository;
+            Repository = repository;
         }
 
         public async Task<bool> UpdateContentStatusBoard()
@@ -87,9 +86,9 @@ namespace autoplaysharp.Game.Tasks
                 {
                     for (var row = 0; row < 4; row++)
                     {
-                        var name = Game.GetText(_repository["CONTENT_STATUS_BOARD_ITEM_NAME_DYN", col, row]);
-                        var status = Game.GetText(_repository["CONTENT_STATUS_BOARD_ITEM_STATUS_DYN", col, row]);
-                        var isCompleted = Game.IsVisible(_repository["CONTENT_STATUS_BOARD_ITEM_NAME_COMPLETED_DYN", col, row]);
+                        var name = Game.GetText(Repository["CONTENT_STATUS_BOARD_ITEM_NAME_DYN", col, row]);
+                        var status = Game.GetText(Repository["CONTENT_STATUS_BOARD_ITEM_STATUS_DYN", col, row]);
+                        var isCompleted = Game.IsVisible(Repository["CONTENT_STATUS_BOARD_ITEM_NAME_COMPLETED_DYN", col, row]);
                         var statusEntry = new ContentStatus(name, isCompleted, status);
                         if (_contentStatusList.ContainsKey(name))
                             continue;
@@ -109,6 +108,10 @@ namespace autoplaysharp.Game.Tasks
 
         protected async Task<bool> StartContentBoardMission(string name)
         {
+            if(!await UpdateContentStatusBoard())
+            {
+                return false;
+            }
             // TODO refactor this ...
             if(!await WaitUntilVisible("MAIN_MENU_ENTER"))
             {
@@ -128,7 +131,7 @@ namespace autoplaysharp.Game.Tasks
                 {
                     for (var row = 0; row < 3; row++)
                     {
-                        var element = _repository["CONTENT_STATUS_BOARD_ITEM_NAME_DYN", col, row];
+                        var element = Repository["CONTENT_STATUS_BOARD_ITEM_NAME_DYN", col, row];
                         var mission_name = Game.GetText(element);
                         if(mission_name == name)
                         {

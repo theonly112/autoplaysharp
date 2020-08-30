@@ -23,7 +23,7 @@ namespace autoplaysharp.Game.Tasks
             }
             finally
             {
-                TaskEnded.Invoke();
+                TaskEnded?.Invoke();
             }
         }
         protected abstract Task RunCore(CancellationToken token);
@@ -54,9 +54,9 @@ namespace autoplaysharp.Game.Tasks
             return true;
         }
 
-        protected Task<bool> WaitUntilVisible(string id, float timeout = 5)
+        protected Task<bool> WaitUntilVisible(string id, float timeout = 5, float interval = 0.1f)
         {
-            return WaitUntil(() => Game.IsVisible(id), timeout);
+            return WaitUntil(() => Game.IsVisible(id), timeout, interval);
         }
 
         protected async Task<bool> WaitUntil(Func<bool> condition, float timeout = 5, float interval = 0.1f)
@@ -81,6 +81,18 @@ namespace autoplaysharp.Game.Tasks
             }
 
             return WaitUntil(IsOnMainScreen);
+        }
+
+
+        protected Task<bool> HandleStartNotices()
+        {
+            if(Game.IsVisible("GENERIC_MISSION_INVENTORY_FULL_NOTICE"))
+            {
+                Console.WriteLine("Inventory is full. TODO: at the moment this is not handled...");
+                return Task.FromResult(false);
+            }
+
+            return Task.FromResult(true);
         }
     }
 }

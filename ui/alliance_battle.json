@@ -16,5 +16,60 @@
     "H": 0.107,
     "PSM": 3,
     "Text": "Alliance Battle\nEnded."
+  },
+  {
+    "Id": "ALLIANCE_BATTLE_NORMAL_MODE_READY",
+    "X": 0.689,
+    "Y": 0.907,
+    "W": 0.191,
+    "H": 0.062,
+    "PSM": 3,
+    "Threshold": 165,
+    "Text": "NORMAL MODE READY"
+  },
+  {
+    "Id": "ALLIANCE_BATTLE_EXTREME_MODE_READY",
+    "X": 0.684,
+    "Y": 0.907,
+    "W": 0.2,
+    "H": 0.062,
+    "PSM": 3,
+    "Threshold": 165,
+    "Text": "EXTREME MODE - READY"
+  },
+  {
+    "Id": "ALLIANCE_BATTLE_HERO_SELECTION_DYN",
+    "X": 0.667,
+    "Y": 0.218,
+    "W": 0.093,
+    "H": 0.164,
+    "XOffset": 0.093,
+    "YOffset": 0.164
+  },
+  {
+    "Id": "ALLIANCE_BATTLE_HERO_SELECTION_HEADER",
+    "X": 0.698,
+    "Y": 0.151,
+    "W": 0.222,
+    "H": 0.04,
+    "Text": "Select a character for your team."
+  },
+  {
+    "Id": "ALLIANCE_BATTLE_NORMAL_MODE_START",
+    "X": 0.676,
+    "Y": 0.893,
+    "W": 0.191,
+    "H": 0.062,
+    "PSM": 3,
+    "Threshold": 165,
+    "Text": "NORMAL MODE START"
+  },
+  {
+    "Id": "ALLIANCE_BATTLE_MODE_HEADER",
+    "X": 0.053,
+    "Y": 0.018,
+    "W": 0.147,
+    "H": 0.062,
+    "Text": "ALLIANCE BATTLE"
   }
 ]

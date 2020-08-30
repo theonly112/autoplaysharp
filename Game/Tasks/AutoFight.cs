@@ -1,5 +1,7 @@
 ﻿using autoplaysharp.Contracts;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,8 +9,15 @@ namespace autoplaysharp.Game.Tasks
 {
     internal class AutoFight : GameTask
     {
-        public AutoFight(IGame game) : base(game)
+        private readonly List<Func<bool>> _conditions;
+
+        public AutoFight(IGame game, params Func<bool>[] conditions) : base(game)
         {
+            _conditions = conditions.ToList();
+            _conditions.Add(() => game.IsVisible("BATTLE_END_BATTLE_NOTICE")); // Generic end message? Used in world event... Anywhere else?? TODO: if not move to another json...
+            _conditions.Add(() => game.IsVisible("WORLD_BOSS_MISSION_SUCCESS"));
+            _conditions.Add(() => game.IsVisible("ALLIANCE_BATTLE_CLEAR_MESSAGE"));
+            _conditions.Add(() => game.IsVisible("ALLIANCE_BATTLE_ENDED_MESSAGE"));
         }
 
         protected override async Task RunCore(CancellationToken token)
@@ -88,21 +97,11 @@ namespace autoplaysharp.Game.Tasks
 
         private bool HasFightEnded()
         {
-            var missionSuccess = Game.IsVisible("WORLD_BOSS_MISSION_SUCCESS");
-            if(missionSuccess)
+            if (_conditions.Any(cond => cond()))
             {
-                Console.WriteLine("Detected World Boss 'Mission Success' screen. Ending AutoFight...");
+                Console.WriteLine("Detected end condition");
                 return true;
             }
-
-            var allianceBattleEnded = Game.IsVisible("ALLIANCE_BATTLE_CLEAR_MESSAGE") || Game.IsVisible("ALLIANCE_BATTLE_ENDED_MESSAGE");
-            if(allianceBattleEnded)
-            {
-                Console.WriteLine("Detected ALLIANCE_BATTLE_CLEAR_MESSAGE. Ending AutoFight...");
-                return true;
-            }
-
-            // TODO: add other end indicators.
 
             return false;
         }

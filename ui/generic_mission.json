@@ -25,5 +25,14 @@
     "H": 0.044,
     "Threshold": 150,
     "Text": "OK"
+  },
+  {
+    "Id": "GENERIC_MISSION_INVENTORY_FULL_NOTICE",
+    "X": 0.293,
+    "Y": 0.458,
+    "W": 0.418,
+    "H": 0.044,
+    "Threshold": 150,
+    "Text": "Your inventory is full. Go to inventory and expand?"
   }
 ]
