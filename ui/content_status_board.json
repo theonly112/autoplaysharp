@@ -3,10 +3,20 @@
     "Id": "CONTENT_STATUS_BOARD_ITEM_NAME_DYN",
     "X": 0.062,
     "Y": 0.249,
-    "W": 0.267,
+    "W": 0.204,
     "H": 0.053,
     "XOffset": 0.299,
     "YOffset": 0.158
+  },
+  {
+    "Id": "CONTENT_STATUS_BOARD_ITEM_NAME_COMPLETED_DYN",
+    "X": 0.265,
+    "Y": 0.249,
+    "W": 0.076,
+    "H": 0.053,
+    "XOffset": 0.299,
+    "YOffset": 0.158,
+    "Text": "COMPLETE" 
   },
   {
     "Id": "CONTENT_STATUS_BOARD_ITEM_STATUS_DYN",

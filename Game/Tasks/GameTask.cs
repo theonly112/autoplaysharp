@@ -73,10 +73,14 @@ namespace autoplaysharp.Game.Tasks
             return true;
         }
 
-        protected Task GoToMainScreen()
+        protected Task<bool> GoToMainScreen()
         {
-            // TODO... implement.
-            return Task.FromResult(0);
+            if(Game.IsVisible("MAIN_MENU_HOME_BUTTON_IMAGE"))
+            {
+                Game.Click("MAIN_MENU_HOME_BUTTON_IMAGE");
+            }
+
+            return WaitUntil(IsOnMainScreen);
         }
     }
 }

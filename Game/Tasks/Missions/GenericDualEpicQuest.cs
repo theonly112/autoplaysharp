@@ -14,7 +14,12 @@ namespace autoplaysharp.Game.Tasks.Missions
         protected abstract string MissionName { get; }
         protected override async Task RunCore(CancellationToken token)
         {
-            await UpdateContentStatusBoard();
+            if(!await UpdateContentStatusBoard())
+            {
+                Console.WriteLine("Failed to update content status board");
+                return;
+            }
+
             var status = GetMissionStatus(MissionName);
             if (status == null)
             {
@@ -26,7 +31,7 @@ namespace autoplaysharp.Game.Tasks.Missions
             {
                 if(!await RunMission())
                 {
-                    Console.WriteLine("Failed...");
+                    Console.WriteLine("Failed to run mission...");
                     break;
                 }
             }

@@ -15,14 +15,18 @@ namespace autoplaysharp.Game.Tasks
         protected class ContentStatus
         {
             internal static Regex StatusRegex = new Regex(@"(\d*)/(\d*)");
-            public ContentStatus(string name, string status)
+
+            public ContentStatus(string name, bool completed, string status)
             {
                 ContentName = name;
+                Completed = completed;
                 Status = status;
             }
 
+
             public string ContentName { get; }
             public string Status { get; }
+            public bool Completed { get; }
             public int Used 
             { 
                 get
@@ -61,14 +65,18 @@ namespace autoplaysharp.Game.Tasks
             _repository = repository;
         }
 
-        public async Task UpdateContentStatusBoard()
+        public async Task<bool> UpdateContentStatusBoard()
         {
-            await GoToMainScreen();
+            if(!await GoToMainScreen())
+            {
+                Console.WriteLine("Failed to go to main screen");
+                return false;
+            }
             Game.Click("CONTENT_STATUS_BOARD_BUTTON");
             if(!await WaitUntilVisible("CONTENT_STATUS_BOARD_MENU_HEADER"))
             {
                 Console.WriteLine("Failed to update content status board");
-                return;
+                return false;
             }
             _contentStatusList.Clear();
 
@@ -77,16 +85,17 @@ namespace autoplaysharp.Game.Tasks
             {
                 for (var col = 0; col < 3; col++)
                 {
-                    for (var row = 0; row < 3; row++)
+                    for (var row = 0; row < 4; row++)
                     {
                         var name = Game.GetText(_repository["CONTENT_STATUS_BOARD_ITEM_NAME_DYN", col, row]);
                         var status = Game.GetText(_repository["CONTENT_STATUS_BOARD_ITEM_STATUS_DYN", col, row]);
-                        var statusEntry = new ContentStatus(name, status);
+                        var isCompleted = Game.IsVisible(_repository["CONTENT_STATUS_BOARD_ITEM_NAME_COMPLETED_DYN", col, row]);
+                        var statusEntry = new ContentStatus(name, isCompleted, status);
                         if (_contentStatusList.ContainsKey(name))
                             continue;
 
                         _contentStatusList.Add(name, statusEntry);
-                        Console.WriteLine($"{name} - {status}");
+                        Console.WriteLine($"{name} - Compelted: {isCompleted} - Status text: {status}");
                     }
                 }
                 Game.Drag("CONTENT_STATUS_BOARD_DRAG_START", "CONTENT_STATUS_BOARD_DRAG_END");
@@ -95,6 +104,7 @@ namespace autoplaysharp.Game.Tasks
 
             Game.Click("CONTENT_STATUS_BOARD_GOTO_MAINSCREEN");
             await WaitUntilVisible("MAIN_MENU_ENTER");
+            return true;
         }
 
         protected async Task<bool> StartContentBoardMission(string name)
