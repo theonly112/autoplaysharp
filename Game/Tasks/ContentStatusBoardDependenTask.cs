@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using F23.StringSimilarity;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -106,23 +107,27 @@ namespace autoplaysharp.Game.Tasks
 
         protected async Task<bool> StartContentBoardMission(string name)
         {
-            if(!await UpdateContentStatusBoard())
+            if(!await GoToMainScreen())
             {
-                return false;
+                Console.WriteLine("Couldn't go to main screen.");
             }
-            // TODO refactor this ...
+
             if(!await WaitUntilVisible("MAIN_MENU_ENTER"))
             {
                 Console.WriteLine("Cannot find enter button.. Not on main screen?");
                 return false;
             }
+
             await Task.Delay(500);
             Game.Click("CONTENT_STATUS_BOARD_BUTTON");
             if (!await WaitUntilVisible("CONTENT_STATUS_BOARD_MENU_HEADER"))
             {
-                Console.WriteLine("Failed to navigati to content status board");
+                Console.WriteLine("Failed to navigate to content status board");
                 return false;
             }
+
+            await Task.Delay(500);
+
             for (int i = 0; i < 2; i++)
             {
                 for (var col = 0; col < 3; col++)
@@ -131,10 +136,18 @@ namespace autoplaysharp.Game.Tasks
                     {
                         var element = Repository["CONTENT_STATUS_BOARD_ITEM_NAME_DYN", col, row];
                         var mission_name = Game.GetText(element);
-                        if(mission_name == name)
+
+                        var nl = new NormalizedLevenshtein();
+                        var similarity = nl.Similarity(name, mission_name);
+                        if (similarity >= 0.8) // 80% should be fine. names are different enough.
                         {
+                            Console.WriteLine($"Clicking on element because it matches expected: {name} actual: {mission_name} similarity: {similarity}");
                             Game.Click(element);
                             return true;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Found mission {mission_name}. But its not what we are looking for. Similarity {similarity}");
                         }
                     }
                 }

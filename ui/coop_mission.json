@@ -1,0 +1,89 @@
+[
+  {
+    "Id": "COOP_START",
+    "X": 0.869,
+    "Y": 0.919,
+    "W": 0.069,
+    "H": 0.054,
+    "Threshold": 150,
+    "Text": "START"
+  },
+  {
+    "Id": "COOP_ENDSCREEN_HOME_BUTTON_IMAGE",
+    "X": 0.767,
+    "Y": 0.892,
+    "W": 0.044,
+    "H": 0.071,
+    "Image": "ui\\HomeButton_EpicQuest.bmp"
+  },
+  {
+    "Id": "COOP_ENDSCREEN_NEXT_BUTTON",
+    "X": 0.896,
+    "Y": 0.892,
+    "W": 0.044,
+    "H": 0.071
+  },
+  {
+    "Id": "COOP_ENDSCREEN_MISSION_SUCCESS",
+    "X": 0.382,
+    "Y": 0.05,
+    "W": 0.243,
+    "H": 0.071,
+    "Text": "MISSION SUCCESS"
+  },
+  {
+    "Id": "COOP_DEPLOY_CHARACTER",
+    "X": 0.012,
+    "Y": 0.753,
+    "W": 0.097,
+    "H": 0.224
+  },
+  {
+    "Id": "COOP_REWARD_COUNT",
+    "X": 0.761,
+    "Y": 0.83,
+    "W": 0.027,
+    "H": 0.042
+  },
+  {
+    "Id": "COOP_REWARD_ACQUIRED",
+    "X": 0.826,
+    "Y": 0.923,
+    "W": 0.151,
+    "H": 0.05,
+    "Threshold": 150,
+    "Text": "Reward Acquired"
+  },
+  {
+    "Id": "COOP_REWARD_ACQUIRE_REWARD",
+    "X": 0.533,
+    "Y": 0.73,
+    "W": 0.089,
+    "H": 0.05,
+    "Text": "Reward Acquired"
+  },
+  {
+    "Id": "COOP_REWARD_ACQUIRE_REWARD_OK",
+    "X": 0.483,
+    "Y": 0.784,
+    "W": 0.035,
+    "H": 0.05,
+    "Text": "OK"
+  },
+  {
+    "Id": "COOP_REWARD_NOTICE_DAILY_LIMIT",
+    "X": 0.255,
+    "Y": 0.456,
+    "W": 0.49,
+    "H": 0.05,
+    "Text": "You have reached the daily limit for collecting Daily Rewards."
+  },
+  {
+    "Id": "COOP_REWARD_NOTICE_DAILY_LIMIT_OK",
+    "X": 0.483,
+    "Y": 0.73,
+    "W": 0.035,
+    "H": 0.05,
+    "Text": "OK"
+  }
+]
