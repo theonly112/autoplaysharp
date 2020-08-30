@@ -58,8 +58,7 @@ namespace autoplaysharp.Game
 
         public string GetText(UIElement element)
         {
-            System.Drawing.Bitmap section = GrabElement(element);
-
+            using Bitmap section = GrabElement(element);
 
             // Preprocessing for OCR.
             using var section_mat = section.ToMat();
@@ -170,7 +169,5 @@ namespace autoplaysharp.Game
         {
             return IsVisible(_repository[id]);
         }
-
-
     }
 }

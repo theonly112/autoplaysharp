@@ -134,30 +134,17 @@ namespace autoplaysharp.Game
             User32.GetWindowRect(_noxMainWindow, out var mainWindowRect);
             var width = mainWindowRect.right - mainWindowRect.left;
             var height = mainWindowRect.bottom - mainWindowRect.top;
-            using (var bitmap = new Bitmap(width, height))
+            
+            using var bitmap = new Bitmap(width, height);
+            
+            using (Graphics g = Graphics.FromImage(bitmap))
             {
-                using (Graphics g = Graphics.FromImage(bitmap))
-                {
-                    //var hdcSrc = User32.GetWindowDC(Hwnd);
-                    //var hdcDest = Gdi32.CreateCompatibleDC(hdcSrc);
-                    //var hBitmap = Gdi32.CreateCompatibleBitmap(hdcSrc, Width, Height);
-                    //var operation = /*SRCCOPY*/0x00CC0020 | /*CAPTUREBLT  */0x40000000;
-                    //var hOld = Gdi32.BitBlt(hdcDest.DangerousGetHandle(), 0, 0, Width, Height, hdcSrc.DangerousGetHandle(), 0, 0, operation);
-                    //var res = Gdi32.SelectObject(hdcDest, hdcSrc.DangerousGetHandle());
-                    //var res2 = Gdi32.DeleteDC(hdcDest);
-                    //var res3 = User32.ReleaseDC(Hwnd, hdcSrc.DangerousGetHandle());
-                    //bitmap = Image.FromHbitmap(hBitmap);
-                    //var res4 = Gdi32.DeleteObject(hBitmap);
-
-                    var res = User32.PrintWindow(_noxMainWindow, g.GetHdc(), User32.PrintWindowFlags.PW_FULLWINDOW);
-                }
-
-                var x = X - mainWindowRect.left;
-                var y = Y - mainWindowRect.top;
-                return bitmap.Crop(x, y, Width, Height);
+                var res = User32.PrintWindow(_noxMainWindow, g.GetHdc(), User32.PrintWindowFlags.PW_FULLWINDOW);
             }
 
-
+            var x = X - mainWindowRect.left;
+            var y = Y - mainWindowRect.top;
+            return bitmap.Crop(x, y, Width, Height);
         }
 
 
@@ -174,18 +161,15 @@ namespace autoplaysharp.Game
             var x_src = X - mainWindowRect.left + x;
             var y_src = Y - mainWindowRect.top + y;
             var operation = /*SRCCOPY*/0x00CC0020; // | /*CAPTUREBLT   */0x40000000;
-            
+
             Gdi32.BitBlt(hdcMemory.DangerousGetHandle(), 0, 0, w, h, hdcSource.DangerousGetHandle(), x_src, y_src, operation);
             var hBitmap2 = Gdi32.SelectObject(hdcMemory, hBitmapOld);
             var bitmap = Image.FromHbitmap(hBitmap2);
 
-            Gdi32.DeleteObject(hBitmap);
-            Gdi32.DeleteObject(hBitmap2);
+            var res = Gdi32.DeleteObject(hBitmap);
+            Gdi32.DeleteDC(hdcMemory);
 
             return bitmap;
-
-
-
         }
     }
 }
