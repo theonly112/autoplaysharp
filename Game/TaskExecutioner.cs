@@ -27,6 +27,7 @@ namespace autoplaysharp.Game
                 {
                     if (_queue.TryDequeue(out var task))
                     {
+                        _taskRunning = true;
                         Task.Run(() =>
                         {
                             Console.WriteLine("Running task");
