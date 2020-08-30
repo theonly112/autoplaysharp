@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Game.UI;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -57,6 +58,11 @@ namespace autoplaysharp.Game.Tasks
         protected Task<bool> WaitUntilVisible(string id, float timeout = 5, float interval = 0.1f)
         {
             return WaitUntil(() => Game.IsVisible(id), timeout, interval);
+        }
+
+        protected Task<bool> WaitUntilVisible(UIElement element, float timeout = 5, float interval = 0.1f)
+        {
+            return WaitUntil(() => Game.IsVisible(element), timeout, interval);
         }
 
         protected async Task<bool> WaitUntil(Func<bool> condition, float timeout = 5, float interval = 0.1f)

@@ -45,5 +45,100 @@
     "W": 0.08,
     "H": 0.04,
     "Text": "Battle Info"
+  },
+  {
+    "Id": "DANGER_ROOM_MENU_HEADER",
+    "X": 0.053,
+    "Y": 0.027,
+    "W": 0.124,
+    "H": 0.04,
+    "Text": "DANGER ROOM"
+  },
+  {
+    "Id": "DANGER_ROOM_START_NORMAL_MODE",
+    "X": 0.867,
+    "Y": 0.916,
+    "W": 0.076,
+    "H": 0.04,
+    "Text": "Normal"
+  },
+  {
+    "Id": "DANGER_ROOM_LOBBY_HEADER",
+    "X": 0.053,
+    "Y": 0.027,
+    "W": 0.124,
+    "H": 0.04,
+    "Text": "LOBBY"
+  },
+  {
+    "Id": "DANGER_ROOM_SEARCHING_FOR_TEAM",
+    "X": 0.422,
+    "Y": 0.578,
+    "W": 0.164,
+    "H": 0.04,
+    "Text": "Searching for a team..."
+  },
+  {
+    "Id": "DANGER_ROOM_SEARCHING_FOR_OPPONENT",
+    "X": 0.378,
+    "Y": 0.578,
+    "W": 0.249,
+    "H": 0.04,
+    "Text": "Searching for an opponent team..."
+  },
+  {
+    "Id": "DANGER_ROOM_CHARACTER_SELECTION_HEADER",
+    "X": 0.604,
+    "Y": 0.089,
+    "W": 0.076,
+    "H": 0.04,
+    "Text": "Characters"
+  },
+  {
+    "Id": "DANGER_ROOM_CHARACTER_PERCENTAGE_DYN",
+    "X": 0.683,
+    "Y": 0.158,
+    "W": 0.039,
+    "H": 0.023,
+    "XOffset": 0.124,
+    "YOffset": 0.274
+  },
+  {
+    "Id": "DANGER_ROOM_CHARACTER_ALREADY_SELECTED_DYN",
+    "X": 0.61,
+    "Y": 0.27,
+    "W": 0.112,
+    "H": 0.031,
+    "Text": "SELECTION COMPLETE",
+    "XOffset": 0.124,
+    "YOffset": 0.274
+  },
+  {
+    "Id": "DANGER_ROOM_USER_NAME_DYN",
+    "X": 0.124,
+    "Y": 0.876,
+    "W": 0.139,
+    "H": 0.042,
+    "XOffset": 0.31,
+    "YOffset": 0.1
+  },
+  {
+    "Id": "DANGER_ROOM_CURRENTLY_SELECTING_DYN",
+    "X": 0.108,
+    "Y": 0.768,
+    "W": 0.181,
+    "H": 0.035,
+    "Text": "Time to select a Character!",
+    "XOffset": 0.309,
+    "YOffset": 0.1
+  },
+  {
+    "Id": "DANGER_ROOM_VS_STARTSCREEN",
+    "X": 0.421,
+    "Y": 0.398,
+    "W": 0.154,
+    "H": 0.193,
+    "Threshold": 150,
+    "Text": "VS"
   }
 ]

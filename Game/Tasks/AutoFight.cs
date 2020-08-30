@@ -18,6 +18,7 @@ namespace autoplaysharp.Game.Tasks
             _conditions.Add(() => game.IsVisible("WORLD_BOSS_MISSION_SUCCESS"));
             _conditions.Add(() => game.IsVisible("ALLIANCE_BATTLE_CLEAR_MESSAGE"));
             _conditions.Add(() => game.IsVisible("ALLIANCE_BATTLE_ENDED_MESSAGE"));
+            _conditions.Add(() => game.IsVisible("DANGER_ROOM_HIGHEST_EXCLUSIV_SKILL_COUNT"));
         }
 
         protected override async Task RunCore(CancellationToken token)

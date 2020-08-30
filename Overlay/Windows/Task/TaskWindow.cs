@@ -28,6 +28,8 @@ namespace autoplaysharp.Overlay.Windows
             _taskToggleButtons.Add(new TaskToggleButton(() => new ShieldLab(_game), "Shield Lab", taskExecutioner));
 
             _taskToggleButtons.Add(new TaskToggleButton(() => new AllianceBattle(_game, _repository), "Alliance Battle", taskExecutioner));
+            _taskToggleButtons.Add(new TaskToggleButton(() => new DangerRoom(_game, _repository), "Danger Room", taskExecutioner));
+
             _taskToggleButtons.Add(new TaskToggleButton(() => new AutoFight(_game), "Auto Fight++", taskExecutioner));
         }
 

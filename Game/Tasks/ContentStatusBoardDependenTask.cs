@@ -80,7 +80,7 @@ namespace autoplaysharp.Game.Tasks
             _contentStatusList.Clear();
 
             // For now draging 1 times seems sufficent.
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 2; i++)
             {
                 for (var col = 0; col < 3; col++)
                 {
@@ -125,11 +125,11 @@ namespace autoplaysharp.Game.Tasks
                 Console.WriteLine("Failed to navigati to content status board");
                 return false;
             }
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 2; i++)
             {
                 for (var col = 0; col < 3; col++)
                 {
-                    for (var row = 0; row < 3; row++)
+                    for (var row = 0; row < 4; row++)
                     {
                         var element = Repository["CONTENT_STATUS_BOARD_ITEM_NAME_DYN", col, row];
                         var mission_name = Game.GetText(element);
