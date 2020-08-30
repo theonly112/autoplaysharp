@@ -10,10 +10,13 @@ namespace autoplaysharp.Game.Tasks
     internal abstract class GameTask
     {
         public event Action TaskEnded;
-        protected IGame Game;
-        public GameTask(IGame game)
+        protected readonly IGame Game;
+        protected readonly IUiRepository Repository;
+
+        public GameTask(IGame game, IUiRepository repository)
         {
             Game = game;
+            Repository = repository;
         }
 
         public async Task Run(CancellationToken token)
@@ -55,17 +58,27 @@ namespace autoplaysharp.Game.Tasks
             return true;
         }
 
+        protected Task<bool> WaitUntilVisible(string id, CancellationToken token, float timeout = 5, float interval = 0.1f)
+        {
+            return WaitUntilVisible(Repository[id], token, timeout, interval);
+        }
+
         protected Task<bool> WaitUntilVisible(string id, float timeout = 5, float interval = 0.1f)
         {
-            return WaitUntil(() => Game.IsVisible(id), timeout, interval);
+            return WaitUntilVisible(Repository[id], timeout, interval);
         }
 
         protected Task<bool> WaitUntilVisible(UIElement element, float timeout = 5, float interval = 0.1f)
         {
-            return WaitUntil(() => Game.IsVisible(element), timeout, interval);
+            return WaitUntilVisible(element, CancellationToken.None, timeout, interval);
         }
 
-        protected async Task<bool> WaitUntil(Func<bool> condition, float timeout = 5, float interval = 0.1f)
+        protected Task<bool> WaitUntilVisible(UIElement element, CancellationToken token, float timeout = 5, float interval = 0.1f)
+        {
+            return WaitUntil(() => Game.IsVisible(element), token, timeout, interval);
+        }
+
+        protected async Task<bool> WaitUntil(Func<bool> condition, CancellationToken token, float timeout = 5, float interval = 0.1f)
         {
             var sw = Stopwatch.StartNew();
             while (!condition())
@@ -75,8 +88,18 @@ namespace autoplaysharp.Game.Tasks
                 {
                     return false;
                 }
+
+                if(token.IsCancellationRequested)
+                {
+                    return false;
+                }
             }
             return true;
+        }
+
+        protected Task<bool> WaitUntil(Func<bool> condition, float timeout = 5, float interval = 0.1f)
+        {
+            return WaitUntil(condition, CancellationToken.None, timeout, interval);
         }
 
         protected async Task<bool> GoToMainScreen()

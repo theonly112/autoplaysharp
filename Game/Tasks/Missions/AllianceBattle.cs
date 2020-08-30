@@ -20,6 +20,8 @@ namespace autoplaysharp.Game.Tasks.Missions
                 return;
             }
             await WaitUntilVisible("ALLIANCE_BATTLE_MODE_HEADER");
+
+
             await RunNormalMode(token);
 
             if (!await StartContentBoardMission(MissionName))
@@ -28,12 +30,14 @@ namespace autoplaysharp.Game.Tasks.Missions
                 return;
             }
             await WaitUntilVisible("ALLIANCE_BATTLE_MODE_HEADER");
+
+
             await RunExtremeMode(token);
         }
 
         private async Task RunExtremeMode(CancellationToken token)
         {
-            if (!Game.IsVisible("ALLIANCE_BATTLE_EXTREME_MODE_READY"))
+            if (!await WaitUntilVisible("ALLIANCE_BATTLE_EXTREME_MODE_READY"))
             {
                 Console.WriteLine("Extreme mode not available.");
                 return;
@@ -59,7 +63,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
         private async Task RunNormalMode(CancellationToken token)
         {
-            if (!Game.IsVisible("ALLIANCE_BATTLE_NORMAL_MODE_READY"))
+            if (!await WaitUntilVisible("ALLIANCE_BATTLE_NORMAL_MODE_READY"))
             {
                 Console.WriteLine("Normal mode not available.");
                 return;
@@ -101,7 +105,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
         private async Task<bool> RunAutoFight(CancellationToken token)
         {
-            var autoFight = new AutoFight(Game, () => Game.IsVisible("ALLIANCE_BATTLE_ENDED_MESSAGE"), () => Game.IsVisible("ALLIANCE_BATTLE_CLEAR_MESSAGE"));
+            var autoFight = new AutoFight(Game, Repository, () => Game.IsVisible("ALLIANCE_BATTLE_ENDED_MESSAGE"), () => Game.IsVisible("ALLIANCE_BATTLE_CLEAR_MESSAGE"));
             var autoFightTask = autoFight.Run(token);
 
             if(await Task.WhenAny(autoFightTask, Task.Delay(300*1000)) == autoFightTask)

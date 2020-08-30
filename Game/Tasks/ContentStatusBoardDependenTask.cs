@@ -8,7 +8,6 @@ namespace autoplaysharp.Game.Tasks
 {
     internal abstract class ContentStatusBoardDependenTask : GameTask
     {
-        protected readonly IUiRepository Repository;
         private Dictionary<string, ContentStatus> _contentStatusList = new Dictionary<string, ContentStatus>();
 
         protected class ContentStatus
@@ -59,9 +58,8 @@ namespace autoplaysharp.Game.Tasks
             }
         }
 
-        protected ContentStatusBoardDependenTask(IGame game, IUiRepository repository) : base(game)
+        protected ContentStatusBoardDependenTask(IGame game, IUiRepository repository) : base(game, repository)
         {
-            Repository = repository;
         }
 
         public async Task<bool> UpdateContentStatusBoard()

@@ -6,7 +6,7 @@ namespace autoplaysharp.Game.Tasks
 {
     internal class ShieldLab : GameTask
     {
-        public ShieldLab(IGame game) : base(game)
+        public ShieldLab(IGame game, IUiRepository repository) : base(game, repository)
         {
         }
 

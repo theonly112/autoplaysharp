@@ -56,7 +56,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
         private async Task<bool> RunAutoFight(CancellationToken token)
         {
-            var autoFight = new AutoFight(Game, () => Game.IsVisible("DANGER_ROOM_HIGHEST_EXCLUSIV_SKILL_COUNT"));
+            var autoFight = new AutoFight(Game, Repository, () => Game.IsVisible("DANGER_ROOM_HIGHEST_EXCLUSIV_SKILL_COUNT"));
             var autoFightTask = autoFight.Run(token);
 
             if (await Task.WhenAny(autoFightTask, Task.Delay(300 * 1000)) == autoFightTask)

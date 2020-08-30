@@ -25,12 +25,12 @@ namespace autoplaysharp.Overlay.Windows
             _taskToggleButtons.Add(new TaskToggleButton(() => new TwistedWorld(_game, _repository), "Twisted World", taskExecutioner));
             _taskToggleButtons.Add(new TaskToggleButton(() => new TheFault(_game, _repository), "The Fault", taskExecutioner));
 
-            _taskToggleButtons.Add(new TaskToggleButton(() => new ShieldLab(_game), "Shield Lab", taskExecutioner));
+            _taskToggleButtons.Add(new TaskToggleButton(() => new ShieldLab(_game, _repository), "Shield Lab", taskExecutioner));
 
             _taskToggleButtons.Add(new TaskToggleButton(() => new AllianceBattle(_game, _repository), "Alliance Battle", taskExecutioner));
             _taskToggleButtons.Add(new TaskToggleButton(() => new DangerRoom(_game, _repository), "Danger Room", taskExecutioner));
 
-            _taskToggleButtons.Add(new TaskToggleButton(() => new AutoFight(_game), "Auto Fight++", taskExecutioner));
+            _taskToggleButtons.Add(new TaskToggleButton(() => new AutoFight(_game, _repository), "Auto Fight++", taskExecutioner));
         }
 
         public void Render()

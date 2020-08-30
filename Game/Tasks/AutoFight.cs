@@ -11,7 +11,7 @@ namespace autoplaysharp.Game.Tasks
     {
         private readonly List<Func<bool>> _conditions;
 
-        public AutoFight(IGame game, params Func<bool>[] conditions) : base(game)
+        public AutoFight(IGame game, IUiRepository repository, params Func<bool>[] conditions) : base(game, repository)
         {
             _conditions = conditions.ToList();
             _conditions.Add(() => game.IsVisible("GENERIC_MISSION_MISSION_SUCCESS"));
