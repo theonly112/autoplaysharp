@@ -14,16 +14,17 @@
     "Y": 0.249,
     "W": 0.076,
     "H": 0.053,
+    "Text": "COMPLETE",
     "XOffset": 0.299,
-    "YOffset": 0.158,
-    "Text": "COMPLETE" 
+    "YOffset": 0.158
   },
   {
     "Id": "CONTENT_STATUS_BOARD_ITEM_STATUS_DYN",
-    "X": 0.253,
+    "X": 0.255,
     "Y": 0.311,
-    "W": 0.053,
-    "H": 0.049,
+    "W": 0.044,
+    "H": 0.046,
+    "Threshold": 165,
     "XOffset": 0.299,
     "YOffset": 0.16,
     "Scale": 4
