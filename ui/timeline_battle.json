@@ -1,0 +1,37 @@
+[
+  {
+    "Id": "TIMELINE_GET_READY",
+    "X": 0.753,
+    "Y": 0.903,
+    "W": 0.104,
+    "H": 0.054,
+    "Threshold": 150,
+    "Text": "GET READY"
+  },
+  {
+    "Id": "TIMELINE_SEARCH_FOR_OPPONENT",
+    "X": 0.747,
+    "Y": 0.903,
+    "W": 0.166,
+    "H": 0.054,
+    "Threshold": 150,
+    "Text": "SEARCH FOR OPPONENT"
+  },
+  {
+    "Id": "TIMELINE_FIGHT",
+    "X": 0.467,
+    "Y": 0.911,
+    "W": 0.066,
+    "H": 0.054,
+    "Threshold": 150,
+    "Text": "FIGHT!"
+  },
+  {
+    "Id": "TIMELINE_ENDSCREEN_HOME_BUTTON_IMAGE",
+    "X": 0.672,
+    "Y": 0.884,
+    "W": 0.044,
+    "H": 0.071,
+    "Image": "ui\\HomeButton_EpicQuest.bmp"
+  }
+]
