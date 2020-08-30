@@ -14,6 +14,7 @@ namespace autoplaysharp.Game.Tasks
         public AutoFight(IGame game, params Func<bool>[] conditions) : base(game)
         {
             _conditions = conditions.ToList();
+            _conditions.Add(() => game.IsVisible("GENERIC_MISSION_MISSION_SUCCESS"));
             _conditions.Add(() => game.IsVisible("BATTLE_END_BATTLE_NOTICE")); // Generic end message? Used in world event... Anywhere else?? TODO: if not move to another json...
             _conditions.Add(() => game.IsVisible("WORLD_BOSS_MISSION_SUCCESS"));
             _conditions.Add(() => game.IsVisible("ALLIANCE_BATTLE_CLEAR_MESSAGE"));

@@ -34,5 +34,13 @@
     "H": 0.044,
     "Threshold": 150,
     "Text": "Your inventory is full. Go to inventory and expand?"
+  },
+  {
+    "Id": "GENERIC_MISSION_MISSION_SUCCESS",
+    "X": 0.293,
+    "Y": 0.452,
+    "W": 0.418,
+    "H": 0.093,
+    "Text": "MISSION SUCCESS"
   }
 ]
