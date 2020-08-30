@@ -91,8 +91,6 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             await WaitUntil(() =>
             {
-                // TODO: doesnt work for stupid x-men... need to find other solution.
-                // Guess we have to wait for "MISSION SUCCESS" text.
                 var missionCompleted = Game.IsVisible("EPIC_QUEST_ENDSCREEN_HOME_BUTTON_IMAGE");
                 if (!missionCompleted)
                 {

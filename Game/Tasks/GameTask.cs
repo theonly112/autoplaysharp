@@ -79,14 +79,19 @@ namespace autoplaysharp.Game.Tasks
             return true;
         }
 
-        protected Task<bool> GoToMainScreen()
+        protected async Task<bool> GoToMainScreen()
         {
             if(Game.IsVisible("MAIN_MENU_HOME_BUTTON_IMAGE"))
             {
                 Game.Click("MAIN_MENU_HOME_BUTTON_IMAGE");
             }
 
-            return WaitUntil(IsOnMainScreen);
+            if(!await WaitUntil(IsOnMainScreen))
+            {
+                return false;
+            }
+            await Task.Delay(500); // Screen is open but we should briefly wait before performing another action.
+            return true;
         }
 
 
