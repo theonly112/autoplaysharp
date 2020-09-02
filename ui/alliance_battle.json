@@ -65,6 +65,16 @@
     "Text": "NORMAL MODE START"
   },
   {
+    "Id": "ALLIANCE_BATTLE_EXTREME_MODE_START",
+    "X": 0.669,
+    "Y": 0.893,
+    "W": 0.209,
+    "H": 0.062,
+    "PSM": 3,
+    "Threshold": 165,
+    "Text": "NORMAL MODE START"
+  },
+  {
     "Id": "ALLIANCE_BATTLE_MODE_HEADER",
     "X": 0.053,
     "Y": 0.018,

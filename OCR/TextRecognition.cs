@@ -10,6 +10,7 @@ namespace autoplaysharp.OCR
         static TextRecognition()
         {
             _engine = new TesseractEngine(@"./tessdata", "eng");
+            _engine.SetVariable("debug_file", "/dev/null");
         }
 
         public static string GetText(Pix pix, int psm = 3)

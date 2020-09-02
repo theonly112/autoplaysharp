@@ -100,6 +100,12 @@ namespace autoplaysharp.Game
             var w = element.W.Value * _window.Width;
             var h = element.H.Value * _window.Height;
             var section = _window.GrabScreen((int)x, (int)y, (int)w, (int)h);
+            if (Program.SaveRawImages)
+            {
+                var dir = Path.Combine("logs", "raw");
+                Directory.CreateDirectory(dir);
+                section.Save(Path.Combine(dir, $"{element.Id}.bmp"), System.Drawing.Imaging.ImageFormat.Bmp);
+            }
             return section;
         }
 

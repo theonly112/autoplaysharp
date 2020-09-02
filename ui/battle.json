@@ -9,6 +9,16 @@
     "Threshold": 150
   },
   {
+    "Id": "BATTLE_SKILL_1_NUM",
+    "X": 0.833,
+    "Y": 0.565,
+    "W": 0.009,
+    "H": 0.028,
+    "PSM": 8,
+    "Threshold": 150,
+    "Text": "1"
+  },
+  {
     "Id": "BATTLE_SKILL_2",
     "X": 0.781,
     "Y": 0.712,
@@ -16,6 +26,16 @@
     "H": 0.077,
     "PSM": 8,
     "Threshold": 150
+  },
+  {
+    "Id": "BATTLE_SKILL_2_NUM",
+    "X": 0.768,
+    "Y": 0.684,
+    "W": 0.015,
+    "H": 0.03,
+    "PSM": 8,
+    "Threshold": 150,
+    "Text": "2"
   },
   {
     "Id": "BATTLE_SKILL_3",
@@ -27,6 +47,16 @@
     "Threshold": 150
   },
   {
+    "Id": "BATTLE_SKILL_3_NUM",
+    "X": 0.924,
+    "Y": 0.57,
+    "W": 0.011,
+    "H": 0.027,
+    "PSM": 8,
+    "Threshold": 150,
+    "Text": "3"
+  },
+  {
     "Id": "BATTLE_SKILL_4",
     "X": 0.792,
     "Y": 0.873,
@@ -34,6 +64,16 @@
     "H": 0.077,
     "PSM": 8,
     "Threshold": 150
+  },
+  {
+    "Id": "BATTLE_SKILL_4_NUM",
+    "X": 0.779,
+    "Y": 0.848,
+    "W": 0.015,
+    "H": 0.027,
+    "PSM": 8,
+    "Threshold": 150,
+    "Text": "4"
   },
   {
     "Id": "BATTLE_SKILL_5",
@@ -45,6 +85,16 @@
     "Threshold": 150
   },
   {
+    "Id": "BATTLE_SKILL_5_NUM",
+    "X": 0.684,
+    "Y": 0.848,
+    "W": 0.019,
+    "H": 0.027,
+    "PSM": 8,
+    "Threshold": 150,
+    "Text": "5"
+  },
+  {
     "Id": "BATTLE_SKILL_T3",
     "X": 0.597,
     "Y": 0.881,
@@ -54,11 +104,22 @@
     "Threshold": 150
   },
   {
+    "Id": "BATTLE_SKILL_T3_NUM",
+    "X": 0.593,
+    "Y": 0.848,
+    "W": 0.015,
+    "H": 0.027,
+    "PSM": 8,
+    "Threshold": 150,
+    "Text": "6"
+  },
+  {
     "Id": "BATTLE_SKILL_T3_LOCKED",
     "X": 0.603,
     "Y": 0.919,
     "W": 0.047,
-    "H": 0.026,
+    "H": 0.03,
+    "Threshold": 130,
     "Text": "Tier-3"
   },
   {
@@ -68,5 +129,13 @@
     "W": 0.173,
     "H": 0.062,
     "Text": "End Battle"
+  },
+  {
+    "Id": "BATTLE_TAP_THE_SCREEN",
+    "X": 0.787,
+    "Y": 0.909,
+    "W": 0.144,
+    "H": 0.049,
+    "Text": "TAP THE SCREEN"
   }
 ]

@@ -135,7 +135,8 @@ namespace autoplaysharp.Overlay.Windows
 
                 ImGui.EndGroup();
 
-
+                ImGui.Checkbox("Save raw images", ref Program.SaveRawImages);
+                ImGui.SameLine();
                 ImGui.Checkbox("Save image?", ref Program.SaveImages);
 
                 if (element.Threshold.HasValue)
@@ -197,10 +198,19 @@ namespace autoplaysharp.Overlay.Windows
             if (_previewText)
             {
                 var fontSize = 18;
-                var fontVec = new Vector2(0, fontSize);
-                var textLoc = Vector2.Max(new Vector2(loc.X, 0), (loc - fontVec));
                 var text = _game.GetText(uiElement);
-                drawList.AddText(ImGui.GetFont(), 18, textLoc, 0xFF0000FF, text);
+
+                if (!string.IsNullOrWhiteSpace(uiElement.Text))
+                {
+                    var font = ImGui.GetFont();
+                    var textToRender = $"Found Text: {text} \nMatches expected text: {text == uiElement.Text}";
+                    var textSize = ImGui.CalcTextSize(textToRender);
+                    var scale = fontSize / (float)ImGui.GetFontSize();
+                    textSize = textSize * scale;
+                    var textLoc = Vector2.Max(new Vector2(loc.X, 0), (loc - textSize));
+                    drawList.AddText(ImGui.GetFont(), fontSize, textLoc, 0xFF0000FF, textToRender);
+                }
+
             }
         }
 

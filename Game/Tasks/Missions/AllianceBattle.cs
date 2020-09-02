@@ -33,6 +33,8 @@ namespace autoplaysharp.Game.Tasks.Missions
 
 
             await RunExtremeMode(token);
+
+            await RunAutoFight(token);
         }
 
         private async Task RunExtremeMode(CancellationToken token)

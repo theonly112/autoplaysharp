@@ -11,6 +11,8 @@ namespace autoplaysharp.Game.Tasks
     {
         private readonly List<Func<bool>> _conditions;
 
+        private const string Tier3Skillid = "BATTLE_SKILL_T3";
+
         public AutoFight(IGame game, IUiRepository repository, params Func<bool>[] conditions) : base(game, repository)
         {
             _conditions = conditions.ToList();
@@ -22,11 +24,32 @@ namespace autoplaysharp.Game.Tasks
             _conditions.Add(() => game.IsVisible("DANGER_ROOM_HIGHEST_EXCLUSIV_SKILL_COUNT"));
         }
 
+        private bool BattleHasStarted()
+        {
+            if(Game.IsVisible("BATTLE_TAP_THE_SCREEN"))
+            {
+                Game.Click("BATTLE_TAP_THE_SCREEN");
+            }
+            return GetAvailableSkills().Any();
+        }
+
         protected override async Task RunCore(CancellationToken token)
         {
             Console.WriteLine("Running AutoFight");
+            Console.WriteLine("Waiting for skills to come available");
+            if(!await WaitUntil(BattleHasStarted, 30, 0.5f))
+            {
+                Console.WriteLine("No skills appeared in time. Ending");
+                return;
+            }
+
             while (!token.IsCancellationRequested && !HasFightEnded())
             {
+                if (Game.IsVisible("BATTLE_TAP_THE_SCREEN"))
+                {
+                    Game.Click("BATTLE_TAP_THE_SCREEN");
+                }
+                
                 var skillId = GetBestAvailableSkill();
                 if(skillId == string.Empty)
                 {
@@ -39,7 +62,7 @@ namespace autoplaysharp.Game.Tasks
 
                     // TODO: find smarter way of deciding how long to wait...
                     Console.WriteLine("Waiting 1s then casting next skill");
-                    await Task.Delay(1000).ConfigureAwait(false);
+                    await Task.Delay(skillId == Tier3Skillid ? 5000 : 1500).ConfigureAwait(false);
                 }
             }
         }
@@ -68,21 +91,26 @@ namespace autoplaysharp.Game.Tasks
 
         private string GetBestAvailableSkill()
         {
-            //var t3SkillId = "BATTLE_SKILL_T3";
-            
-            //var chargePercentageText = Game.GetText(t3SkillId);
-            //if (Game.IsVisible("BATTLE_SKILL_T3_LOCKED") || int.TryParse(chargePercentageText, out var chargePercentage))
-            //{
-            //    Console.WriteLine($"T3 not ready yet...");
-            //}
-            //else
-            //{
-            //    return t3SkillId;
-            //}
-
-            for (int i = 5; i > 0;i--)
+            if (Game.IsVisible($"BATTLE_SKILL_T3_NUM"))
             {
-                var skillId = GetSkillId(i);
+                var t3SkillId = "BATTLE_SKILL_T3";
+                var chargePercentageText = Game.GetText(t3SkillId);
+                var t3Locked = Game.IsVisible("BATTLE_SKILL_T3_LOCKED");
+                var couldParseChargePercentage = int.TryParse(chargePercentageText, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out var chargePercentage);
+                if (t3Locked || couldParseChargePercentage || chargePercentageText.Any(char.IsDigit))
+                {
+                    Console.WriteLine($"T3 not ready yet...");
+                }
+                else
+                {
+                    return t3SkillId;
+                }
+            }
+
+            var availableSkills = GetAvailableSkills();
+            foreach(var s in availableSkills.OrderByDescending(x => x))
+            {
+                var skillId = GetSkillId(s);
                 var text = Game.GetText(skillId);
                 if(int.TryParse(text, out var cooldown))
                 {
@@ -96,6 +124,16 @@ namespace autoplaysharp.Game.Tasks
             return string.Empty;
         }
 
+        private IEnumerable<int> GetAvailableSkills()
+        {
+            for(int i = 1; i < 6;i++)
+            {
+                if(Game.IsVisible($"{GetSkillId(i)}_NUM"))
+                {
+                    yield return i;
+                }
+            }
+        }
 
         private bool HasFightEnded()
         {

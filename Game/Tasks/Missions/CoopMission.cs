@@ -70,6 +70,12 @@ namespace autoplaysharp.Game.Tasks.Missions
                 }
                 Game.Click("COOP_START");
 
+                if(!await HandleStartNotices())
+                {
+                    Console.WriteLine("Unable to handle mission start notice.");
+                    return;
+                }
+
                 if (!await WaitUntilVisible("COOP_ENDSCREEN_MISSION_SUCCESS", token, 60, 1))
                 {
                     Console.WriteLine("Wait on success message failed.");
