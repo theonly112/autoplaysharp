@@ -14,7 +14,7 @@ namespace autoplaysharp.Game.Tasks.Missions
         protected override async Task RunCore(CancellationToken token)
         {
             const string MissionName = "ALLIANCE BATTLE";
-            if(!await StartContentBoardMission(MissionName))
+            if(await StartContentBoardMission(MissionName) == null)
             {
                 Console.WriteLine($"Failed to go to {MissionName}");
                 return;
@@ -24,7 +24,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             await RunNormalMode(token);
 
-            if (!await StartContentBoardMission(MissionName))
+            if (await StartContentBoardMission(MissionName) == null)
             {
                 Console.WriteLine($"Failed to go to {MissionName}");
                 return;

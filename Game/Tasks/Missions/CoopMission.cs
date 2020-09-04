@@ -19,7 +19,7 @@ namespace autoplaysharp.Game.Tasks.Missions
          
         protected override async Task RunCore(CancellationToken token)
         {
-            if(!await StartContentBoardMission("CO-OP PLAY"))
+            if(await StartContentBoardMission("CO-OP PLAY") == null)
             {
                 return;
             }

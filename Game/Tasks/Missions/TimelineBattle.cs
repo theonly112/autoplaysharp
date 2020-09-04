@@ -23,14 +23,12 @@ namespace autoplaysharp.Game.Tasks.Missions
         {
             while(true)
             {
-                await UpdateContentStatusBoard();
-                if (!await StartContentBoardMission(_missionName))
+                var status = await StartContentBoardMission(_missionName);
+                if (status == null)
                 {
                     Console.WriteLine($"Failed to start {_missionName}");
                     return;
                 }
-
-                var status = GetMissionStatus(_missionName);
 
                 Console.WriteLine($"Timeline Battle: {status.Available} runs available.");
 

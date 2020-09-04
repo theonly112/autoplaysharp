@@ -14,13 +14,7 @@ namespace autoplaysharp.Game.Tasks.Missions
         protected abstract string MissionName { get; }
         protected override async Task RunCore(CancellationToken token)
         {
-            if(!await UpdateContentStatusBoard())
-            {
-                Console.WriteLine("Failed to update content status board");
-                return;
-            }
-
-            var status = GetMissionStatus(MissionName);
+            var status = await StartContentBoardMission(MissionName);
             if (status == null)
             {
                 Console.WriteLine($"Mission {MissionName} not found on content status board. Stopping...");
@@ -41,7 +35,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
         private async Task<bool> RunMission()
         {
-            if(!await StartContentBoardMission(MissionName))
+            if (await StartContentBoardMission(MissionName) == null)
             {
                 Console.WriteLine($"Cannot start mission {MissionName}");
                 return false;
@@ -97,7 +91,7 @@ namespace autoplaysharp.Game.Tasks.Missions
                     Console.WriteLine($"Waiting for mission {MissionName} to be completed");
                 }
                 return missionCompleted;
-            }, 120, 1);
+            }, 120, 5);
 
             await Task.Delay(3000);
 

@@ -1,7 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using F23.StringSimilarity;
 using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -9,8 +8,6 @@ namespace autoplaysharp.Game.Tasks
 {
     internal abstract class ContentStatusBoardDependenTask : GameTask
     {
-        private Dictionary<string, ContentStatus> _contentStatusList = new Dictionary<string, ContentStatus>();
-
         protected class ContentStatus
         {
             internal static Regex StatusRegex = new Regex(@"(\d*)/(\d*)");
@@ -63,49 +60,7 @@ namespace autoplaysharp.Game.Tasks
         {
         }
 
-        public async Task<bool> UpdateContentStatusBoard()
-        {
-            if(!await GoToMainScreen())
-            {
-                Console.WriteLine("Failed to go to main screen");
-                return false;
-            }
-            Game.Click("CONTENT_STATUS_BOARD_BUTTON");
-            if(!await WaitUntilVisible("CONTENT_STATUS_BOARD_MENU_HEADER"))
-            {
-                Console.WriteLine("Failed to update content status board");
-                return false;
-            }
-            _contentStatusList.Clear();
-
-            // For now draging 1 times seems sufficent.
-            for (int i = 0; i < 2; i++)
-            {
-                for (var col = 0; col < 3; col++)
-                {
-                    for (var row = 0; row < 4; row++)
-                    {
-                        var name = Game.GetText(Repository["CONTENT_STATUS_BOARD_ITEM_NAME_DYN", col, row]);
-                        var status = Game.GetText(Repository["CONTENT_STATUS_BOARD_ITEM_STATUS_DYN", col, row]);
-                        var isCompleted = Game.IsVisible(Repository["CONTENT_STATUS_BOARD_ITEM_NAME_COMPLETED_DYN", col, row]);
-                        var statusEntry = new ContentStatus(name, isCompleted, status);
-                        if (_contentStatusList.ContainsKey(name))
-                            continue;
-
-                        _contentStatusList.Add(name, statusEntry);
-                        Console.WriteLine($"{name} - Compelted: {isCompleted} - Status text: {status}");
-                    }
-                }
-                Game.Drag("CONTENT_STATUS_BOARD_DRAG_START", "CONTENT_STATUS_BOARD_DRAG_END");
-                await Task.Delay(500);
-            }
-
-            Game.Click("CONTENT_STATUS_BOARD_GOTO_MAINSCREEN");
-            await WaitUntilVisible("MAIN_MENU_ENTER");
-            return true;
-        }
-
-        protected async Task<bool> StartContentBoardMission(string name)
+        protected async Task<ContentStatus> StartContentBoardMission(string name)
         {
             if(!await GoToMainScreen())
             {
@@ -115,7 +70,7 @@ namespace autoplaysharp.Game.Tasks
             if(!await WaitUntilVisible("MAIN_MENU_ENTER"))
             {
                 Console.WriteLine("Cannot find enter button.. Not on main screen?");
-                return false;
+                return null;
             }
 
             await Task.Delay(500);
@@ -123,7 +78,7 @@ namespace autoplaysharp.Game.Tasks
             if (!await WaitUntilVisible("CONTENT_STATUS_BOARD_MENU_HEADER"))
             {
                 Console.WriteLine("Failed to navigate to content status board");
-                return false;
+                return null;
             }
 
             await Task.Delay(500);
@@ -134,16 +89,19 @@ namespace autoplaysharp.Game.Tasks
                 {
                     for (var row = 0; row < 4; row++)
                     {
-                        var element = Repository["CONTENT_STATUS_BOARD_ITEM_NAME_DYN", col, row];
-                        var mission_name = Game.GetText(element);
+                        var nameElement = Repository["CONTENT_STATUS_BOARD_ITEM_NAME_DYN", col, row];
+                        var status = Game.GetText(Repository["CONTENT_STATUS_BOARD_ITEM_STATUS_DYN", col, row]);
+                        var isCompleted = Game.IsVisible(Repository["CONTENT_STATUS_BOARD_ITEM_NAME_COMPLETED_DYN", col, row]);
+                        var statusEntry = new ContentStatus(name, isCompleted, status);
+                        var mission_name = Game.GetText(nameElement);
 
                         var nl = new NormalizedLevenshtein();
                         var similarity = nl.Similarity(name, mission_name);
                         if (similarity >= 0.8) // 80% should be fine. names are different enough.
                         {
                             Console.WriteLine($"Clicking on element because it matches expected: {name} actual: {mission_name} similarity: {similarity}");
-                            Game.Click(element);
-                            return true;
+                            Game.Click(nameElement);
+                            return statusEntry;
                         }
                         else
                         {
@@ -154,18 +112,7 @@ namespace autoplaysharp.Game.Tasks
                 Game.Drag("CONTENT_STATUS_BOARD_DRAG_START", "CONTENT_STATUS_BOARD_DRAG_END");
                 await Task.Delay(500);
             }
-            return false;
+            return null;
         }
-
-        protected ContentStatus GetMissionStatus(string id)
-        {
-            if (!_contentStatusList.ContainsKey(id))
-            {
-                return null;
-            }
-            return _contentStatusList[id];
-        }
-
-
     }
 }

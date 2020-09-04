@@ -16,7 +16,7 @@ namespace autoplaysharp.Game.Tasks.Missions
         protected override async Task RunCore(CancellationToken token)
         {
             // TODO: retrive username...
-            if(!await StartContentBoardMission("DANGER ROOM"))
+            if(await StartContentBoardMission("DANGER ROOM") == null)
             {
                 return;
             }
