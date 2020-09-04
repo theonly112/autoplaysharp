@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace autoplaysharp.Game.Tasks.Missions
 {
-    abstract class GenericDualEpicQuest : ContentStatusBoardDependenTask
+    public abstract class GenericDualEpicQuest : ContentStatusBoardDependenTask
     {
         protected GenericDualEpicQuest(IGame game, IUiRepository repository) : base(game, repository)
         {

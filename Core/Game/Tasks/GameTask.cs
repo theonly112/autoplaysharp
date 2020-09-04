@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace autoplaysharp.Game.Tasks
 {
-    internal abstract class GameTask
+    public abstract class GameTask : IGameTask
     {
         public event Action TaskEnded;
         protected readonly IGame Game;

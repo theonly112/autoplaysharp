@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace autoplaysharp.Game
 {
-    class TaskExecutioner : ITaskExecutioner
+    public class TaskExecutioner : ITaskExecutioner
     {
-        private Queue<GameTask> _queue = new Queue<GameTask>();
+        private Queue<IGameTask> _queue = new Queue<IGameTask>();
         private bool _taskRunning = false;
         private CancellationTokenSource _source = new CancellationTokenSource();
         private readonly object _lock = new object();
 
-        public void QueueTask(GameTask task)
+        public void QueueTask(IGameTask task)
         {
             _queue.Enqueue(task);
         }
@@ -52,11 +52,6 @@ namespace autoplaysharp.Game
         {
             _source.Cancel();
             _source = new CancellationTokenSource();
-        }
-
-        public void QueueTask(GameTask task, Action taskCompleted)
-        {
-            throw new NotImplementedException();
         }
     }
 }

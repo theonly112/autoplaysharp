@@ -2,7 +2,7 @@
 
 namespace autoplaysharp.Game.Tasks.Missions
 {
-    class TheFault : GenericDualEpicQuest
+    public class TheFault : GenericDualEpicQuest
     {
         public TheFault(IGame game, IUiRepository repository) : base(game, repository)
         {

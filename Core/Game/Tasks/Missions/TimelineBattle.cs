@@ -12,7 +12,7 @@ namespace autoplaysharp.Game.Tasks.Missions
     /// 3. use autofight instead of ingame "Autoplay+".
     /// 4. fix issue with available run count.
     /// </summary>
-    class TimelineBattle : ContentStatusBoardDependenTask
+    public class TimelineBattle : ContentStatusBoardDependenTask
     {
         private const string _missionName = "TIMELINE BATTLE";
         public TimelineBattle(IGame game, IUiRepository repository) : base(game, repository)

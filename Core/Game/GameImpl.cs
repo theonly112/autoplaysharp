@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Core;
 using autoplaysharp.Game.UI;
 using autoplaysharp.Helper;
 using autoplaysharp.OCR;
@@ -11,7 +12,7 @@ using System.Numerics;
 
 namespace autoplaysharp.Game
 {
-    class GameImpl : IGame
+    public class GameImpl : IGame
     {
         private readonly IEmulatorWindow _window;
         private readonly IUiRepository _repository;
@@ -82,7 +83,7 @@ namespace autoplaysharp.Game
             using var pix = inverted_bitmap.ToPix();
 
             // for debugging ...
-            if (Program.SaveImages)
+            if (Settings.SaveImages)
             {
                 SaveImage(element.Id, pix);
             }
@@ -100,7 +101,7 @@ namespace autoplaysharp.Game
             var w = element.W.Value * _window.Width;
             var h = element.H.Value * _window.Height;
             var section = _window.GrabScreen((int)x, (int)y, (int)w, (int)h);
-            if (Program.SaveRawImages)
+            if (Settings.SaveRawImages)
             {
                 var dir = Path.Combine("logs", "raw");
                 Directory.CreateDirectory(dir);
@@ -147,7 +148,7 @@ namespace autoplaysharp.Game
         {
             using var uielement = GrabElement(element);
 
-            if(Program.SaveImages)
+            if(Settings.SaveImages)
             {
                 Directory.CreateDirectory($"logs\\{Path.GetDirectoryName(element.Image)}");
                 uielement.Save($"logs\\{element.Image}");

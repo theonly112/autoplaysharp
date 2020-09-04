@@ -1,6 +1,6 @@
 ﻿namespace autoplaysharp.Contracts
 {
-    interface IOverlaySubWindow
+    public interface IOverlaySubWindow
     {
         void Render();
     }

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace autoplaysharp.Game.Tasks
 {
-    internal class ShieldLab : GameTask
+    public class ShieldLab : GameTask
     {
         public ShieldLab(IGame game, IUiRepository repository) : base(game, repository)
         {

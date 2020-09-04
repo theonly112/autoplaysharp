@@ -1,11 +1,8 @@
-﻿using autoplaysharp.Game.Tasks;
-using System;
-
-namespace autoplaysharp.Contracts
+﻿namespace autoplaysharp.Contracts
 {
-    interface ITaskExecutioner
+    public interface ITaskExecutioner
     {
-        void QueueTask(GameTask task);
+        void QueueTask(IGameTask task);
 
         void CancelActiveTask();
     }

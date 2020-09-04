@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace autoplaysharp.Game.Tasks.Missions
 {
-    internal class AllianceBattle : ContentStatusBoardDependenTask
+    public class AllianceBattle : ContentStatusBoardDependenTask
     {
         public AllianceBattle(IGame game, IUiRepository repository) : base(game, repository)
         {

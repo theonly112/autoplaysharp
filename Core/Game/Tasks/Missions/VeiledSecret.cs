@@ -2,7 +2,7 @@
 
 namespace autoplaysharp.Game.Tasks.Missions
 {
-    internal class VeiledSecret : GenericDualEpicQuest
+    public class VeiledSecret : GenericDualEpicQuest
     {
         public VeiledSecret(IGame game, IUiRepository repository) : base(game, repository)
         {

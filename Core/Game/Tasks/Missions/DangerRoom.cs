@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace autoplaysharp.Game.Tasks.Missions
 {
-    class DangerRoom : ContentStatusBoardDependenTask
+    public class DangerRoom : ContentStatusBoardDependenTask
     {
         public DangerRoom(IGame game, IUiRepository repository) : base(game, repository)
         {

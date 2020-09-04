@@ -1,10 +1,9 @@
-﻿using SharpDX.D3DCompiler;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Numerics;
 
 namespace autoplaysharp.Contracts
 {
-    interface IEmulatorWindow
+    public interface IEmulatorWindow
     {
         int Width { get; }
         int Height { get; }

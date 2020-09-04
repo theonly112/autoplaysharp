@@ -2,7 +2,7 @@
 
 namespace autoplaysharp.Game.Tasks.Missions
 {
-    class StupidXMen : GenericDualEpicQuest
+    public class StupidXMen : GenericDualEpicQuest
     {
         public StupidXMen(IGame game, IUiRepository repository) : base(game, repository)
         {

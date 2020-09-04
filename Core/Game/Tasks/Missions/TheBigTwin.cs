@@ -2,7 +2,7 @@
 
 namespace autoplaysharp.Game.Tasks.Missions
 {
-    class TheBigTwin : GenericDualEpicQuest
+    public class TheBigTwin : GenericDualEpicQuest
     {
         public TheBigTwin(IGame game, IUiRepository repository) : base(game, repository)
         {

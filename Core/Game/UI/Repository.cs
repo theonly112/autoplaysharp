@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace autoplaysharp.Game.UI
 {
-    class Repository : IUiRepository
+    public class Repository : IUiRepository
     {
         private Dictionary<string, UIElement> _repository = new Dictionary<string, UIElement>();
         private Dictionary<string, string> _fileMapping = new Dictionary<string, string>();

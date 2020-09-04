@@ -2,7 +2,7 @@
 
 namespace autoplaysharp.Game.Tasks.Missions
 {
-    class TwistedWorld : GenericDualEpicQuest
+    public class TwistedWorld : GenericDualEpicQuest
     {
         public TwistedWorld(IGame game, IUiRepository repository) : base(game, repository)
         {

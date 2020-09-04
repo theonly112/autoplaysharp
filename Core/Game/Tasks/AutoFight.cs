@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace autoplaysharp.Game.Tasks
 {
-    internal class AutoFight : GameTask
+    public class AutoFight : GameTask
     {
         private readonly List<Func<bool>> _conditions;
 

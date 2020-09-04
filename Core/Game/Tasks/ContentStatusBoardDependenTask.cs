@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace autoplaysharp.Game.Tasks
 {
-    internal abstract class ContentStatusBoardDependenTask : GameTask
+    public abstract class ContentStatusBoardDependenTask : GameTask
     {
         protected class ContentStatus
         {

@@ -11,7 +11,7 @@ namespace autoplaysharp.Game.Tasks.Missions
     /// 2. Remove the dry waits where possible.
     /// 3. Handle message when all rewards are collected. (COOP_REWARD_NOTICE_DAILY_LIMIT, COOP_REWARD_NOTICE_DAILY_LIMIT_OK)
     /// </summary>
-    class CoopMission : ContentStatusBoardDependenTask
+    public class CoopMission : ContentStatusBoardDependenTask
     {
         public CoopMission(IGame game, IUiRepository repository) : base(game, repository)
         {

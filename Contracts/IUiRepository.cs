@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace autoplaysharp.Contracts
 {
-    interface IUiRepository
+    public interface IUiRepository
     {
         void Load();
         UIElement this[string id] { get; }

@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace autoplaysharp.Game
 {
-    internal class NoxWindow : IEmulatorWindow
+    public class NoxWindow : IEmulatorWindow
     {
         private Random _random = new Random();
         private IntPtr _noxMainWindow;

@@ -2,7 +2,7 @@
 
 namespace autoplaysharp.Contracts
 {
-    interface IGame
+    public interface IGame
     {
         void Click(string id);
         string GetText(string id);
