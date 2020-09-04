@@ -1,0 +1,150 @@
+[
+  {
+    "Id": "WBI_SELECT_MISSION_COOP",
+    "X": 0.814,
+    "Y": 0.171,
+    "W": 0.061,
+    "H": 0.053
+  },
+  {
+    "Id": "WBI_SELECT_MISSION_WBI",
+    "X": 0.285,
+    "Y": 0.293,
+    "W": 0.198,
+    "H": 0.053,
+    "Text": "WORLD_BOSS_INVASION"
+  },
+  {
+    "Id": "WBI_MANAGE_SUPPLIES",
+    "X": 0.787,
+    "Y": 0.719,
+    "W": 0.144,
+    "H": 0.046
+  },
+  {
+    "Id": "WBI_MANAGE_SUPPLY_CHESTS_ACQUIRE",
+    "X": 0.099,
+    "Y": 0.639,
+    "W": 0.076,
+    "H": 0.042,
+    "Text": "ACQUIRE",
+    "XOffset": 0.183,
+    "YOffset": 0.9
+  },
+  {
+    "Id": "WBI_MANAGE_SUPPLY_CHESTS_EMPTY_SLOT",
+    "X": 0.087,
+    "Y": 0.456,
+    "W": 0.099,
+    "H": 0.046,
+    "Text": "Supply Chest",
+    "XOffset": 0.183,
+    "YOffset": 0.9
+  },
+  {
+    "Id": "WBI_MANAGE_SUPPLIES_SKIP",
+    "X": 0.89,
+    "Y": 0.061,
+    "W": 0.046,
+    "H": 0.046,
+    "Text": "SKIP"
+  },
+  {
+    "Id": "WBI_MANAGE_SUPPLIES_SELECT_STAGE",
+    "X": 0.437,
+    "Y": 0.886,
+    "W": 0.125,
+    "H": 0.046,
+    "Text": "SELECT STAGE"
+  },
+  {
+    "Id": "WBI_OPPONENT_1_ACTIVE",
+    "X": 0.065,
+    "Y": 0.445,
+    "W": 0.068,
+    "H": 0.046
+  },
+  {
+    "Id": "WBI_OPPONENT_2_ACTIVE",
+    "X": 0.217,
+    "Y": 0.346,
+    "W": 0.068,
+    "H": 0.046
+  },
+  {
+    "Id": "WBI_OPPONENT_3_ACTIVE",
+    "X": 0.342,
+    "Y": 0.635,
+    "W": 0.057,
+    "H": 0.038
+  },
+  {
+    "Id": "WBI_OPPONENT_4_ACTIVE",
+    "X": 0.475,
+    "Y": 0.335,
+    "W": 0.072,
+    "H": 0.046
+  },
+  {
+    "Id": "WBI_OPPONENT_5_ACTIVE",
+    "X": 0.726,
+    "Y": 0.392,
+    "W": 0.076,
+    "H": 0.046
+  },
+  {
+    "Id": "WBI_OPPONENT_6_ACTIVE",
+    "X": 0.567,
+    "Y": 0.692,
+    "W": 0.068,
+    "H": 0.046
+  },
+  {
+    "Id": "WBI_OPPONENT_7_ACTIVE",
+    "X": 0.863,
+    "Y": 0.639,
+    "W": 0.068,
+    "H": 0.046
+  },
+  {
+    "Id": "WBI_OPPONENT_ENTER",
+    "X": 0.551,
+    "Y": 0.806,
+    "W": 0.068,
+    "H": 0.046,
+    "Threshold": 169,
+    "Text": "ENTER"
+  },
+  {
+    "Id": "WBI_HERO_SELECTION_DYN",
+    "X": 0.667,
+    "Y": 0.218,
+    "W": 0.093,
+    "H": 0.164,
+    "XOffset": 0.093,
+    "YOffset": 0.164
+  },
+  {
+    "Id": "WBI_HERO_START_MISSION",
+    "X": 0.738,
+    "Y": 0.901,
+    "W": 0.065,
+    "H": 0.049,
+    "Text": "START"
+  },
+  {
+    "Id": "WBI_SLOT_CHEST_IN_INVENTORY",
+    "X": 0.517,
+    "Y": 0.768,
+    "W": 0.148,
+    "H": 0.049,
+    "Text": "SLOT INVENTORY"
+  },
+  {
+    "Id": "WBI_NEXT_RUN",
+    "X": 0.806,
+    "Y": 0.901,
+    "W": 0.049,
+    "H": 0.053
+  }
+]

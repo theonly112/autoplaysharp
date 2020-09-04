@@ -10,10 +10,18 @@ namespace autoplaysharp.Game.Tasks
     public class AutoFight : GameTask
     {
         private readonly List<Func<bool>> _conditions;
-
+        
         private const string Tier3Skillid = "BATTLE_SKILL_T3";
+        
+        private readonly int _maxWaitTime;
 
-        public AutoFight(IGame game, IUiRepository repository, params Func<bool>[] conditions) : base(game, repository)
+
+        public AutoFight(IGame game, IUiRepository repository, params Func<bool>[] conditions) : this(game, repository, 30, conditions)
+        {
+            
+        }
+
+        public AutoFight(IGame game, IUiRepository repository, int maxWaitTime, params Func<bool>[] conditions) : base(game, repository)
         {
             _conditions = conditions.ToList();
             _conditions.Add(() => game.IsVisible("GENERIC_MISSION_MISSION_SUCCESS"));
@@ -22,6 +30,7 @@ namespace autoplaysharp.Game.Tasks
             _conditions.Add(() => game.IsVisible("ALLIANCE_BATTLE_CLEAR_MESSAGE"));
             _conditions.Add(() => game.IsVisible("ALLIANCE_BATTLE_ENDED_MESSAGE"));
             _conditions.Add(() => game.IsVisible("DANGER_ROOM_HIGHEST_EXCLUSIV_SKILL_COUNT"));
+            _maxWaitTime = maxWaitTime;
         }
 
         private bool BattleHasStarted()
@@ -37,7 +46,7 @@ namespace autoplaysharp.Game.Tasks
         {
             Console.WriteLine("Running AutoFight");
             Console.WriteLine("Waiting for skills to come available");
-            if(!await WaitUntil(BattleHasStarted, 30, 0.5f))
+            if(!await WaitUntil(BattleHasStarted, _maxWaitTime, 0.5f))
             {
                 Console.WriteLine("No skills appeared in time. Ending");
                 return;

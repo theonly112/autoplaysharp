@@ -77,6 +77,9 @@
     <None Update="ui\world_boss.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="ui\world_boss_invasion.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="F23.StringSimilarity" Version="3.1.0" />
