@@ -1,6 +1,4 @@
 ﻿using autoplaysharp.Contracts;
-using autoplaysharp.Game;
-using autoplaysharp.Game.UI;
 using autoplaysharp.Overlay.Windows;
 using ImGuiNET;
 using System.Collections.Generic;
@@ -10,10 +8,10 @@ namespace autoplaysharp.Overlay
 {
     internal class ImGuiOverlay : ImGuiOverlayBase
     {
-        private readonly NoxWindow _window;
+        private readonly IEmulatorWindow _window;
         private List<IOverlaySubWindow> _subWindows = new List<IOverlaySubWindow>();
 
-        public ImGuiOverlay(ITaskExecutioner taskExecutioner, IGame game, NoxWindow window, Repository repository) : base(window)
+        public ImGuiOverlay(ITaskExecutioner taskExecutioner, IGame game, IEmulatorWindow window, IUiRepository repository) : base(window)
         {
             _subWindows.Add(new TaskWindow(taskExecutioner, game, repository));
             _subWindows.Add(new RepositoryWindow(repository, window, game));

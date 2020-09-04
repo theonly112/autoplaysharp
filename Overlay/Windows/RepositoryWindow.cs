@@ -12,11 +12,11 @@ namespace autoplaysharp.Overlay.Windows
     {
         private int _selectedUiElement = 0;
         private bool _previewText = false;
-        private readonly Repository _repository;
+        private readonly IUiRepository _repository;
         private readonly IGame _game;
-        private NoxWindow _noxWindow;
+        private IEmulatorWindow _noxWindow;
 
-        public RepositoryWindow(Repository repository, NoxWindow window, IGame game)
+        public RepositoryWindow(IUiRepository repository, IEmulatorWindow window, IGame game)
         {
             _repository = repository;
             _noxWindow = window;

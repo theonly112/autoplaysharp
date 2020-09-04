@@ -13,10 +13,10 @@ namespace autoplaysharp.Game
 {
     class GameImpl : IGame
     {
-        private readonly NoxWindow _window;
-        private readonly Repository _repository;
+        private readonly IEmulatorWindow _window;
+        private readonly IUiRepository _repository;
 
-        public GameImpl(NoxWindow window, Repository repository)
+        public GameImpl(IEmulatorWindow window, IUiRepository repository)
         {
             _window = window;
             _repository = repository;

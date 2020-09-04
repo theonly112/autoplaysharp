@@ -1,4 +1,5 @@
-﻿using autoplaysharp.Game;
+﻿using autoplaysharp.Contracts;
+using autoplaysharp.Game;
 using PInvoke;
 using System;
 using System.Runtime.InteropServices;
@@ -14,7 +15,7 @@ namespace autoplaysharp.Overlay
         private static GraphicsDevice _gd;
         private static CommandList _cl;
         private static ImGuiController _controller;
-        protected readonly NoxWindow NoxWindow;
+        protected readonly IEmulatorWindow NoxWindow;
 
         [DllImport("dwmapi.dll")]
         static extern void DwmExtendFrameIntoClientArea(IntPtr hWnd, ref int[] pMargins);
@@ -22,7 +23,7 @@ namespace autoplaysharp.Overlay
         [DllImport("user32.dll")]
         static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
 
-        public ImGuiOverlayBase(NoxWindow window)
+        public ImGuiOverlayBase(IEmulatorWindow window)
         {
             NoxWindow = window;
             Setup();

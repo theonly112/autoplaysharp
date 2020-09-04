@@ -49,7 +49,7 @@ namespace autoplaysharp.Game.UI
             return cloned;
         }
 
-        internal void Save()
+        public void Save()
         {
             var lists = _repository.Values.GroupBy(x => _fileMapping[x.Id]).ToList();
             foreach(var l in lists)

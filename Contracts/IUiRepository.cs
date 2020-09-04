@@ -11,5 +11,6 @@ namespace autoplaysharp.Contracts
         IEnumerable<string> Ids { get; }
 
         UIElement GetGridElement(string id, int column, int row);
+        void Save();
     }
 }

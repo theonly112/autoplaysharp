@@ -1,4 +1,5 @@
-﻿using autoplaysharp.Helper;
+﻿using autoplaysharp.Contracts;
+using autoplaysharp.Helper;
 using PInvoke;
 using System;
 using System.Drawing;
@@ -8,7 +9,7 @@ using System.Threading;
 
 namespace autoplaysharp.Game
 {
-    class NoxWindow
+    internal class NoxWindow : IEmulatorWindow
     {
         private Random _random = new Random();
         private IntPtr _noxMainWindow;
@@ -20,7 +21,7 @@ namespace autoplaysharp.Game
 
         public Vector2 VirtualMousePosition { get; set; } = Vector2.Zero;
 
-        internal void ClickAt(float x, float y)
+        public void ClickAt(float x, float y)
         {
             int x_relative = (int)(x * Width);
             int y_realtive = (int)(y * Height);
@@ -33,7 +34,7 @@ namespace autoplaysharp.Game
             User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONUP, new IntPtr(0), new IntPtr(lparam));
         }
 
-        internal void Drag(Vector2 vectorStart, Vector2 vectorEnd)
+        public void Drag(Vector2 vectorStart, Vector2 vectorEnd)
         {
             int x_start = (int)(vectorStart.X * Width);
             int y_start = (int)(vectorStart.Y * Height);
