@@ -46,7 +46,7 @@ namespace autoplaysharp.Game.Tasks
         {
             Console.WriteLine("Running AutoFight");
             Console.WriteLine("Waiting for skills to come available");
-            if(!await WaitUntil(BattleHasStarted, _maxWaitTime, 0.5f))
+            if(!await WaitUntil(BattleHasStarted, token, _maxWaitTime, 0.5f))
             {
                 Console.WriteLine("No skills appeared in time. Ending");
                 return;
