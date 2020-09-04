@@ -1,5 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -43,7 +44,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             // TODO: wait for game to start.
 
-            if(!await WaitUntilVisible("DANGER_ROOM_VS_STARTSCREEN", 60, 0.5f))
+            if(!await WaitUntilVisible("DANGER_ROOM_WAITING_FOR_HEROES", 60, 0.2f))
             {
                 Console.WriteLine("Start screen did not appear. Cancelling...");
                 return;
@@ -51,7 +52,21 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             Console.WriteLine("Game started... Starting fight bot.");
             // TODO: start battle bot.
-            await RunAutoFight(token);
+            if(!await RunAutoFight(token))
+            {
+                Console.WriteLine("Failed to run fight bot...");
+                return;
+            }
+
+            await Task.Delay(3000);
+
+            Game.Click("DANGER_ROOM_ENDSCREEN_NEXT");
+
+            await Task.Delay(5000);
+
+            Game.Click("DANGER_ROOM_ENDSCREEN_HOME");
+
+            await Task.Delay(5000);
         }
 
         private async Task<bool> RunAutoFight(CancellationToken token)
@@ -68,7 +83,7 @@ namespace autoplaysharp.Game.Tasks.Missions
             return false;
         }
 
-        private async Task SelectCharacter()
+        internal async Task SelectCharacter()
         {
             var userNames = Enumerable.Range(0, 3).Select(x => Game.GetText(Repository["DANGER_ROOM_USER_NAME_DYN", x, 0])).ToArray();
             Console.WriteLine($"Usernames: {string.Join(",", userNames)}");
@@ -78,7 +93,7 @@ namespace autoplaysharp.Game.Tasks.Missions
             await WaitUntilVisible(Repository["DANGER_ROOM_CURRENTLY_SELECTING_DYN", myPosition, 0], 30, 1);
             Console.WriteLine("Out turn. Selecting first availabe character");
 
-            Regex percentageRegex = new Regex(@"(\d*)*%");
+            Regex percentageRegex = new Regex(@"(\d+.+)%");
             int bestX = 0, bestY = 0;
             float highestPercentage = 0f;
             for (var y = 0; y < 2; y++)
@@ -90,12 +105,12 @@ namespace autoplaysharp.Game.Tasks.Missions
                     if(match.Success)
                     {
                         var percentageText = match.Groups[1].Value;
-                        if (float.TryParse(percentageText, out var percentage))
+                        if (float.TryParse(percentageText, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture,out var percentage))
                         {
                             if(percentage > highestPercentage)
                             {
                                 Console.WriteLine($"Found new best character. ({x}/{y})");
-                                if(!Game.IsVisible(Repository["",x,y]))
+                                if(!Game.IsVisible(Repository["DANGER_ROOM_CHARACTER_ALREADY_SELECTED_DYN", x,y]))
                                 {
                                     bestX = x;
                                     bestY = y;

@@ -18,10 +18,10 @@
   {
     "Id": "DANGER_ROOM_WAITING_FOR_HEROES",
     "X": 0.38,
-    "Y": 0.073,
+    "Y": 0.342,
     "W": 0.244,
     "H": 0.068,
-    "Text": "Waiting for other heroes"
+    "Text": "Waiting for other heroes..."
   },
   {
     "Id": "DANGER_ROOM_REVIVE_IN_X_SECONDS",
@@ -101,7 +101,8 @@
     "W": 0.039,
     "H": 0.023,
     "XOffset": 0.124,
-    "YOffset": 0.274
+    "YOffset": 0.274,
+    "Scale": 2
   },
   {
     "Id": "DANGER_ROOM_CHARACTER_ALREADY_SELECTED_DYN",
@@ -128,17 +129,23 @@
     "Y": 0.768,
     "W": 0.181,
     "H": 0.035,
+    "Threshold": 150,
     "Text": "Time to select a Character!",
     "XOffset": 0.309,
     "YOffset": 0.1
   },
   {
-    "Id": "DANGER_ROOM_VS_STARTSCREEN",
-    "X": 0.421,
-    "Y": 0.398,
-    "W": 0.154,
-    "H": 0.193,
-    "Threshold": 150,
-    "Text": "VS"
+    "Id": "DANGER_ROOM_ENDSCREEN_NEXT",
+    "X": 0.856,
+    "Y": 0.894,
+    "W": 0.129,
+    "H": 0.08
+  },
+  {
+    "Id": "DANGER_ROOM_ENDSCREEN_HOME",
+    "X": 0.555,
+    "Y": 0.886,
+    "W": 0.133,
+    "H": 0.08
   }
 ]
