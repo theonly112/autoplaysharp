@@ -3,9 +3,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace autoplaysharp.Game.Tasks.Missions
+namespace autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests
 {
-    public abstract class GenericDualEpicQuest : ContentStatusBoardDependenTask
+    public abstract class GenericDualEpicQuest : GenericEpicQuest
     {
         protected GenericDualEpicQuest(IGame game, IUiRepository repository) : base(game, repository)
         {
@@ -23,7 +23,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             for (int i = 0; i < status.Available; i++)
             {
-                if(!await RunMission())
+                if (!await RunMission())
                 {
                     Console.WriteLine("Failed to run mission...");
                     break;
@@ -69,41 +69,6 @@ namespace autoplaysharp.Game.Tasks.Missions
             return true;
         }
 
-        private async Task<bool> RunMissionCore()
-        {
-            if(!await WaitUntilVisible("GENERIC_MISSION_START"))
-            {
-                return false;
-            }
-            await Task.Delay(1000);
-            Game.Click("GENERIC_MISSION_START");
-            await Task.Delay(1000);
-            if (Game.IsVisible("GENERIC_MISSION_ITEM_LIMIT_REACHED_NOTICE"))
-            {
-                Game.Click("GENERIC_MISSION_ITEM_LIMIT_REACHED_NOTICE_OK_BUTTON");
-            }
 
-            await WaitUntil(() =>
-            {
-                var missionCompleted = Game.IsVisible("EPIC_QUEST_ENDSCREEN_HOME_BUTTON_IMAGE");
-                if (!missionCompleted)
-                {
-                    Console.WriteLine($"Waiting for mission {MissionName} to be completed");
-                }
-                return missionCompleted;
-            }, 120, 5);
-
-            await Task.Delay(3000);
-
-            if(Game.IsVisible("EPIC_QUEST_ENDSCREEN_NOTICE_ALL_ENTRIES_USED"))
-            {
-                Game.Click("EPIC_QUEST_ENDSCREEN_NOTICE_ALL_ENTRIES_USED_OK_BUTTON");
-                await Task.Delay(1000);
-            }
-
-            Game.Click("EPIC_QUEST_ENDSCREEN_HOME_BUTTON_IMAGE");
-            await Task.Delay(3000);
-            return true;
-        }
     }
 }

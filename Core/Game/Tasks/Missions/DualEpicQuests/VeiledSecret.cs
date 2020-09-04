@@ -1,6 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 
-namespace autoplaysharp.Game.Tasks.Missions
+namespace autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests
 {
     public class VeiledSecret : GenericDualEpicQuest
     {
