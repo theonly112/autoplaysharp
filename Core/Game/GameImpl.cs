@@ -3,8 +3,10 @@ using autoplaysharp.Core;
 using autoplaysharp.Game.UI;
 using autoplaysharp.Helper;
 using autoplaysharp.OCR;
+using Microsoft.Extensions.Logging;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -16,11 +18,13 @@ namespace autoplaysharp.Game
     {
         private readonly IEmulatorWindow _window;
         private readonly IUiRepository _repository;
+        private readonly ILoggerFactory _loggerFactory;
 
-        public GameImpl(IEmulatorWindow window, IUiRepository repository)
+        public GameImpl(IEmulatorWindow window, IUiRepository repository, ILoggerFactory loggerFactory)
         {
             _window = window;
             _repository = repository;
+            _loggerFactory = loggerFactory;
         }
 
         public void Click(string id)
@@ -175,6 +179,11 @@ namespace autoplaysharp.Game
         public bool IsVisible(string id)
         {
             return IsVisible(_repository[id]);
+        }
+
+        public ILogger CreateLogger(Type t)
+        {
+            return _loggerFactory.CreateLogger(t);
         }
     }
 }

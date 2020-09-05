@@ -1,5 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Game.UI;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -13,10 +14,13 @@ namespace autoplaysharp.Game.Tasks
         protected readonly IGame Game;
         protected readonly IUiRepository Repository;
 
+        protected ILogger Logger;
+
         public GameTask(IGame game, IUiRepository repository)
         {
             Game = game;
             Repository = repository;
+            Logger = Game.CreateLogger(GetType());
         }
 
         public async Task Run(CancellationToken token)
