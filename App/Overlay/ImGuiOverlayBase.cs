@@ -45,7 +45,7 @@ namespace autoplaysharp.Overlay
 
             //int[] marg = new[] { 0, 0, _window.Width, _window.Height };
             //DwmExtendFrameIntoClientArea(_window.Handle, ref marg);
-
+            SetWindowClasses();
 
             _gd = VeldridStartup.CreateGraphicsDevice(_window,
                 new GraphicsDeviceOptions(),
@@ -59,8 +59,19 @@ namespace autoplaysharp.Overlay
             _controller = new ImGuiController(_gd, _gd.MainSwapchain.Framebuffer.OutputDescription, _window.Width, _window.Height);
         }
 
+        private bool SetIfChanged(int old, int newValue, Action<int> setter)
+        {
+            var changed = old != newValue;
+            if(changed)
+            {
+                setter(newValue);
+            }
+            return changed;
+        }
+
         public void Update()
         {
+            UpdatePosition();
             InputSnapshot snapshot = _window.PumpEvents();
             if (!_window.Exists) { return; }
 
@@ -79,6 +90,27 @@ namespace autoplaysharp.Overlay
             _gd.SwapBuffers(_gd.MainSwapchain);
         }
 
+        private void UpdatePosition()
+        {
+            var changed = SetIfChanged(_window.Width, NoxWindow.Width, x => _window.Width = x);
+            changed |= SetIfChanged(_window.Height, NoxWindow.Height, x => _window.Height = x);
+            changed |= SetIfChanged(_window.X, NoxWindow.X, x => _window.X = x);
+            changed |= SetIfChanged(_window.Y, NoxWindow.Y, x => _window.Y = x);
+            if (changed)
+            {
+                User32.SetWindowPos(_window.Handle, new IntPtr(-1), 0, 0, 0, 0, User32.SetWindowPosFlags.SWP_NOMOVE | User32.SetWindowPosFlags.SWP_NOSIZE | User32.SetWindowPosFlags.SWP_SHOWWINDOW);
+                SetWindowClasses();
+            }
+        }
+
+        private static void SetWindowClasses()
+        {
+            var classes = User32.GetWindowLong(_window.Handle, User32.WindowLongIndexFlags.GWL_STYLE);
+            classes &= ~(int)User32.SetWindowLongFlags.WS_DLGFRAME;
+            classes &= ~(int)User32.SetWindowLongFlags.WS_THICKFRAME;
+            classes &= ~(int)User32.SetWindowLongFlags.WS_BORDER;
+            User32.SetWindowLong(_window.Handle, User32.WindowLongIndexFlags.GWL_STYLE, (User32.SetWindowLongFlags)classes);
+        }
 
         protected abstract void SubmitUI(InputSnapshot snapshot);
 
