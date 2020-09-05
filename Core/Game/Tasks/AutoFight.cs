@@ -12,7 +12,8 @@ namespace autoplaysharp.Game.Tasks
         private readonly List<Func<bool>> _conditions;
         
         private const string Tier3Skillid = "BATTLE_SKILL_T3";
-        
+        private const string AwakenSkillId = "BATTLE_SKILL_6";
+
         private readonly int _maxWaitTime;
 
 
@@ -71,11 +72,17 @@ namespace autoplaysharp.Game.Tasks
 
                     // TODO: find smarter way of deciding how long to wait...
                     Console.WriteLine("Waiting 1s then casting next skill");
-                    await Task.Delay(skillId == Tier3Skillid ? 5000 : 1500).ConfigureAwait(false);
+                    await Task.Delay(GetSkillCastWaitTime(skillId)).ConfigureAwait(false);
                 }
             }
         }
 
+        private static int GetSkillCastWaitTime(string skillId)
+        {
+            return skillId == Tier3Skillid ||
+                   skillId == AwakenSkillId
+                   ? 7000 : 1500;
+        }
 
         private async Task TryCastSkill(string skillId)
         {
@@ -135,9 +142,10 @@ namespace autoplaysharp.Game.Tasks
 
         private IEnumerable<int> GetAvailableSkills()
         {
-            for(int i = 1; i < 6;i++)
+            for(int i = 1; i < 7;i++)
             {
-                if(Game.IsVisible($"{GetSkillId(i)}_NUM"))
+                var id = $"{GetSkillId(i)}_NUM";
+                if (Game.IsVisible(id))
                 {
                     yield return i;
                 }
