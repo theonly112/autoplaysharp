@@ -135,7 +135,7 @@ namespace autoplaysharp.Game
                 return rect.top;
             }
         }
-
+       
         public Bitmap GrabScreen()
         {
             User32.GetWindowRect(_noxMainWindow, out var mainWindowRect);
@@ -177,6 +177,11 @@ namespace autoplaysharp.Game
             Gdi32.DeleteDC(hdcMemory);
 
             return bitmap;
+        }
+
+        public Vector2 Denormalize(Vector2 normalized)
+        {
+            return normalized * new Vector2(Width, Height);
         }
     }
 }

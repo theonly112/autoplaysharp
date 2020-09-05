@@ -16,5 +16,7 @@ namespace autoplaysharp.Contracts
 
         // TODO: find a better solution to create loggers...
         ILogger CreateLogger(Type t);
+
+        IEmulatorOverlay Overlay { get; set; }
     }
 }

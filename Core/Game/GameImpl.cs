@@ -20,6 +20,8 @@ namespace autoplaysharp.Game
         private readonly IUiRepository _repository;
         private readonly ILoggerFactory _loggerFactory;
 
+        public IEmulatorOverlay Overlay { get; set; }
+
         public GameImpl(IEmulatorWindow window, IUiRepository repository, ILoggerFactory loggerFactory)
         {
             _window = window;
@@ -93,8 +95,9 @@ namespace autoplaysharp.Game
             }
 
 
-
             var result = TextRecognition.GetText(pix, element.PSM.HasValue ? element.PSM.Value : 3);
+
+            Overlay?.ShowGetText(element);
             return result.TrimStart().TrimEnd();
         }
 
@@ -145,7 +148,9 @@ namespace autoplaysharp.Game
 
             Debug.Assert(!string.IsNullOrWhiteSpace(element.Text));
             var text = GetText(element).TrimStart().TrimEnd();
-            return text == element.Text;
+            var isVisible = text == element.Text;
+            Overlay?.ShowIsVisibile(element, isVisible);
+            return isVisible;
         }
 
         private bool IsImageVisible(UIElement element, float confidence = 0.90f)

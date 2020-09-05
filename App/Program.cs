@@ -27,6 +27,8 @@ namespace autoplaysharp
             repository.Load();
             var game = new GameImpl(noxWindow, repository, loggerFactory);
             var overlay = new ImGuiOverlay(executioner, game, noxWindow, repository);
+            // circular dependency. find better solution.
+            game.Overlay = overlay;
 
             while (true)
             {
