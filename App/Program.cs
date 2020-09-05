@@ -8,12 +8,6 @@ namespace autoplaysharp
 {
     class Program
     {
-        /// <summary>
-        /// TODO: move this somewhere better... but it is fine for now...
-        /// </summary>
-        public static bool SaveImages = false;
-        public static bool SaveRawImages = false;
-
         [STAThread]
         static void Main(string[] args)
         {

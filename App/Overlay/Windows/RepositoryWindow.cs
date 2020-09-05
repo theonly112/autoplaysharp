@@ -1,5 +1,5 @@
 ﻿using autoplaysharp.Contracts;
-using autoplaysharp.Game;
+using autoplaysharp.Core;
 using autoplaysharp.Game.UI;
 using ImGuiNET;
 using System;
@@ -135,9 +135,9 @@ namespace autoplaysharp.Overlay.Windows
 
                 ImGui.EndGroup();
 
-                ImGui.Checkbox("Save raw images", ref Program.SaveRawImages);
+                ImGui.Checkbox("Save raw images", ref Settings.SaveRawImages);
                 ImGui.SameLine();
-                ImGui.Checkbox("Save image?", ref Program.SaveImages);
+                ImGui.Checkbox("Save image?", ref Settings.SaveImages);
 
                 if (element.Threshold.HasValue)
                 {
@@ -200,17 +200,21 @@ namespace autoplaysharp.Overlay.Windows
                 var fontSize = 18;
                 var text = _game.GetText(uiElement);
 
+                string textToRender;
                 if (!string.IsNullOrWhiteSpace(uiElement.Text))
                 {
-                    var font = ImGui.GetFont();
-                    var textToRender = $"Found Text: {text} \nMatches expected text: {text == uiElement.Text}";
-                    var textSize = ImGui.CalcTextSize(textToRender);
-                    var scale = fontSize / (float)ImGui.GetFontSize();
-                    textSize = textSize * scale;
-                    var textLoc = Vector2.Max(new Vector2(loc.X, 0), (loc - textSize));
-                    drawList.AddText(ImGui.GetFont(), fontSize, textLoc, 0xFF0000FF, textToRender);
+                    textToRender = $"Found Text: {text} \nMatches expected text: {text == uiElement.Text}";
+                }
+                else
+                {
+                    textToRender = $"Found Text: {text}";
                 }
 
+                var textSize = ImGui.CalcTextSize(textToRender);
+                var scale = fontSize / (float)ImGui.GetFontSize();
+                textSize = textSize * scale;
+                var textLoc = Vector2.Max(new Vector2(loc.X, 0), (loc - textSize));
+                drawList.AddText(ImGui.GetFont(), fontSize, textLoc, 0xFF0000FF, textToRender);
             }
         }
 
