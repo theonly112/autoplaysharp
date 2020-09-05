@@ -101,6 +101,8 @@ namespace autoplaysharp.Game.Tasks
                         {
                             Console.WriteLine($"Clicking on element because it matches expected: {name} actual: {mission_name} similarity: {similarity}");
                             Game.Click(nameElement);
+
+                            await Task.Delay(500); // waiting briefly for page to change.
                             return statusEntry;
                         }
                         else
