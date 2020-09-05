@@ -32,7 +32,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
                 Console.WriteLine($"Timeline Battle: {status.Available} runs available.");
 
-                if(status.Available ==  0)
+                if(status.Available <  1)
                 {
                     Console.WriteLine("Timeline Battle done...");
                     return;
