@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace autoplaysharp.Core.Game.Tasks
+namespace autoplaysharp.Core.Game.Tasks.Missions
 {
     public class WorldBossInvasion : GameTask
     {
@@ -51,7 +51,7 @@ namespace autoplaysharp.Core.Game.Tasks
         {
             for (int i = 0; i < emptySlots; i++)
             {
-                if(!await WaitUntilVisible("WBI_HERO_START_MISSION"))
+                if (!await WaitUntilVisible("WBI_HERO_START_MISSION"))
                 {
                     Console.WriteLine("Start button did not appear in time.");
                     return;
