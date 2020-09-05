@@ -51,6 +51,12 @@ namespace autoplaysharp.Core.Game.Tasks
         {
             for (int i = 0; i < emptySlots; i++)
             {
+                if(!await WaitUntilVisible("WBI_HERO_START_MISSION"))
+                {
+                    Console.WriteLine("Start button did not appear in time.");
+                    return;
+                }
+
                 await SelectCharacters();
                 await Task.Delay(2000);
                 Game.Click("WBI_HERO_START_MISSION");
@@ -67,7 +73,6 @@ namespace autoplaysharp.Core.Game.Tasks
                 await Task.Delay(2000);
 
                 Game.Click("WBI_NEXT_RUN");
-                await Task.Delay(2000);
             }
         }
 
