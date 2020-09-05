@@ -12,8 +12,12 @@ namespace autoplaysharp.Game.Tasks
 
         protected override async Task RunCore(CancellationToken token)
         {
+            if(!await GoToMainScreen())
+            {
+
+            }
             await OpenMenu().ConfigureAwait(false);
-            Game.Click("MAIN_MENU_SHIELD_LAB_BUTTON");
+            Game.Click(UIds.MAIN_MENU_SHIELD_LAB_BUTTON);
         }
     }
 }

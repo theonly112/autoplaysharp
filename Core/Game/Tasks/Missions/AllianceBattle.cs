@@ -19,7 +19,7 @@ namespace autoplaysharp.Game.Tasks.Missions
                 Console.WriteLine($"Failed to go to {MissionName}");
                 return;
             }
-            await WaitUntilVisible("ALLIANCE_BATTLE_MODE_HEADER");
+            await WaitUntilVisible(UIds.ALLIANCE_BATTLE_MODE_HEADER);
 
 
             await RunNormalMode(token);
@@ -29,7 +29,7 @@ namespace autoplaysharp.Game.Tasks.Missions
                 Console.WriteLine($"Failed to go to {MissionName}");
                 return;
             }
-            await WaitUntilVisible("ALLIANCE_BATTLE_MODE_HEADER");
+            await WaitUntilVisible(UIds.ALLIANCE_BATTLE_MODE_HEADER);
 
             await RunExtremeMode(token);
 
@@ -37,16 +37,16 @@ namespace autoplaysharp.Game.Tasks.Missions
 
         private async Task RunExtremeMode(CancellationToken token)
         {
-            if (!await WaitUntilVisible("ALLIANCE_BATTLE_EXTREME_MODE_READY"))
+            if (!await WaitUntilVisible(UIds.ALLIANCE_BATTLE_EXTREME_MODE_READY))
             {
                 Console.WriteLine("Extreme mode not available.");
                 return;
             }
-            Game.Click("ALLIANCE_BATTLE_EXTREME_MODE_READY");
+            Game.Click(UIds.ALLIANCE_BATTLE_EXTREME_MODE_READY);
 
             await SelectHeroes();
 
-            Game.Click("ALLIANCE_BATTLE_EXTREME_MODE_START");
+            Game.Click(UIds.ALLIANCE_BATTLE_EXTREME_MODE_START);
 
             if (!await HandleStartNotices())
             {
@@ -63,16 +63,16 @@ namespace autoplaysharp.Game.Tasks.Missions
 
         private async Task RunNormalMode(CancellationToken token)
         {
-            if (!await WaitUntilVisible("ALLIANCE_BATTLE_NORMAL_MODE_READY", token))
+            if (!await WaitUntilVisible(UIds.ALLIANCE_BATTLE_NORMAL_MODE_READY, token))
             {
                 Console.WriteLine("Normal mode not available.");
                 return;
             }
 
-            Game.Click("ALLIANCE_BATTLE_NORMAL_MODE_READY");
+            Game.Click(UIds.ALLIANCE_BATTLE_NORMAL_MODE_READY);
 
 
-            if (await WaitUntilVisible("ALLIANCE_BATTLE_NORMAL_MODE_START", token))
+            if (await WaitUntilVisible(UIds.ALLIANCE_BATTLE_NORMAL_MODE_START, token))
             {
                 Console.WriteLine("Normal mode start button not available.");
                 return;
@@ -80,7 +80,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             await SelectHeroes();
 
-            Game.Click("ALLIANCE_BATTLE_NORMAL_MODE_START");
+            Game.Click(UIds.ALLIANCE_BATTLE_NORMAL_MODE_START);
 
             await Task.Delay(500);
 
@@ -95,14 +95,14 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             await Task.Delay(1000);
 
-            Game.Click("ALLIANCE_BATTLE_END_SCREEN_HOME");
+            Game.Click(UIds.ALLIANCE_BATTLE_END_SCREEN_HOME);
 
             await Task.Delay(5000);
         }
 
         private async Task SelectHeroes()
         {
-            if (!await WaitUntilVisible("ALLIANCE_BATTLE_HERO_SELECTION_HEADER"))
+            if (!await WaitUntilVisible(UIds.ALLIANCE_BATTLE_HERO_SELECTION_HEADER))
             {
                 Console.WriteLine("Failed: Hero selection screen did not appear");
                 return;
@@ -110,14 +110,14 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             for (int i = 0; i < 3; i++)
             {
-                Game.Click(Repository["ALLIANCE_BATTLE_HERO_SELECTION_DYN", i, 0]);
+                Game.Click(Repository[UIds.ALLIANCE_BATTLE_HERO_SELECTION_DYN, i, 0]);
                 await Task.Delay(200);
             }
         }
 
         private async Task<bool> RunAutoFight(CancellationToken token)
         {
-            var autoFight = new AutoFight(Game, Repository, () => Game.IsVisible("ALLIANCE_BATTLE_ENDED_MESSAGE"), () => Game.IsVisible("ALLIANCE_BATTLE_CLEAR_MESSAGE"));
+            var autoFight = new AutoFight(Game, Repository, () => Game.IsVisible(UIds.ALLIANCE_BATTLE_ENDED_MESSAGE), () => Game.IsVisible(UIds.ALLIANCE_BATTLE_CLEAR_MESSAGE));
             var autoFightTask = autoFight.Run(token);
 
             if(await Task.WhenAny(autoFightTask, Task.Delay(300*1000)) == autoFightTask)

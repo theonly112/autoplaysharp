@@ -1,0 +1,83 @@
+partial class UIds
+{
+	/// <summary>
+	/// DANGER_ROOM_MENU_NAME
+	/// </summary>
+	public const string DANGER_ROOM_MENU_NAME="DANGER_ROOM_MENU_NAME";
+	/// <summary>
+	/// DANGER_ROOM_WAITING
+	/// </summary>
+	public const string DANGER_ROOM_WAITING="DANGER_ROOM_WAITING";
+	/// <summary>
+	/// DANGER_ROOM_WAITING_FOR_HEROES
+	/// </summary>
+	public const string DANGER_ROOM_WAITING_FOR_HEROES="DANGER_ROOM_WAITING_FOR_HEROES";
+	/// <summary>
+	/// DANGER_ROOM_REVIVE_IN_X_SECONDS
+	/// </summary>
+	public const string DANGER_ROOM_REVIVE_IN_X_SECONDS="DANGER_ROOM_REVIVE_IN_X_SECONDS";
+	/// <summary>
+	/// DANGER_ROOM_HIGHEST_EXCLUSIV_SKILL_COUNT
+	/// </summary>
+	public const string DANGER_ROOM_HIGHEST_EXCLUSIV_SKILL_COUNT="DANGER_ROOM_HIGHEST_EXCLUSIV_SKILL_COUNT";
+	/// <summary>
+	/// DANGER_ROOM_BATTLE_INFO
+	/// </summary>
+	public const string DANGER_ROOM_BATTLE_INFO="DANGER_ROOM_BATTLE_INFO";
+	/// <summary>
+	/// DANGER_ROOM_MENU_HEADER
+	/// </summary>
+	public const string DANGER_ROOM_MENU_HEADER="DANGER_ROOM_MENU_HEADER";
+	/// <summary>
+	/// DANGER_ROOM_START_NORMAL_MODE
+	/// </summary>
+	public const string DANGER_ROOM_START_NORMAL_MODE="DANGER_ROOM_START_NORMAL_MODE";
+	/// <summary>
+	/// DANGER_ROOM_LOBBY_HEADER
+	/// </summary>
+	public const string DANGER_ROOM_LOBBY_HEADER="DANGER_ROOM_LOBBY_HEADER";
+	/// <summary>
+	/// DANGER_ROOM_SEARCHING_FOR_TEAM
+	/// </summary>
+	public const string DANGER_ROOM_SEARCHING_FOR_TEAM="DANGER_ROOM_SEARCHING_FOR_TEAM";
+	/// <summary>
+	/// DANGER_ROOM_SEARCHING_FOR_OPPONENT
+	/// </summary>
+	public const string DANGER_ROOM_SEARCHING_FOR_OPPONENT="DANGER_ROOM_SEARCHING_FOR_OPPONENT";
+	/// <summary>
+	/// DANGER_ROOM_CHARACTER_SELECTION_HEADER
+	/// </summary>
+	public const string DANGER_ROOM_CHARACTER_SELECTION_HEADER="DANGER_ROOM_CHARACTER_SELECTION_HEADER";
+	/// <summary>
+	/// DANGER_ROOM_CHARACTER_PERCENTAGE_DYN
+	/// </summary>
+	public const string DANGER_ROOM_CHARACTER_PERCENTAGE_DYN="DANGER_ROOM_CHARACTER_PERCENTAGE_DYN";
+	/// <summary>
+	/// DANGER_ROOM_CHARACTER_ALREADY_SELECTED_DYN
+	/// </summary>
+	public const string DANGER_ROOM_CHARACTER_ALREADY_SELECTED_DYN="DANGER_ROOM_CHARACTER_ALREADY_SELECTED_DYN";
+	/// <summary>
+	/// DANGER_ROOM_USER_NAME_DYN
+	/// </summary>
+	public const string DANGER_ROOM_USER_NAME_DYN="DANGER_ROOM_USER_NAME_DYN";
+	/// <summary>
+	/// DANGER_ROOM_CURRENTLY_SELECTING_DYN
+	/// </summary>
+	public const string DANGER_ROOM_CURRENTLY_SELECTING_DYN="DANGER_ROOM_CURRENTLY_SELECTING_DYN";
+	/// <summary>
+	/// DANGER_ROOM_ENDSCREEN_NEXT
+	/// </summary>
+	public const string DANGER_ROOM_ENDSCREEN_NEXT="DANGER_ROOM_ENDSCREEN_NEXT";
+	/// <summary>
+	/// DANGER_ROOM_ENDSCREEN_HOME
+	/// </summary>
+	public const string DANGER_ROOM_ENDSCREEN_HOME="DANGER_ROOM_ENDSCREEN_HOME";
+	/// <summary>
+	/// DANGER_ROOM_GAME_CANCELED_NOTICE
+	/// </summary>
+	public const string DANGER_ROOM_GAME_CANCELED_NOTICE="DANGER_ROOM_GAME_CANCELED_NOTICE";
+	/// <summary>
+	/// DANGER_ROOM_GAME_CANCELED_NOTICE_OK
+	/// </summary>
+	public const string DANGER_ROOM_GAME_CANCELED_NOTICE_OK="DANGER_ROOM_GAME_CANCELED_NOTICE_OK";
+}

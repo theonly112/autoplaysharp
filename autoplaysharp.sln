@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp.Contracts", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp.Core", "Core\autoplaysharp.Core.csproj", "{78EF46AC-9A41-4A71-A830-2169708F11A1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp.Build", "Build\autoplaysharp.Build.csproj", "{61E3533C-7AC3-4335-BD31-5F460A7C21A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,11 @@ Global
 		{78EF46AC-9A41-4A71-A830-2169708F11A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78EF46AC-9A41-4A71-A830-2169708F11A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78EF46AC-9A41-4A71-A830-2169708F11A1}.Release|Any CPU.Build.0 = Release|Any CPU
+
+		{61E3533C-7AC3-4335-BD31-5F460A7C21A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61E3533C-7AC3-4335-BD31-5F460A7C21A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61E3533C-7AC3-4335-BD31-5F460A7C21A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61E3533C-7AC3-4335-BD31-5F460A7C21A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

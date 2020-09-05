@@ -3,6 +3,17 @@
     <OutputType>Library</OutputType>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
+  <PropertyGroup>
+    <BuildDependsOn> $(BuildDependsOn); JsonCodeGeneratorTarget </BuildDependsOn>
+  </PropertyGroup>
+  <UsingTask TaskName="autoplaysharp.Build.JsonGeneratorTask" AssemblyFile="..\Build\Bin\autoplaysharp.Build.dll" />
+  <Target Name="JsonCodeGeneratorTarget" BeforeTargets="Build">
+    <ItemGroup>
+      <_JsonFiles Include="ui\*.json" />
+    </ItemGroup>
+    <JsonGeneratorTask InputFiles="@(_JsonFiles)" />
+  </Target>
+
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
