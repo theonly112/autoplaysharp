@@ -42,6 +42,9 @@ namespace autoplaysharp.Game.Tasks.Missions
                 Logger.LogError("Extreme mode not available.");
                 return;
             }
+
+            await Task.Delay(1000);
+
             Game.Click(UIds.ALLIANCE_BATTLE_EXTREME_MODE_READY);
 
             await SelectHeroes();
@@ -59,6 +62,12 @@ namespace autoplaysharp.Game.Tasks.Missions
                 Logger.LogError("Failed to run autofight");
                 return;
             }
+
+            await Task.Delay(1000);
+
+            Game.Click(UIds.ALLIANCE_BATTLE_END_SCREEN_HOME);
+
+            await Task.Delay(5000);
         }
 
         private async Task RunNormalMode(CancellationToken token)
@@ -69,10 +78,12 @@ namespace autoplaysharp.Game.Tasks.Missions
                 return;
             }
 
+            await Task.Delay(1000);
+
             Game.Click(UIds.ALLIANCE_BATTLE_NORMAL_MODE_READY);
 
 
-            if (await WaitUntilVisible(UIds.ALLIANCE_BATTLE_NORMAL_MODE_START, token))
+            if (!await WaitUntilVisible(UIds.ALLIANCE_BATTLE_NORMAL_MODE_START, token))
             {
                 Logger.LogError("Normal mode start button not available.");
                 return;

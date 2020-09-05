@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace autoplaysharp.Game.Tasks
 {
+    /// <summary>
+    /// TODO: there is a problem, where it initially think it casted the t3 awaken skill sucessfully and then waits x seconds. event though it didnt work.
+    /// </summary>
     public class AutoFight : GameTask
     {
         private readonly List<Func<bool>> _conditions;
