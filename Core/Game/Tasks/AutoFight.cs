@@ -25,7 +25,9 @@ namespace autoplaysharp.Game.Tasks
         public AutoFight(IGame game, IUiRepository repository, int maxWaitTime, params Func<bool>[] conditions) : base(game, repository)
         {
             _conditions = conditions.ToList();
-            _conditions.Add(() => game.IsVisible("GENERIC_MISSION_MISSION_SUCCESS"));
+            _conditions.Add(() => game.IsVisible(UIds.GENERIC_MISSION_MISSION_SUCCESS));
+            
+            // TODO: these conditions should be moved to specific missions.
             _conditions.Add(() => game.IsVisible("BATTLE_END_BATTLE_NOTICE")); // Generic end message? Used in world event... Anywhere else?? TODO: if not move to another json...
             _conditions.Add(() => game.IsVisible("WORLD_BOSS_MISSION_SUCCESS"));
             _conditions.Add(() => game.IsVisible("ALLIANCE_BATTLE_CLEAR_MESSAGE"));

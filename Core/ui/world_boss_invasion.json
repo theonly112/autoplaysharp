@@ -147,21 +147,5 @@
     "Y": 0.901,
     "W": 0.049,
     "H": 0.053
-  },
-  {
-    "Id": "WBI_NOTICE_DISCONNECTED",
-    "X": 0.373,
-    "Y": 0.456,
-    "W": 0.258,
-    "H": 0.05,
-    "Text": "Disconnected from the server."
-  },
-  {
-    "Id": "WBI_NOTICE_DISCONNECTED_OK",
-    "X": 0.483,
-    "Y": 0.73,
-    "W": 0.035,
-    "H": 0.05,
-    "Text": "OK"
   }
 ]

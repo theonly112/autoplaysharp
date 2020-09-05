@@ -76,12 +76,4 @@ partial class UIds
 	/// WBI_NEXT_RUN
 	/// </summary>
 	public const string WBI_NEXT_RUN="WBI_NEXT_RUN";
-	/// <summary>
-	/// WBI_NOTICE_DISCONNECTED
-	/// </summary>
-	public const string WBI_NOTICE_DISCONNECTED="WBI_NOTICE_DISCONNECTED";
-	/// <summary>
-	/// WBI_NOTICE_DISCONNECTED_OK
-	/// </summary>
-	public const string WBI_NOTICE_DISCONNECTED_OK="WBI_NOTICE_DISCONNECTED_OK";
 }

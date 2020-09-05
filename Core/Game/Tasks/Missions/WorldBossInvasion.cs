@@ -73,9 +73,9 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             var fightBot = new AutoFight(Game, Repository, 60, slotChest, disconnected);
             await fightBot.Run(token);
 
-            if (Game.IsVisible("WBI_NOTICE_DISCONNECTED"))
+            if (Game.IsVisible(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED))
             {
-                Game.Click("WBI_NOTICE_DISCONNECTED_OK");
+                Game.Click(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED_OK);
                 await Task.Delay(2000);
 
                 Logger.LogInformation("Restarting because of disconnect");
