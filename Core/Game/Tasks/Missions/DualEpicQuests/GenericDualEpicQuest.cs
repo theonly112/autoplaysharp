@@ -1,5 +1,5 @@
 ﻿using autoplaysharp.Contracts;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +17,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests
             var status = await StartContentBoardMission(MissionName);
             if (status == null)
             {
-                Console.WriteLine($"Mission {MissionName} not found on content status board. Stopping...");
+                Logger.LogError($"Mission {MissionName} not found on content status board. Stopping...");
                 return;
             }
 
@@ -25,19 +25,19 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests
             {
                 if (!await RunMission())
                 {
-                    Console.WriteLine("Failed to run mission...");
+                    Logger.LogError("Failed to run mission...");
                     break;
                 }
             }
 
-            Console.WriteLine($"Done running {MissionName}");
+            Logger.LogInformation($"Done running {MissionName}");
         }
 
         private async Task<bool> RunMission()
         {
             if (await StartContentBoardMission(MissionName) == null)
             {
-                Console.WriteLine($"Cannot start mission {MissionName}");
+                Logger.LogError($"Cannot start mission {MissionName}");
                 return false;
             }
 

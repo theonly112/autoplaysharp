@@ -1,6 +1,5 @@
 ﻿using autoplaysharp.Contracts;
-using autoplaysharp.Game.Tasks;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +11,13 @@ namespace autoplaysharp.Game
         private Queue<IGameTask> _queue = new Queue<IGameTask>();
         private bool _taskRunning = false;
         private CancellationTokenSource _source = new CancellationTokenSource();
+        private ILogger<TaskExecutioner> _logger;
         private readonly object _lock = new object();
+
+        public TaskExecutioner(ILogger<TaskExecutioner> logger)
+        {
+            _logger = logger;
+        }
 
         public void QueueTask(IGameTask task)
         {
@@ -30,7 +35,7 @@ namespace autoplaysharp.Game
                         _taskRunning = true;
                         Task.Run(() =>
                         {
-                            Console.WriteLine("Running task");
+                            _logger.LogDebug("Running task");
                             return task.Run(_source.Token).ContinueWith(TaskFinished);
                         });
                     }
@@ -44,7 +49,7 @@ namespace autoplaysharp.Game
             lock(_lock)
             {
                 _taskRunning = false;
-                Console.WriteLine("Task finished");
+                _logger.LogDebug("Task finished");
             }
         }
 

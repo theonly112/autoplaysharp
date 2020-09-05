@@ -1,5 +1,5 @@
 ﻿using autoplaysharp.Contracts;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,19 +32,19 @@ namespace autoplaysharp.Game.Tasks.Missions
                 var match = ContentStatus.StatusRegex.Match(text);
                 if (!match.Success)
                 {
-                    Console.WriteLine("Could not get avilable reward count");
+                    Logger.LogError("Could not get avilable reward count");
                     return;
                 }
 
                 if (!int.TryParse(match.Groups[1].Value, out var num))
                 {
-                    Console.WriteLine("Could not get avilable reward count. Try parse failed.");
+                    Logger.LogError("Could not get avilable reward count. Try parse failed.");
                     return;
                 }
 
                 if (num == 0)
                 {
-                    Console.WriteLine("Done with co-op. No rewards available.");
+                    Logger.LogError("Done with co-op. No rewards available.");
                     return;
                 }
 
@@ -65,20 +65,27 @@ namespace autoplaysharp.Game.Tasks.Missions
 
                 if (!await WaitUntilVisible("COOP_START", token))
                 {
-                    Console.WriteLine("Start button not available.");
+                    Logger.LogError("Start button not available.");
                     return;
                 }
                 Game.Click("COOP_START");
 
                 if(!await HandleStartNotices())
                 {
-                    Console.WriteLine("Unable to handle mission start notice.");
+                    Logger.LogError("Unable to handle mission start notice.");
                     return;
                 }
 
                 if (!await WaitUntilVisible("COOP_ENDSCREEN_MISSION_SUCCESS", token, 60, 1))
                 {
-                    Console.WriteLine("Wait on success message failed.");
+                    if(Game.IsVisible(UIds.COOP_REWARD_NOTICE_DAILY_LIMIT))
+                    {
+                        Game.Click(UIds.COOP_REWARD_NOTICE_DAILY_LIMIT_OK);
+                        await Task.Delay(2000);
+                        Logger.LogInformation("Finished CO-OP missions.");
+                        return;
+                    }
+                    Logger.LogError("Wait on success message failed.");
                     return;
                 }
 

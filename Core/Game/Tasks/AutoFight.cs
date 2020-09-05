@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,11 +45,11 @@ namespace autoplaysharp.Game.Tasks
 
         protected override async Task RunCore(CancellationToken token)
         {
-            Console.WriteLine("Running AutoFight");
-            Console.WriteLine("Waiting for skills to come available");
+            Logger.LogInformation("Running AutoFight");
+            Logger.LogDebug("Waiting for skills to come available");
             if(!await WaitUntil(BattleHasStarted, token, _maxWaitTime, 0.5f))
             {
-                Console.WriteLine("No skills appeared in time. Ending");
+                Logger.LogError("No skills appeared in time. Ending");
                 return;
             }
 
@@ -63,14 +64,14 @@ namespace autoplaysharp.Game.Tasks
                 if(skillId == string.Empty)
                 {
                     await Task.Delay(1000);
-                    Console.WriteLine("No skill available. Waiting briefly");
+                    Logger.LogDebug("No skill available. Waiting briefly");
                 }
                 else
                 {
                     await TryCastSkill(skillId);
 
                     // TODO: find smarter way of deciding how long to wait...
-                    Console.WriteLine("Waiting 1s then casting next skill");
+                    Logger.LogDebug("Waiting 1s then casting next skill");
                     await Task.Delay(GetSkillCastWaitTime(skillId)).ConfigureAwait(false);
                 }
             }
@@ -84,7 +85,7 @@ namespace autoplaysharp.Game.Tasks
 
         private async Task TryCastSkill(string skillId)
         {
-            Console.WriteLine($"Casting skill: {skillId}");
+            Logger.LogDebug($"Casting skill: {skillId}");
             Game.Click(skillId);
 
             await Task.Delay(500);
@@ -93,12 +94,12 @@ namespace autoplaysharp.Game.Tasks
             int cd;
             while (!int.TryParse(Game.GetText(skillId), out cd) && attempts > 0)
             {
-                Console.WriteLine("Failed to cast. Trying again.");
+                Logger.LogDebug("Failed to cast. Trying again.");
                 Game.Click(skillId);
                 await Task.Delay(500);
                 attempts--;
             }
-            Console.WriteLine($"Successfully casted. Skill has {cd}s cooldown");
+            Logger.LogDebug($"Successfully casted. Skill has {cd}s cooldown");
         }
 
         private string GetSkillId(int skillNum) => $"BATTLE_SKILL_{skillNum}";
@@ -112,7 +113,7 @@ namespace autoplaysharp.Game.Tasks
                 var text = Game.GetText(skillId);
                 if(int.TryParse(text, out var cooldown))
                 {
-                    Console.WriteLine($"Skill {skillId} on cooldown: {cooldown}s");
+                    Logger.LogDebug($"Skill {skillId} on cooldown: {cooldown}s");
                 }
                 else
                 {
@@ -136,7 +137,7 @@ namespace autoplaysharp.Game.Tasks
                         var couldParseChargePercentage = int.TryParse(chargePercentageText, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out var chargePercentage);
                         if (t3Locked || couldParseChargePercentage || chargePercentageText.Any(char.IsDigit))
                         {
-                            Console.WriteLine($"T3 not ready yet...");
+                            Logger.LogDebug($"T3 not ready yet...");
                         }
                         else
                         {
@@ -155,7 +156,7 @@ namespace autoplaysharp.Game.Tasks
         {
             if (_conditions.Any(cond => cond()))
             {
-                Console.WriteLine("Detected end condition");
+                Logger.LogInformation("Detected end condition");
                 return true;
             }
 

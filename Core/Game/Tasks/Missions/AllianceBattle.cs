@@ -1,5 +1,5 @@
 ﻿using autoplaysharp.Contracts;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,7 +16,7 @@ namespace autoplaysharp.Game.Tasks.Missions
             const string MissionName = "ALLIANCE BATTLE";
             if(await StartContentBoardMission(MissionName) == null)
             {
-                Console.WriteLine($"Failed to go to {MissionName}");
+                Logger.LogError($"Failed to go to {MissionName}");
                 return;
             }
             await WaitUntilVisible(UIds.ALLIANCE_BATTLE_MODE_HEADER);
@@ -26,7 +26,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             if (await StartContentBoardMission(MissionName) == null)
             {
-                Console.WriteLine($"Failed to go to {MissionName}");
+                Logger.LogError($"Failed to go to {MissionName}");
                 return;
             }
             await WaitUntilVisible(UIds.ALLIANCE_BATTLE_MODE_HEADER);
@@ -39,7 +39,7 @@ namespace autoplaysharp.Game.Tasks.Missions
         {
             if (!await WaitUntilVisible(UIds.ALLIANCE_BATTLE_EXTREME_MODE_READY))
             {
-                Console.WriteLine("Extreme mode not available.");
+                Logger.LogError("Extreme mode not available.");
                 return;
             }
             Game.Click(UIds.ALLIANCE_BATTLE_EXTREME_MODE_READY);
@@ -50,13 +50,13 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             if (!await HandleStartNotices())
             {
-                Console.WriteLine("Failed to start mission...");
+                Logger.LogError("Failed to start mission...");
                 return;
             }
 
             if(!await RunAutoFight(token))
             {
-                Console.WriteLine("Failed to run autofight");
+                Logger.LogError("Failed to run autofight");
                 return;
             }
         }
@@ -65,7 +65,7 @@ namespace autoplaysharp.Game.Tasks.Missions
         {
             if (!await WaitUntilVisible(UIds.ALLIANCE_BATTLE_NORMAL_MODE_READY, token))
             {
-                Console.WriteLine("Normal mode not available.");
+                Logger.LogError("Normal mode not available.");
                 return;
             }
 
@@ -74,7 +74,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             if (await WaitUntilVisible(UIds.ALLIANCE_BATTLE_NORMAL_MODE_START, token))
             {
-                Console.WriteLine("Normal mode start button not available.");
+                Logger.LogError("Normal mode start button not available.");
                 return;
             }
 
@@ -86,7 +86,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             if (!await HandleStartNotices())
             {
-                Console.WriteLine("Failed to start mission...");
+                Logger.LogError("Failed to start mission...");
                 return;
             }
 
@@ -104,7 +104,7 @@ namespace autoplaysharp.Game.Tasks.Missions
         {
             if (!await WaitUntilVisible(UIds.ALLIANCE_BATTLE_HERO_SELECTION_HEADER))
             {
-                Console.WriteLine("Failed: Hero selection screen did not appear");
+                Logger.LogError("Failed: Hero selection screen did not appear");
                 return;
             }
 

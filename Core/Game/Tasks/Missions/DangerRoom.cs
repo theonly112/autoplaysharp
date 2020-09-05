@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -50,21 +51,21 @@ namespace autoplaysharp.Game.Tasks.Missions
                 {
                     Game.Click("DANGER_ROOM_GAME_CANCELED_NOTICE_OK");
                     await Task.Delay(2000);
-                    Console.WriteLine("Game was cancelled. Restarting");
+                    Logger.LogError("Game was cancelled. Restarting");
                     await RunCore(token);
                 }
                 else
                 {
-                    Console.WriteLine("Start screen did not appear. Cancelling...");
+                    Logger.LogError("Start screen did not appear. Cancelling...");
                 }
                 return;
             }
 
-            Console.WriteLine("Game started... Starting fight bot.");
+            Logger.LogInformation("Game started... Starting fight bot.");
             // TODO: start battle bot.
             if(!await RunAutoFight(token))
             {
-                Console.WriteLine("Failed to run fight bot...");
+                Logger.LogError("Failed to run fight bot...");
                 return;
             }
 
@@ -101,7 +102,7 @@ namespace autoplaysharp.Game.Tasks.Missions
             Console.WriteLine("Waiting for our turn");
             var myPosition = Array.IndexOf(userNames, myUserName);
             await WaitUntilVisible(Repository["DANGER_ROOM_CURRENTLY_SELECTING_DYN", myPosition, 0], 30, 1);
-            Console.WriteLine("Out turn. Selecting first availabe character");
+            Logger.LogInformation("Our turn. Selecting first availabe character");
 
             Regex percentageRegex = new Regex(@"(\d+.+)%");
             int bestX = 0, bestY = 0;
@@ -119,7 +120,7 @@ namespace autoplaysharp.Game.Tasks.Missions
                         {
                             if(percentage > highestPercentage)
                             {
-                                Console.WriteLine($"Found new best character. ({x}/{y})");
+                                Logger.LogDebug($"Found new best character. ({x}/{y})");
                                 if(!Game.IsVisible(Repository["DANGER_ROOM_CHARACTER_ALREADY_SELECTED_DYN", x,y]))
                                 {
                                     bestX = x;
@@ -128,7 +129,7 @@ namespace autoplaysharp.Game.Tasks.Missions
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Unfortunately character already taken");
+                                    Logger.LogDebug("Unfortunately character already taken");
                                 }
 
                             }
@@ -163,12 +164,12 @@ namespace autoplaysharp.Game.Tasks.Missions
                 {
                     if (!await completed)
                     {
-                        Console.WriteLine("None of the expected elements found...");
+                        Logger.LogError("None of the expected elements found...");
                         return;
                     }
                     else
                     {
-                        Console.WriteLine(completed == searchingForTeam ? "Searching for team" : "Searching for opponent");
+                        Logger.LogDebug(completed == searchingForTeam ? "Searching for team" : "Searching for opponent");
                         await Task.Delay(2000);
                     }
                 }

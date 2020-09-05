@@ -1,5 +1,5 @@
 ﻿using autoplaysharp.Contracts;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +18,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DeluxeEpicQuests
             var status = await StartContentBoardMission(MissionName);
             if(status == null)
             {
-                Console.WriteLine($"Could not find mission {MissionName}. Maybe it's still locked");
+                Logger.LogError($"Could not find mission {MissionName}. Maybe it's still locked");
                 return;
             }
 

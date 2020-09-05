@@ -19,7 +19,7 @@ namespace autoplaysharp
                       builder.SetMinimumLevel(LogLevel.Debug);
                   });
 
-            var executioner = new TaskExecutioner();
+            var executioner = new TaskExecutioner(loggerFactory.CreateLogger<TaskExecutioner>());
             var noxWindow = new NoxWindow();
             var repository = new Repository();
             repository.Load();
@@ -58,7 +58,7 @@ namespace autoplaysharp
 
             public CustomConsoleLogger(string categoryName)
             {
-                _categoryName = categoryName;
+                _categoryName = categoryName.Contains(".") ? categoryName.Substring(categoryName.LastIndexOf('.') + 1) : categoryName;
             }
 
             public IDisposable BeginScope<TState>(TState state)

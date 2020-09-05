@@ -1,5 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Game.Tasks;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         {
             if (!await GoToMainScreen())
             {
-                Console.WriteLine("Could't go to main screen");
+                Logger.LogError("Could't go to main screen");
                 return;
             }
             Game.Click("MAIN_MENU_ENTER");
@@ -29,7 +30,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             await Task.Delay(2000);
 
             var emptySlots = await CollectChests();
-            Console.WriteLine($"{emptySlots} chest slots empty.");
+            Logger.LogInformation($"{emptySlots} chest slots empty.");
 
             if (emptySlots == 0)
             {
@@ -53,7 +54,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             {
                 if (!await WaitUntilVisible("WBI_HERO_START_MISSION"))
                 {
-                    Console.WriteLine("Start button did not appear in time.");
+                    Logger.LogError("Start button did not appear in time.");
                     return;
                 }
 
@@ -77,7 +78,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Game.Click("WBI_NOTICE_DISCONNECTED_OK");
                 await Task.Delay(2000);
 
-                Console.WriteLine("Restarting because of disconnect");
+                Logger.LogInformation("Restarting because of disconnect");
 
                 Game.Click("WBI_HERO_START_MISSION");
 
@@ -127,7 +128,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 var chestAvailable = Repository["WBI_MANAGE_SUPPLY_CHESTS_ACQUIRE", i, 0];
                 if (Game.IsVisible(chestAvailable))
                 {
-                    Console.WriteLine($"Chest {i + 1} available for pick up");
+                    Logger.LogInformation($"Chest {i + 1} available for pick up");
                     Game.Click(chestAvailable);
                     await Task.Delay(2000);
                     Game.Click("WBI_MANAGE_SUPPLIES_SKIP");

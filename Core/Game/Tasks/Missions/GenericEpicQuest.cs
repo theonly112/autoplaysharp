@@ -1,6 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Game.Tasks;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace autoplaysharp.Core.Game.Tasks.Missions
@@ -30,7 +30,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 var missionCompleted = Game.IsVisible("EPIC_QUEST_ENDSCREEN_HOME_BUTTON_IMAGE");
                 if (!missionCompleted)
                 {
-                    Console.WriteLine($"Waiting for mission to be completed");
+                    Logger.LogError($"Waiting for mission to be completed");
                 }
                 return missionCompleted;
             }, 120, 5);

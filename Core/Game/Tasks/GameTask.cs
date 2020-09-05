@@ -52,8 +52,8 @@ namespace autoplaysharp.Game.Tasks
         {
             if (!IsOnMainScreen())
             {
-                Console.WriteLine("Main screen not visible...");
-                Console.WriteLine("TODO: implement navigation to main screen");
+                Logger.LogError("Main screen not visible...");
+                Logger.LogError("TODO: implement navigation to main screen");
                 return false;
             }
 
@@ -126,7 +126,7 @@ namespace autoplaysharp.Game.Tasks
         {
             if(Game.IsVisible("GENERIC_MISSION_INVENTORY_FULL_NOTICE"))
             {
-                Console.WriteLine("Inventory is full. TODO: at the moment this is not handled...");
+                Logger.LogError("Inventory is full. TODO: at the moment this is not handled...");
                 return Task.FromResult(false);
             }
 

@@ -1,5 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Game.Tasks;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
 using System.Threading;
@@ -18,7 +19,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             var status = await StartContentBoardMission("SQUAD BATTLE");
             if(status.Completed)
             {
-                Console.WriteLine("Already completed...");
+                Logger.LogInformation("Already completed...");
                 return;
             }
 
@@ -43,11 +44,11 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                                 leastPointsX = x;
                                 leastPointsY = y;
                                 leastPoints = points;
-                                Console.WriteLine($"Found new least points. {points} {leastPointsX}/{leastPointsY}");
+                                Logger.LogDebug($"Found new least points. {points} {leastPointsX}/{leastPointsY}");
                             }
                         }
                     }
-                    Console.WriteLine(pointsStr);
+                    Logger.LogDebug(pointsStr);
                 }
             }
 

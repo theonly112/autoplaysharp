@@ -1,5 +1,5 @@
 ﻿using autoplaysharp.Contracts;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,15 +26,15 @@ namespace autoplaysharp.Game.Tasks.Missions
                 var status = await StartContentBoardMission(_missionName);
                 if (status == null)
                 {
-                    Console.WriteLine($"Failed to start {_missionName}");
+                    Logger.LogError($"Failed to start {_missionName}");
                     return;
                 }
 
-                Console.WriteLine($"Timeline Battle: {status.Available} runs available.");
+                Logger.LogInformation($"Timeline Battle: {status.Available} runs available.");
 
                 if(status.Available <  1)
                 {
-                    Console.WriteLine("Timeline Battle done...");
+                    Logger.LogInformation("Timeline Battle done...");
                     return;
                 }
 
@@ -64,10 +64,11 @@ namespace autoplaysharp.Game.Tasks.Missions
                 Game.Click("TIMELINE_FIGHT");
 
 
-                Console.WriteLine("Waiting for fight to finish");
+                Logger.LogInformation("Waiting for fight to finish");
                 if (!await WaitUntilVisible("TIMELINE_ENDSCREEN_HOME_BUTTON_IMAGE", token, 120, 5)) 
                 {
-
+                    Logger.LogError("Home button did not appear.");
+                    return;
                 }
 
                 Game.Click("TIMELINE_ENDSCREEN_HOME_BUTTON_IMAGE");

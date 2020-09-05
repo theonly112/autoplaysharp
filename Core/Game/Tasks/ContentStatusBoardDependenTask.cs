@@ -1,6 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using F23.StringSimilarity;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -64,12 +64,12 @@ namespace autoplaysharp.Game.Tasks
         {
             if(!await GoToMainScreen())
             {
-                Console.WriteLine("Couldn't go to main screen.");
+                Logger.LogError("Couldn't go to main screen.");
             }
 
             if(!await WaitUntilVisible("MAIN_MENU_ENTER"))
             {
-                Console.WriteLine("Cannot find enter button.. Not on main screen?");
+                Logger.LogError("Cannot find enter button.. Not on main screen?");
                 return null;
             }
 
@@ -77,7 +77,7 @@ namespace autoplaysharp.Game.Tasks
             Game.Click("CONTENT_STATUS_BOARD_BUTTON");
             if (!await WaitUntilVisible("CONTENT_STATUS_BOARD_MENU_HEADER"))
             {
-                Console.WriteLine("Failed to navigate to content status board");
+                Logger.LogError("Failed to navigate to content status board");
                 return null;
             }
 
@@ -99,7 +99,7 @@ namespace autoplaysharp.Game.Tasks
                         var similarity = nl.Similarity(name, mission_name);
                         if (similarity >= 0.8) // 80% should be fine. names are different enough.
                         {
-                            Console.WriteLine($"Clicking on element because it matches expected: {name} actual: {mission_name} similarity: {similarity}");
+                            Logger.LogDebug($"Clicking on element because it matches expected: {name} actual: {mission_name} similarity: {similarity}");
                             Game.Click(nameElement);
 
                             await Task.Delay(500); // waiting briefly for page to change.
@@ -107,7 +107,7 @@ namespace autoplaysharp.Game.Tasks
                         }
                         else
                         {
-                            Console.WriteLine($"Found mission {mission_name}. But its not what we are looking for. Similarity {similarity}");
+                            Logger.LogDebug($"Found mission {mission_name}. But its not what we are looking for. Similarity {similarity}");
                         }
                     }
                 }

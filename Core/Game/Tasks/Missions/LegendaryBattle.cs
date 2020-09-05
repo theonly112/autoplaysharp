@@ -1,5 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Game.Tasks;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             var status = await StartContentBoardMission("LEGENDARY BATTLE");
             if (status.Completed)
             {
-                Console.WriteLine("Already completed");
+                Logger.LogInformation("Already completed");
                 return;
             }
 
@@ -47,7 +48,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             if (!await WaitUntilVisible(enter))
             {
-                Console.WriteLine("Enter button did not appear");
+                Logger.LogError("Enter button did not appear");
                 return;
             }
 
