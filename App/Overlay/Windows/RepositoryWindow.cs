@@ -30,7 +30,11 @@ namespace autoplaysharp.Overlay.Windows
 
         private void ShowRepository()
         {
-            ImGui.Begin("Repository");
+            if(!ImGui.Begin("Repository"))
+            {
+                ImGui.End();
+                return;
+            }
 
             var items = _repository.Ids.ToArray();
 
