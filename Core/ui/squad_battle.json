@@ -100,5 +100,37 @@
     "Y": 0.899,
     "W": 0.043,
     "H": 0.065
+  },
+  {
+    "Id": "SQUAD_BATTLE_RANK_DROP",
+    "X": 0.406,
+    "Y": 0.101,
+    "W": 0.194,
+    "H": 0.083,
+    "Text": "Rank Drop"
+  },
+  {
+    "Id": "SQUAD_BATTLE_ALL_SLOTS_MUST_BE_FILLED",
+    "X": 0.378,
+    "Y": 0.447,
+    "W": 0.249,
+    "H": 0.06,
+    "Text": "All squad slots must be filled."
+  },
+  {
+    "Id": "SQUAD_BATTLE_ALL_SLOTS_MUST_BE_FILLED_OK",
+    "X": 0.484,
+    "Y": 0.728,
+    "W": 0.032,
+    "H": 0.055,
+    "Text": "All squad slots must be filled."
+  },
+  {
+    "Id": "SQUAD_BATTLE_SUMMARY_OVERALL_BATTLEPOINTS",
+    "X": 0.263,
+    "Y": 0.645,
+    "W": 0.198,
+    "H": 0.055,
+    "Text": "OVERALL BATTLE POINTS"
   }
 ]

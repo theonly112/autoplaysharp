@@ -25,6 +25,11 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             await Task.Delay(2000);
 
+            if (Game.IsVisible(UIds.SQUAD_BATTLE_RANK_DROP))
+            {
+                Game.Click(UIds.SQUAD_BATTLE_RANK_DROP);
+            }
+
             int leastPoints = int.MaxValue;
             int leastPointsX = 0;
             int leastPointsY = 0;
@@ -57,22 +62,46 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             await Task.Delay(2000);
 
-            for (int i = 0; i < 3; i++)
+            await SelectHeroes();
+
+            Game.Click(UIds.SQUAD_BATTLE_START_BATTLE);
+
+            await Task.Delay(1000);
+
+            if(Game.IsVisible(UIds.SQUAD_BATTLE_ALL_SLOTS_MUST_BE_FILLED))
             {
-                Game.Click(Repository["SQUAD_BATTLE_HERO_SELECTION_DYN", i, 0]);
-                await Task.Delay(250);
+                Game.Click(UIds.SQUAD_BATTLE_ALL_SLOTS_MUST_BE_FILLED_OK);
+                await Task.Delay(1000);
+                await SelectHeroes();
+
+                Game.Click(UIds.SQUAD_BATTLE_START_BATTLE);
             }
 
-            Game.Click("SQUAD_BATTLE_START_BATTLE");
-
-            Func<bool> endCondition = () => Game.IsVisible("SQUAD_BATTLE_END_BATTLE_MESSAGE");
-            var fightBot = new AutoFight(Game, Repository, endCondition);
+            Func<bool> endCondition = () => Game.IsVisible(UIds.SQUAD_BATTLE_END_BATTLE_MESSAGE);
+            Func<bool> summaryBattlePoints = () => Game.IsVisible(UIds.SQUAD_BATTLE_SUMMARY_OVERALL_BATTLEPOINTS);
+            var fightBot = new AutoFight(Game, Repository, endCondition, summaryBattlePoints);
             await fightBot.Run(token);
 
             await Task.Delay(2000);
 
-            Game.Click("SQUAD_BATTLE_END_HOME_BUTTON");
+            if(Game.IsVisible(UIds.SQUAD_BATTLE_SUMMARY_OVERALL_BATTLEPOINTS))
+            {
+                Game.Click(UIds.SQUAD_BATTLE_SUMMARY_OVERALL_BATTLEPOINTS);
+            }
+
+            await Task.Delay(2000);
+
+            Game.Click(UIds.SQUAD_BATTLE_END_HOME_BUTTON);
             await Task.Delay(5000);
+        }
+
+        private async Task SelectHeroes()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Game.Click(Repository[UIds.SQUAD_BATTLE_HERO_SELECTION_DYN, i, 0]);
+                await Task.Delay(250);
+            }
         }
     }
 }
