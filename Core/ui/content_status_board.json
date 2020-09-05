@@ -6,7 +6,7 @@
     "W": 0.204,
     "H": 0.053,
     "XOffset": 0.299,
-    "YOffset": 0.158
+    "YOffset": 0.051
   },
   {
     "Id": "CONTENT_STATUS_BOARD_ITEM_NAME_COMPLETED_DYN",
@@ -16,7 +16,7 @@
     "H": 0.053,
     "Text": "COMPLETE",
     "XOffset": 0.299,
-    "YOffset": 0.158
+    "YOffset": 0.051
   },
   {
     "Id": "CONTENT_STATUS_BOARD_ITEM_STATUS_DYN",
@@ -26,7 +26,7 @@
     "H": 0.046,
     "Threshold": 165,
     "XOffset": 0.299,
-    "YOffset": 0.16,
+    "YOffset": 0.051,
     "Scale": 4
   },
   {
@@ -47,7 +47,7 @@
   {
     "Id": "CONTENT_STATUS_BOARD_DRAG_END",
     "X": 0.493,
-    "Y": 0.591
+    "Y": 0.501
   },
   {
     "Id": "CONTENT_STATUS_BOARD_DRAG_START",

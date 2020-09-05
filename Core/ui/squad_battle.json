@@ -22,5 +22,83 @@
     "W": 0.298,
     "H": 0.089,
     "Text": "END BATTLE"
+  },
+  {
+    "Id": "SQUAD_BATTLE_POINTS_1_ROW",
+    "X": 0.129,
+    "Y": 0.429,
+    "W": 0.111,
+    "H": 0.037,
+    "XOffset": 0.677,
+    "YOffset": 1.0
+  },
+  {
+    "Id": "SQUAD_BATTLE_POINTS_2_ROW",
+    "X": 0.18,
+    "Y": 0.627,
+    "W": 0.111,
+    "H": 0.037,
+    "XOffset": 0.581,
+    "YOffset": 1.0
+  },
+  {
+    "Id": "SQUAD_BATTLE_POINTS_3_ROW",
+    "X": 0.23,
+    "Y": 0.82,
+    "W": 0.111,
+    "H": 0.037,
+    "XOffset": 0.488,
+    "YOffset": 1.0
+  },
+  {
+    "Id": "SQUAD_BATTLE_SELECTION_1_ROW",
+    "X": 0.046,
+    "Y": 0.281,
+    "W": 0.23,
+    "H": 0.143,
+    "XOffset": 0.677,
+    "YOffset": 1.0
+  },
+  {
+    "Id": "SQUAD_BATTLE_SELECTION_2_ROW",
+    "X": 0.097,
+    "Y": 0.479,
+    "W": 0.23,
+    "H": 0.143,
+    "XOffset": 0.581,
+    "YOffset": 1.0
+  },
+  {
+    "Id": "SQUAD_BATTLE_SELECTION_3_ROW",
+    "X": 0.143,
+    "Y": 0.682,
+    "W": 0.217,
+    "H": 0.138,
+    "XOffset": 0.498,
+    "YOffset": 1.0
+  },
+  {
+    "Id": "SQUAD_BATTLE_HERO_SELECTION_DYN",
+    "X": 0.599,
+    "Y": 0.203,
+    "W": 0.088,
+    "H": 0.161,
+    "XOffset": 0.092,
+    "YOffset": 0.161
+  },
+  {
+    "Id": "SQUAD_BATTLE_START_BATTLE",
+    "X": 0.525,
+    "Y": 0.876,
+    "W": 0.06,
+    "H": 0.041,
+    "Text": "START"
+  },
+  {
+    "Id": "SQUAD_BATTLE_END_HOME_BUTTON",
+    "X": 0.41,
+    "Y": 0.899,
+    "W": 0.043,
+    "H": 0.065
   }
 ]

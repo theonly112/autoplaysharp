@@ -1,5 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Core.Game.Tasks;
+using autoplaysharp.Core.Game.Tasks.Missions;
 using autoplaysharp.Core.Game.Tasks.Missions.DeluxeEpicQuests;
 using autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests;
 using autoplaysharp.Game.Tasks;
@@ -40,6 +41,7 @@ namespace autoplaysharp.Overlay.Windows
             _taskToggleButtons.Add(new TaskToggleButton(() => new TimelineBattle(_game, _repository), "Timeline Battle", taskExecutioner));
             _taskToggleButtons.Add(new TaskToggleButton(() => new CoopMission(_game, _repository), "CO-OP Play", taskExecutioner));
             _taskToggleButtons.Add(new TaskToggleButton(() => new WorldBossInvasion(_game, _repository), "World Boss Invasion", taskExecutioner));
+            _taskToggleButtons.Add(new TaskToggleButton(() => new SquadBattle(_game, _repository), "Squad Battle", taskExecutioner));
 
 
             _taskToggleButtons.Add(new TaskToggleButton(() => new AutoFight(_game, _repository), "Auto Fight++", taskExecutioner));

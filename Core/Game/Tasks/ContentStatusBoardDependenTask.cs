@@ -83,11 +83,11 @@ namespace autoplaysharp.Game.Tasks
 
             await Task.Delay(500);
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 5; i++)
             {
                 for (var col = 0; col < 3; col++)
                 {
-                    for (var row = 0; row < 4; row++)
+                    for (var row = 0; row < 12; row++)
                     {
                         var nameElement = Repository["CONTENT_STATUS_BOARD_ITEM_NAME_DYN", col, row];
                         var status = Game.GetText(Repository["CONTENT_STATUS_BOARD_ITEM_STATUS_DYN", col, row]);
@@ -110,7 +110,6 @@ namespace autoplaysharp.Game.Tasks
                     }
                 }
                 Game.Drag("CONTENT_STATUS_BOARD_DRAG_START", "CONTENT_STATUS_BOARD_DRAG_END");
-                await Task.Delay(500);
             }
             return null;
         }
