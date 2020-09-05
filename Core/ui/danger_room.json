@@ -147,5 +147,22 @@
     "Y": 0.886,
     "W": 0.133,
     "H": 0.08
+  },
+  {
+    "Id": "DANGER_ROOM_GAME_CANCELED_NOTICE",
+    "X": 0.263,
+    "Y": 0.452,
+    "W": 0.475,
+    "H": 0.051,
+    "Text": "The game has been canceled because another user has left."
+  },
+  {
+    "Id": "DANGER_ROOM_GAME_CANCELED_NOTICE_OK",
+    "X": 0.484,
+    "Y": 0.728,
+    "W": 0.037,
+    "H": 0.051,
+    "Threshold": 140,
+    "Text": "OK"
   }
 ]

@@ -46,7 +46,17 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             if(!await WaitUntilVisible("DANGER_ROOM_WAITING_FOR_HEROES", 60, 0.2f))
             {
-                Console.WriteLine("Start screen did not appear. Cancelling...");
+                if (Game.IsVisible("DANGER_ROOM_GAME_CANCELED_NOTICE"))
+                {
+                    Game.Click("DANGER_ROOM_GAME_CANCELED_NOTICE_OK");
+                    await Task.Delay(2000);
+                    Console.WriteLine("Game was cancelled. Restarting");
+                    await RunCore(token);
+                }
+                else
+                {
+                    Console.WriteLine("Start screen did not appear. Cancelling...");
+                }
                 return;
             }
 
