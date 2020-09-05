@@ -31,10 +31,8 @@ namespace autoplaysharp.Game.Tasks.Missions
             }
             await WaitUntilVisible("ALLIANCE_BATTLE_MODE_HEADER");
 
-
             await RunExtremeMode(token);
 
-            await RunAutoFight(token);
         }
 
         private async Task RunExtremeMode(CancellationToken token)
@@ -65,7 +63,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
         private async Task RunNormalMode(CancellationToken token)
         {
-            if (!await WaitUntilVisible("ALLIANCE_BATTLE_NORMAL_MODE_READY"))
+            if (!await WaitUntilVisible("ALLIANCE_BATTLE_NORMAL_MODE_READY", token))
             {
                 Console.WriteLine("Normal mode not available.");
                 return;
@@ -74,20 +72,32 @@ namespace autoplaysharp.Game.Tasks.Missions
             Game.Click("ALLIANCE_BATTLE_NORMAL_MODE_READY");
 
 
-            if (!Game.IsVisible("ALLIANCE_BATTLE_NORMAL_MODE_START"))
+            if (await WaitUntilVisible("ALLIANCE_BATTLE_NORMAL_MODE_START", token))
             {
                 Console.WriteLine("Normal mode start button not available.");
+                return;
             }
 
             await SelectHeroes();
 
             Game.Click("ALLIANCE_BATTLE_NORMAL_MODE_START");
 
+            await Task.Delay(500);
+
             if (!await HandleStartNotices())
             {
                 Console.WriteLine("Failed to start mission...");
                 return;
             }
+
+            var autoFight = new AutoFight(Game, Repository);
+            await autoFight.Run(token);
+
+            await Task.Delay(1000);
+
+            Game.Click("ALLIANCE_BATTLE_END_SCREEN_HOME");
+
+            await Task.Delay(5000);
         }
 
         private async Task SelectHeroes()

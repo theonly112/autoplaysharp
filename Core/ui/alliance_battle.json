@@ -6,7 +6,8 @@
     "W": 0.235,
     "H": 0.107,
     "PSM": 3,
-    "Text": "ALLIANCE BATTLE CLEAR"
+    "Threshold": 155,
+    "Text": "ALLIANCE BATTLE\nCLEAR"
   },
   {
     "Id": "ALLIANCE_BATTLE_ENDED_MESSAGE",
@@ -81,5 +82,12 @@
     "W": 0.147,
     "H": 0.062,
     "Text": "ALLIANCE BATTLE"
+  },
+  {
+    "Id": "ALLIANCE_BATTLE_END_SCREEN_HOME",
+    "X": 0.756,
+    "Y": 0.871,
+    "W": 0.044,
+    "H": 0.069
   }
 ]
