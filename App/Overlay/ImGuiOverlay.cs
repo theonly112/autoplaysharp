@@ -2,6 +2,8 @@
 using autoplaysharp.Overlay.Windows;
 using ImGuiNET;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using Veldrid;
 
 namespace autoplaysharp.Overlay
@@ -25,6 +27,18 @@ namespace autoplaysharp.Overlay
             var drawList = ImGui.GetForegroundDrawList();
             var absPos = _window.VirtualMousePosition * new System.Numerics.Vector2(_window.Width, _window.Height);
             drawList.AddCircleFilled(absPos, 25, 0xff0000ff);
+            if(ImGui.Button("Copy jsons back..."))
+            {
+                var files = Directory.GetFiles("ui", "*.json");
+                var relativPath = @"..\..\..\..\Core\";
+                Debug.Assert(Directory.Exists(relativPath));
+
+                foreach (var f in files)
+                {
+                    File.Copy(f, Path.Combine(relativPath, f), true);
+                }
+                
+            }
             ImGui.Text($"MousePos: {_window.VirtualMousePosition}");
             ImGui.End();
 

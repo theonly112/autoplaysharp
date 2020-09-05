@@ -1,0 +1,63 @@
+[
+  {
+    "Id": "LEGENDARY_BATTLE_NAME_DYN",
+    "X": 0.009,
+    "Y": 0.263,
+    "W": 0.198,
+    "H": 0.041,
+    "XOffset": 1.0,
+    "YOffset": 0.214
+  },
+  {
+    "Id": "LEGENDARY_BATTLE_NORMAL_MODE_BUTTON",
+    "X": 0.839,
+    "Y": 0.917,
+    "W": 0.078,
+    "H": 0.041,
+    "Text": "NORMAL"
+  },
+  {
+    "Id": "LEGENDARY_BATTLE_MISSION_ENTER",
+    "X": 0.115,
+    "Y": 0.756,
+    "W": 0.078,
+    "H": 0.046,
+    "Text": "ENTER",
+    "XOffset": 0.295,
+    "YOffset": 1.0
+  },
+  {
+    "Id": "LEGENDARY_BATTLE_MISSION_START",
+    "X": 0.802,
+    "Y": 0.894,
+    "W": 0.074,
+    "H": 0.046,
+    "Threshold": 150,
+    "Text": "START"
+  },
+  {
+    "Id": "LEGENDARY_BATTLE_MISSION_SKIP_INTRO",
+    "X": 0.899,
+    "Y": 0.041,
+    "W": 0.06,
+    "H": 0.046,
+    "Threshold": 150,
+    "Text": "SKIP"
+  },
+  {
+    "Id": "LEGENDARY_BATTLE_MISSION_SUCCESS",
+    "X": 0.369,
+    "Y": 0.065,
+    "W": 0.263,
+    "H": 0.055,
+    "Threshold": 150,
+    "Text": "CHALLENGE SUCCESS!"
+  },
+  {
+    "Id": "LEGENDARY_BATTLE_ENDSCREEN_REPEAT_RUN",
+    "X": 0.722,
+    "Y": 0.894,
+    "W": 0.046,
+    "H": 0.065
+  }
+]

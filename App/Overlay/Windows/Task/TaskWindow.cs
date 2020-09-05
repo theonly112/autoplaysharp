@@ -41,6 +41,7 @@ namespace autoplaysharp.Overlay.Windows
             _taskToggleButtons.Add(new TaskToggleButton(() => new CoopMission(_game, _repository), "CO-OP Play", taskExecutioner));
             _taskToggleButtons.Add(new TaskToggleButton(() => new WorldBossInvasion(_game, _repository), "World Boss Invasion", taskExecutioner));
             _taskToggleButtons.Add(new TaskToggleButton(() => new SquadBattle(_game, _repository), "Squad Battle", taskExecutioner));
+            _taskToggleButtons.Add(new TaskToggleButton(() => new LegendaryBattle(_game, _repository), "Legendary Battle", taskExecutioner));
 
 
             _taskToggleButtons.Add(new TaskToggleButton(() => new AutoFight(_game, _repository), "Auto Fight++", taskExecutioner));
