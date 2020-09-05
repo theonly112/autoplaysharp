@@ -61,11 +61,31 @@ namespace autoplaysharp.Core.Game.Tasks
                 await Task.Delay(2000);
                 Game.Click("WBI_HERO_START_MISSION");
 
-                Func<bool> condition = () => { return Game.IsVisible("WBI_SLOT_CHEST_IN_INVENTORY"); };
+                await Fight(token);
+            }
+        }
 
-                var fightBot = new AutoFight(Game, Repository, 60, condition);
-                await fightBot.Run(token);
+        private async Task Fight(CancellationToken token)
+        {
+            Func<bool> slotChest = () => { return Game.IsVisible("WBI_SLOT_CHEST_IN_INVENTORY"); };
+            Func<bool> disconnected = () => { return Game.IsVisible("WBI_NOTICE_DISCONNECTED"); };
+            var fightBot = new AutoFight(Game, Repository, 60, slotChest, disconnected);
+            await fightBot.Run(token);
 
+            if (Game.IsVisible("WBI_NOTICE_DISCONNECTED"))
+            {
+                Game.Click("WBI_NOTICE_DISCONNECTED_OK");
+                await Task.Delay(2000);
+
+                Console.WriteLine("Restarting because of disconnect");
+
+                Game.Click("WBI_HERO_START_MISSION");
+
+                await Fight(token);
+                return;
+            }
+            else
+            {
                 await Task.Delay(2000);
 
                 Game.Click("WBI_SLOT_CHEST_IN_INVENTORY");
