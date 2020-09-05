@@ -50,13 +50,15 @@ namespace autoplaysharp.Overlay
             _gd = VeldridStartup.CreateGraphicsDevice(_window,
                 new GraphicsDeviceOptions(),
                    GraphicsBackend.Direct3D11);
-            _window.Resized += () =>
-            {
-                _gd.MainSwapchain.Resize((uint)_window.Width, (uint)_window.Height);
-            };
+     
 
             _cl = _gd.ResourceFactory.CreateCommandList();
             _controller = new ImGuiController(_gd, _gd.MainSwapchain.Framebuffer.OutputDescription, _window.Width, _window.Height);
+            _window.Resized += () =>
+            {
+                _gd.MainSwapchain.Resize((uint)_window.Width, (uint)_window.Height);
+                _controller.WindowResized(_window.Width, _window.Height);
+            };
         }
 
         private bool SetIfChanged(int old, int newValue, Action<int> setter)
