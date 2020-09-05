@@ -95,25 +95,6 @@
     "Text": "5"
   },
   {
-    "Id": "BATTLE_SKILL_T3",
-    "X": 0.597,
-    "Y": 0.881,
-    "W": 0.047,
-    "H": 0.053,
-    "PSM": 8,
-    "Threshold": 150
-  },
-  {
-    "Id": "BATTLE_SKILL_T3_NUM",
-    "X": 0.593,
-    "Y": 0.848,
-    "W": 0.015,
-    "H": 0.027,
-    "PSM": 8,
-    "Threshold": 150,
-    "Text": "6"
-  },
-  {
     "Id": "BATTLE_SKILL_T3_LOCKED",
     "X": 0.603,
     "Y": 0.919,

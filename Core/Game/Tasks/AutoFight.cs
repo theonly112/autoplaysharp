@@ -11,8 +11,7 @@ namespace autoplaysharp.Game.Tasks
     {
         private readonly List<Func<bool>> _conditions;
         
-        private const string Tier3Skillid = "BATTLE_SKILL_T3";
-        private const string AwakenSkillId = "BATTLE_SKILL_6";
+        private const string AwakenOrT3SkillId = "BATTLE_SKILL_6";
 
         private readonly int _maxWaitTime;
 
@@ -79,8 +78,7 @@ namespace autoplaysharp.Game.Tasks
 
         private static int GetSkillCastWaitTime(string skillId)
         {
-            return skillId == Tier3Skillid ||
-                   skillId == AwakenSkillId
+            return skillId == AwakenOrT3SkillId
                    ? 7000 : 1500;
         }
 
@@ -107,22 +105,6 @@ namespace autoplaysharp.Game.Tasks
 
         private string GetBestAvailableSkill()
         {
-            if (Game.IsVisible($"BATTLE_SKILL_T3_NUM"))
-            {
-                var t3SkillId = "BATTLE_SKILL_T3";
-                var chargePercentageText = Game.GetText(t3SkillId);
-                var t3Locked = Game.IsVisible("BATTLE_SKILL_T3_LOCKED");
-                var couldParseChargePercentage = int.TryParse(chargePercentageText, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out var chargePercentage);
-                if (t3Locked || couldParseChargePercentage || chargePercentageText.Any(char.IsDigit))
-                {
-                    Console.WriteLine($"T3 not ready yet...");
-                }
-                else
-                {
-                    return t3SkillId;
-                }
-            }
-
             var availableSkills = GetAvailableSkills();
             foreach(var s in availableSkills.OrderByDescending(x => x))
             {
@@ -147,7 +129,24 @@ namespace autoplaysharp.Game.Tasks
                 var id = $"{GetSkillId(i)}_NUM";
                 if (Game.IsVisible(id))
                 {
-                    yield return i;
+                    if (i == 6)
+                    {
+                        var chargePercentageText = Game.GetText(GetSkillId(i));
+                        var t3Locked = Game.IsVisible("BATTLE_SKILL_T3_LOCKED");
+                        var couldParseChargePercentage = int.TryParse(chargePercentageText, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out var chargePercentage);
+                        if (t3Locked || couldParseChargePercentage || chargePercentageText.Any(char.IsDigit))
+                        {
+                            Console.WriteLine($"T3 not ready yet...");
+                        }
+                        else
+                        {
+                            yield return i;
+                        }
+                    }
+                    else
+                    {
+                        yield return i;
+                    }
                 }
             }
         }
