@@ -19,6 +19,7 @@ namespace autoplaysharp.Game
         private readonly IEmulatorWindow _window;
         private readonly IUiRepository _repository;
         private readonly ILoggerFactory _loggerFactory;
+        private readonly ILogger _logger;
 
         public IEmulatorOverlay Overlay { get; set; }
 
@@ -27,6 +28,7 @@ namespace autoplaysharp.Game
             _window = window;
             _repository = repository;
             _loggerFactory = loggerFactory;
+            _logger = _loggerFactory.CreateLogger(GetType());
         }
 
         public void Click(string id)
@@ -98,7 +100,10 @@ namespace autoplaysharp.Game
             var result = TextRecognition.GetText(pix, element.PSM.HasValue ? element.PSM.Value : 3);
 
             Overlay?.ShowGetText(element);
-            return result.TrimStart().TrimEnd();
+            result = result.TrimStart().TrimEnd();
+            //_logger.LogDebug($"{element.Id} Text: {result}");
+            
+            return result;
         }
 
         private Bitmap GrabElement(UIElement element)
@@ -150,6 +155,7 @@ namespace autoplaysharp.Game
             var text = GetText(element).TrimStart().TrimEnd();
             var isVisible = text == element.Text;
             Overlay?.ShowIsVisibile(element, isVisible);
+            //_logger.LogDebug($"{element.Id} IsVisible: {isVisible}");
             return isVisible;
         }
 
