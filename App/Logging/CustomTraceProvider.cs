@@ -12,6 +12,7 @@ namespace autoplaysharp
 
         public CustomTraceProvider()
         {
+            Directory.CreateDirectory("logs");
             _streamWriter = new StreamWriter(@"logs\\trace.log", true);
         }
 
