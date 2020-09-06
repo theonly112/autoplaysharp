@@ -2,7 +2,7 @@ using Tesseract;
 
 namespace autoplaysharp.OCR
 {
-    class TextRecognition
+    public class TextRecognition
     {
         private static object _lock = new object();
         private static TesseractEngine _engine;
