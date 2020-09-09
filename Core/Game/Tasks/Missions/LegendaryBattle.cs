@@ -26,6 +26,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             await Task.Delay(1000);
 
+            bool found = false;
             // TODO: implement search for mission via drag
             for (int y = 0; y < 4; y++)
             {
@@ -33,9 +34,15 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 var missionText = Game.GetText(mission);
                 if (missionText == missionToRun)
                 {
+                    found = true;
                     Game.Click(mission);
                     break;
                 }
+            }
+
+            if(!found)
+            {
+                Logger.LogError($"Failed to find mission {missionToRun}.");
             }
 
             await Task.Delay(1000);
