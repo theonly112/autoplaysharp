@@ -1,5 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,12 +45,20 @@ namespace autoplaysharp.Game
 
         }
 
-        private void TaskFinished(Task t)
+        private async void TaskFinished(Task t)
         {
             lock(_lock)
             {
                 _taskRunning = false;
                 _logger.LogDebug("Task finished");
+            }
+            try
+            {
+                await t; // unwarp any exception.
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Task existed with exception.");
             }
         }
 
