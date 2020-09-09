@@ -7,7 +7,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 {
     /// <summary>
     /// TODOs:
-    /// 1. disable repeat button if enabled.
+    /// 1. disable auto repeat button if enabled.
     /// 2. make it more reliable. should be prio 1. lol
     /// 3. use autofight instead of ingame "Autoplay+".
     /// 4. handle end notice.

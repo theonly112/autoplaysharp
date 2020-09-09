@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace autoplaysharp.Core.Game.Tasks.Missions
 {
+    // TODO: press tab on end screen?
     public class SquadBattle : ContentStatusBoardDependenTask
     {
         public SquadBattle(IGame game, IUiRepository repository) : base(game, repository)

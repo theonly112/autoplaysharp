@@ -41,9 +41,9 @@ namespace autoplaysharp.Game.Tasks
 
         private bool BattleHasStarted()
         {
-            if(Game.IsVisible("BATTLE_TAP_THE_SCREEN"))
+            if(Game.IsVisible(UIds.BATTLE_TAP_THE_SCREEN))
             {
-                Game.Click("BATTLE_TAP_THE_SCREEN");
+                Game.Click(UIds.BATTLE_TAP_THE_SCREEN);
             }
             return GetAvailableSkills().Any();
         }
@@ -60,9 +60,9 @@ namespace autoplaysharp.Game.Tasks
 
             while (!token.IsCancellationRequested && !HasFightEnded())
             {
-                if (Game.IsVisible("BATTLE_TAP_THE_SCREEN"))
+                if (Game.IsVisible(UIds.BATTLE_TAP_THE_SCREEN))
                 {
-                    Game.Click("BATTLE_TAP_THE_SCREEN");
+                    Game.Click(UIds.BATTLE_TAP_THE_SCREEN);
                 }
                 
                 var skillId = GetBestAvailableSkill();
@@ -138,7 +138,7 @@ namespace autoplaysharp.Game.Tasks
                     if (i == 6)
                     {
                         var chargePercentageText = Game.GetText(GetSkillId(i));
-                        var t3Locked = Game.IsVisible("BATTLE_SKILL_T3_LOCKED");
+                        var t3Locked = Game.IsVisible(UIds.BATTLE_SKILL_T3_LOCKED);
                         var couldParseChargePercentage = int.TryParse(chargePercentageText, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out var chargePercentage);
                         if (t3Locked || couldParseChargePercentage || chargePercentageText.Any(char.IsDigit))
                         {
