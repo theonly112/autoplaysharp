@@ -17,7 +17,14 @@ namespace autoplaysharp.Game.Tasks.Missions
 
         protected override async Task RunCore(CancellationToken token)
         {
-            // TODO: retrive username...
+            if(!await GoToMainScreen())
+            {
+                Logger.LogError("could not go to main screen");
+                return;
+            }
+
+            var username = Game.GetText(UIds.MAIN_MENU_USERNAME);
+
             if(await StartContentBoardMission("DANGER ROOM") == null)
             {
                 return;
@@ -41,9 +48,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             await WaitForCharacterSelection();
 
-            await SelectCharacter();
-
-            // TODO: wait for game to start.
+            await SelectCharacter(username);
 
             if(!await WaitUntilVisible("DANGER_ROOM_WAITING_FOR_HEROES", 60, 0.2f))
             {
@@ -94,12 +99,11 @@ namespace autoplaysharp.Game.Tasks.Missions
             return false;
         }
 
-        internal async Task SelectCharacter()
+        internal async Task SelectCharacter(string myUserName)
         {
             var userNames = Enumerable.Range(0, 3).Select(x => Game.GetText(Repository["DANGER_ROOM_USER_NAME_DYN", x, 0])).ToArray();
-            Console.WriteLine($"Usernames: {string.Join(",", userNames)}");
-            var myUserName = "";
-            Console.WriteLine("Waiting for our turn");
+            Logger.LogInformation($"Usernames: {string.Join(",", userNames)}");
+            Logger.LogInformation("Waiting for our turn");
             var myPosition = Array.IndexOf(userNames, myUserName);
             await WaitUntilVisible(Repository["DANGER_ROOM_CURRENTLY_SELECTING_DYN", myPosition, 0], 30, 1);
             Logger.LogInformation("Our turn. Selecting first availabe character");
