@@ -23,6 +23,7 @@ namespace autoplaysharp
 
         public void Dispose()
         {
+            _streamWriter.Dispose();
         }
 
         class TraceLogger : ILogger
