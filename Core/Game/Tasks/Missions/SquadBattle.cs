@@ -33,7 +33,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             int leastPoints = int.MaxValue;
             int leastPointsX = 0;
-            int leastPointsY = 0;
+            int leastPointsY = 1; // first row is 1 not 0.
             for (int y = 1; y < 4; y++)
             {
                 for (int x = 0; x < 2; x++)
