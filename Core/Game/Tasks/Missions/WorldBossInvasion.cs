@@ -109,9 +109,26 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
         private void SelectActiveOpponent()
         {
+            var type = Game.GetText(Repository[UIds.WBI_OPPONENT_TYPE]);
+
+            string opponentFmtStr;
+            switch (type)
+            {
+                case "Twilight":
+                     opponentFmtStr = "WBI_TWILIGHT_OPPONENT_{0}_ACTIVE";
+                    break;
+                case "Black Order":
+                    opponentFmtStr = "WBI_BLACKORDER_OPPONENT_{0}_ACTIVE";
+                    break;
+                default:
+                    Logger.LogError($"Unknown WBI Opponent type: {type}");
+                    throw new Exception("Unhandled");
+            }
+
             for (int i = 1; i < 8; i++)
             {
-                var opponent = Repository[$"WBI_OPPONENT_{i}_ACTIVE"];
+                var id = string.Format(opponentFmtStr, i);
+                var opponent = Repository[id];
                 var time = Game.GetText(opponent);
                 if (time.Contains("h") || time.Contains("m")) // TODO: can we make this more robust?
                 {

@@ -58,51 +58,107 @@
     "Text": "SELECT STAGE"
   },
   {
-    "Id": "WBI_OPPONENT_1_ACTIVE",
+    "Id": "WBI_OPPONENT_TYPE",
+    "X": 0.009,
+    "Y": 0.724,
+    "W": 0.198,
+    "H": 0.051
+  },
+  {
+    "Id": "WBI_BLACKORDER_OPPONENT_1_ACTIVE",
     "X": 0.065,
     "Y": 0.445,
     "W": 0.068,
     "H": 0.046
   },
   {
-    "Id": "WBI_OPPONENT_2_ACTIVE",
+    "Id": "WBI_BLACKORDER_OPPONENT_2_ACTIVE",
     "X": 0.217,
     "Y": 0.346,
     "W": 0.068,
     "H": 0.046
   },
   {
-    "Id": "WBI_OPPONENT_3_ACTIVE",
+    "Id": "WBI_BLACKORDER_OPPONENT_3_ACTIVE",
     "X": 0.342,
     "Y": 0.635,
     "W": 0.057,
     "H": 0.038
   },
   {
-    "Id": "WBI_OPPONENT_4_ACTIVE",
+    "Id": "WBI_BLACKORDER_OPPONENT_4_ACTIVE",
     "X": 0.475,
     "Y": 0.335,
     "W": 0.072,
     "H": 0.046
   },
   {
-    "Id": "WBI_OPPONENT_5_ACTIVE",
+    "Id": "WBI_BLACKORDER_OPPONENT_5_ACTIVE",
     "X": 0.726,
     "Y": 0.392,
     "W": 0.076,
     "H": 0.046
   },
   {
-    "Id": "WBI_OPPONENT_6_ACTIVE",
+    "Id": "WBI_BLACKORDER_OPPONENT_6_ACTIVE",
     "X": 0.567,
     "Y": 0.692,
     "W": 0.068,
     "H": 0.046
   },
   {
-    "Id": "WBI_OPPONENT_7_ACTIVE",
+    "Id": "WBI_BLACKORDER_OPPONENT_7_ACTIVE",
     "X": 0.863,
     "Y": 0.639,
+    "W": 0.068,
+    "H": 0.046
+  },
+  {
+    "Id": "WBI_TWILIGHT_OPPONENT_1_ACTIVE",
+    "X": 0.069,
+    "Y": 0.406,
+    "W": 0.068,
+    "H": 0.046
+  },
+  {
+    "Id": "WBI_TWILIGHT_OPPONENT_2_ACTIVE",
+    "X": 0.235,
+    "Y": 0.622,
+    "W": 0.068,
+    "H": 0.046
+  },
+  {
+    "Id": "WBI_TWILIGHT_OPPONENT_3_ACTIVE",
+    "X": 0.336,
+    "Y": 0.341,
+    "W": 0.057,
+    "H": 0.038
+  },
+  {
+    "Id": "WBI_TWILIGHT_OPPONENT_4_ACTIVE",
+    "X": 0.442,
+    "Y": 0.664,
+    "W": 0.072,
+    "H": 0.046
+  },
+  {
+    "Id": "WBI_TWILIGHT_OPPONENT_5_ACTIVE",
+    "X": 0.567,
+    "Y": 0.47,
+    "W": 0.076,
+    "H": 0.046
+  },
+  {
+    "Id": "WBI_TWILIGHT_OPPONENT_6_ACTIVE",
+    "X": 0.728,
+    "Y": 0.318,
+    "W": 0.068,
+    "H": 0.046
+  },
+  {
+    "Id": "WBI_TWILIGHT_OPPONENT_7_ACTIVE",
+    "X": 0.857,
+    "Y": 0.613,
     "W": 0.068,
     "H": 0.046
   },
