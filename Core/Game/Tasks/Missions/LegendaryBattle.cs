@@ -16,6 +16,12 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         protected override async Task RunCore(CancellationToken token)
         {
             var status = await StartContentBoardMission("LEGENDARY BATTLE");
+            if(status == null)
+            {
+                Logger.LogError("Could not find legendary battle");
+                return;
+            }
+
             if (status.Completed)
             {
                 Logger.LogInformation("Already completed");

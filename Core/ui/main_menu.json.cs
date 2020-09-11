@@ -37,6 +37,10 @@ partial class UIds
 	/// </summary>
 	public const string MAIN_MENU_SHIELD_LAB_BUTTON="MAIN_MENU_SHIELD_LAB_BUTTON";
 	/// <summary>
+	/// MAIN_MENU_CHALLENGES_BUTTON
+	/// </summary>
+	public const string MAIN_MENU_CHALLENGES_BUTTON="MAIN_MENU_CHALLENGES_BUTTON";
+	/// <summary>
 	/// MAIN_MENU_HOME_BUTTON_IMAGE
 	/// </summary>
 	public const string MAIN_MENU_HOME_BUTTON_IMAGE="MAIN_MENU_HOME_BUTTON_IMAGE";

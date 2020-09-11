@@ -65,6 +65,13 @@
     "H": 0.164
   },
   {
+    "Id": "MAIN_MENU_CHALLENGES_BUTTON",
+    "X": 0.876,
+    "Y": 0.484,
+    "W": 0.111,
+    "H": 0.164
+  },
+  {
     "Id": "MAIN_MENU_HOME_BUTTON_IMAGE",
     "X": 0.902,
     "Y": 0.018,

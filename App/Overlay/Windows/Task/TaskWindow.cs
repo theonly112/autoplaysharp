@@ -34,6 +34,7 @@ namespace autoplaysharp.Overlay.Windows
             _taskToggleButtons.Add(new TaskToggleButton(() => new FateOfTheUniverse(_game, _repository), "Fate of the Universe", taskExecutioner));
 
             _taskToggleButtons.Add(new TaskToggleButton(() => new ShieldLab(_game, _repository), "Shield Lab", taskExecutioner));
+            _taskToggleButtons.Add(new TaskToggleButton(() => new DailyTrivia(_game, _repository), "Daily Trivia", taskExecutioner));
 
             _taskToggleButtons.Add(new TaskToggleButton(() => new AllianceBattle(_game, _repository), "Alliance Battle", taskExecutioner));
             _taskToggleButtons.Add(new TaskToggleButton(() => new DangerRoom(_game, _repository), "Danger Room", taskExecutioner));
