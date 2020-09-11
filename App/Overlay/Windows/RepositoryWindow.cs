@@ -3,6 +3,8 @@ using autoplaysharp.Core;
 using autoplaysharp.Game.UI;
 using ImGuiNET;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 
@@ -65,6 +67,46 @@ namespace autoplaysharp.Overlay.Windows
             // Draw selected.
             DrawSelectedElement(items, element, x, y);
 
+            var hasThreshold = element.Threshold.HasValue;
+            ImGui.Checkbox("Treshhold", ref hasThreshold);
+            if (hasThreshold)
+            {
+                ImGui.SameLine();
+                if (!element.Threshold.HasValue)
+                {
+                    element.Threshold = 128;
+                }
+
+                var thresh = element.Threshold.Value;
+                ImGui.SliderInt("Threshold", ref thresh, 0, 255);
+                element.Threshold = thresh;
+            }
+            else
+            {
+                element.Threshold = null;
+            }
+
+            var hasText = element.Text != null;
+            ImGui.Checkbox("Text", ref hasText);
+            if(hasText)
+            {
+                ImGui.SameLine();
+                if(element.Text == null)
+                {
+                    element.Text = _game.GetText(element);
+                }
+                var text = element.Text;
+                ImGui.InputText("Text", ref text, 64);
+                element.Text = text;
+            }
+            else
+            {
+                element.Text = null;
+            }
+
+
+
+
             if (element.PSM.HasValue)
             {
                 var psm = element.PSM.Value;
@@ -94,8 +136,23 @@ namespace autoplaysharp.Overlay.Windows
                 _repository.Save();
             }
 
-            ImGui.Checkbox("Preview Text", ref _previewText);
+            if (ImGui.Button("Copy jsons back..."))
+            {
+                var files = Directory.GetFiles("ui", "*.json");
+                var relativPath = @"..\..\..\..\Core\";
+                Debug.Assert(Directory.Exists(relativPath));
 
+                foreach (var f in files)
+                {
+                    File.Copy(f, Path.Combine(relativPath, f), true);
+                }
+            }
+
+
+            ImGui.Checkbox("Preview Text", ref _previewText);
+            ImGui.Checkbox("Save raw images", ref Settings.SaveRawImages);
+            ImGui.SameLine();
+            ImGui.Checkbox("Save image?", ref Settings.SaveImages);
             ImGui.End();
         }
 
@@ -138,19 +195,8 @@ namespace autoplaysharp.Overlay.Windows
                 }
 
                 ImGui.EndGroup();
+         
 
-                ImGui.Checkbox("Save raw images", ref Settings.SaveRawImages);
-                ImGui.SameLine();
-                ImGui.Checkbox("Save image?", ref Settings.SaveImages);
-
-                if (element.Threshold.HasValue)
-                {
-                    var thresh = element.Threshold.Value;
-                    ImGui.SliderInt("Threshold", ref thresh, 0, 255);
-                    element.Threshold = thresh;
-                }
-
-  
             }
             else
             {
