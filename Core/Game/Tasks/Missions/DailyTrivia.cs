@@ -82,7 +82,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 for (int i = 0; i < 4; i++)
                 {
                     var answerId = Repository[UIds.CHALLENGES_DAILY_TRIVIA_ANSWER_DYN, 0, i];
-                    if (nl.Distance(Game.GetText(answerId), answer) > 0.9) // 90% should be fine.
+                    if (nl.Similarity(Game.GetText(answerId), answer) > 0.9) // 90% should be fine.
                     {
                         Game.Click(answerId);
                         if(!await WaitUntilVisible(UIds.CHALLENGES_DAILY_TRIVIA_CLOSE_BUTTON))
