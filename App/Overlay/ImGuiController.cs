@@ -1,7 +1,6 @@
 ﻿using ImGuiNET;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using Veldrid;
@@ -93,8 +92,45 @@ namespace autoplaysharp.Overlay
             _projMatrixBuffer = factory.CreateBuffer(new BufferDescription(64, BufferUsage.UniformBuffer | BufferUsage.Dynamic));
             _projMatrixBuffer.Name = "ImGui.NET Projection Buffer";
 
-            byte[] vertexShaderBytes = LoadEmbeddedShaderCode(gd.ResourceFactory, "imgui-vertex", ShaderStages.Vertex);
-            byte[] fragmentShaderBytes = LoadEmbeddedShaderCode(gd.ResourceFactory, "imgui-frag", ShaderStages.Fragment);
+            string fragment =
+@"#version 330 core
+
+uniform sampler2D FontTexture;
+
+in vec4 color;
+in vec2 texCoord;
+
+out vec4 outputColor;
+
+void main()
+{
+    outputColor = color * texture(FontTexture, texCoord);
+}
+";
+            string vertex =
+@"#version 330 core
+
+uniform ProjectionMatrixBuffer
+{
+    mat4 projection_matrix;
+};
+
+in vec2 in_position;
+in vec2 in_texCoord;
+in vec4 in_color;
+
+out vec4 color;
+out vec2 texCoord;
+
+void main()
+{
+    gl_Position = projection_matrix * vec4(in_position, 0, 1);
+    color = in_color;
+	texCoord = in_texCoord;
+}";
+
+            byte[] vertexShaderBytes = System.Text.Encoding.UTF8.GetBytes(vertex);
+            byte[] fragmentShaderBytes = System.Text.Encoding.UTF8.GetBytes(fragment);
             _vertexShader = factory.CreateShader(new ShaderDescription(ShaderStages.Vertex, vertexShaderBytes, "VS"));
             _fragmentShader = factory.CreateShader(new ShaderDescription(ShaderStages.Fragment, fragmentShaderBytes, "FS"));
 
@@ -198,45 +234,6 @@ namespace autoplaysharp.Overlay
             _lastAssignedID = 100;
         }
 
-        private byte[] LoadEmbeddedShaderCode(ResourceFactory factory, string name, ShaderStages stage)
-        {
-            switch (factory.BackendType)
-            {
-                case GraphicsBackend.Direct3D11:
-                    {
-                        string resourceName = name + ".hlsl.bytes";
-                        return GetEmbeddedResourceBytes(resourceName);
-                    }
-                case GraphicsBackend.OpenGL:
-                    {
-                        string resourceName = name + ".glsl";
-                        return GetEmbeddedResourceBytes(resourceName);
-                    }
-                case GraphicsBackend.Vulkan:
-                    {
-                        string resourceName = name + ".spv";
-                        return GetEmbeddedResourceBytes(resourceName);
-                    }
-                case GraphicsBackend.Metal:
-                    {
-                        string resourceName = name + ".metallib";
-                        return GetEmbeddedResourceBytes(resourceName);
-                    }
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-
-        private byte[] GetEmbeddedResourceBytes(string resourceName)
-        {
-            // Assembly assembly = typeof(ImGuiController).Assembly;
-            using (Stream s = File.OpenRead(resourceName))
-            {
-                byte[] ret = new byte[s.Length];
-                s.Read(ret, 0, (int)s.Length);
-                return ret;
-            }
-        }
 
         /// <summary>
         /// Recreates the device texture used to render text.

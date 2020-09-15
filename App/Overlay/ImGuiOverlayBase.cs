@@ -49,7 +49,7 @@ namespace autoplaysharp.Overlay
 
             _gd = VeldridStartup.CreateGraphicsDevice(_window,
                 new GraphicsDeviceOptions(),
-                   GraphicsBackend.Direct3D11);
+                   GraphicsBackend.OpenGL);
      
 
             _cl = _gd.ResourceFactory.CreateCommandList();
