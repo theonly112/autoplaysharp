@@ -77,7 +77,7 @@ namespace autoplaysharp.Overlay
             InputSnapshot snapshot = _window.PumpEvents();
             if (!_window.Exists) { return; }
 
-            _controller.Update(1000 / 60, snapshot);
+            _controller.Update(1f / 60f, snapshot);
 
             SubmitUI(snapshot);
 
