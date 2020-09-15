@@ -57,6 +57,10 @@ namespace autoplaysharp.Game
             {
                 await t; // unwarp any exception.
             }
+            catch (TaskCanceledException)
+            {
+                _logger.LogInformation("Task was cancelled");
+            }
             catch (Exception e)
             {
                 _logger.LogError(e, $"Task existed with exception.");

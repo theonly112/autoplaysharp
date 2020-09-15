@@ -106,7 +106,12 @@ namespace autoplaysharp.Game.Tasks
             return WaitUntil(condition, CancellationToken.None, timeout, interval);
         }
 
-        protected async Task<bool> GoToMainScreen()
+        protected Task<bool> GoToMainScreen()
+        {
+            return GoToMainScreen(CancellationToken.None);
+        }
+
+        protected async Task<bool> GoToMainScreen(CancellationToken token)
         {
             if(Game.IsVisible("MAIN_MENU_HOME_BUTTON_IMAGE"))
             {

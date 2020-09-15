@@ -47,5 +47,13 @@
     "Y": 0.413,
     "W": 0.039,
     "H": 0.044
+  },
+  {
+    "Id": "CHALLENGES_DAILY_TRIVIA_REMAINING_UNTIL_RESET",
+    "X": 0.811,
+    "Y": 0.237,
+    "W": 0.136,
+    "H": 0.039,
+    "Text": "Remaining until Reset"
   }
 ]
