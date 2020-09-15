@@ -32,8 +32,6 @@ namespace autoplaysharp
 
             while (true)
             {
-                game.Update();
-                executioner.Update();
                 overlay.Update();
                 // how can we reduce cpu impact...
                 Thread.Sleep(5);

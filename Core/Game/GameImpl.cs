@@ -61,10 +61,6 @@ namespace autoplaysharp.Game
             _window.Drag(new Vector2(start.X.Value, start.Y.Value), new Vector2(end.X.Value, end.Y.Value));
         }
 
-        public void Update()
-        {
-        }
-
         public string GetText(UIElement element)
         {
             using Bitmap section = GrabElement(element);

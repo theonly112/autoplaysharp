@@ -23,9 +23,10 @@ namespace autoplaysharp.Game
         public void QueueTask(IGameTask task)
         {
             _queue.Enqueue(task);
+            RunNext();
         }
 
-        public void Update()
+        private void RunNext()
         {
             lock (_lock)
             {
@@ -42,7 +43,6 @@ namespace autoplaysharp.Game
                     }
                 }
             }
-
         }
 
         private async void TaskFinished(Task t)
@@ -51,6 +51,7 @@ namespace autoplaysharp.Game
             {
                 _taskRunning = false;
                 _logger.LogDebug("Task finished");
+                RunNext();
             }
             try
             {
