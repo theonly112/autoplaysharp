@@ -8,8 +8,8 @@ namespace autoplaysharp.Contracts
         void Load();
         UIElement this[string id] { get; }
         UIElement this[string id, int column, int row] { get; }
-        IEnumerable<string> Ids { get; }
-
+        IEnumerable<string> AllIds { get; }
+        IEnumerable<IUiSubRepository> SubRepositories { get; }
         UIElement GetGridElement(string id, int column, int row);
         void Save();
     }

@@ -12,6 +12,7 @@ namespace autoplaysharp.Overlay.Windows
 {
     class RepositoryWindow : IOverlaySubWindow
     {
+        private int _selectedRepo = 0;
         private int _selectedUiElement = 0;
         private bool _previewText = false;
         private readonly IUiRepository _repository;
@@ -38,7 +39,12 @@ namespace autoplaysharp.Overlay.Windows
                 return;
             }
 
-            var items = _repository.Ids.ToArray();
+            var repos = _repository.SubRepositories.ToList();
+            var items = repos[_selectedRepo].Ids.ToArray();
+            if(_selectedUiElement > items.Length)
+            {
+                _selectedUiElement = 0;
+            }
 
             var element = _repository[items[_selectedUiElement]];
 
@@ -65,7 +71,7 @@ namespace autoplaysharp.Overlay.Windows
             }
 
             // Draw selected.
-            DrawSelectedElement(items, element, x, y);
+            DrawSelectedElement(element, x, y);
 
             var hasThreshold = element.Threshold.HasValue;
             ImGui.Checkbox("Treshhold", ref hasThreshold);
@@ -123,6 +129,7 @@ namespace autoplaysharp.Overlay.Windows
             }
 
 
+            ImGui.Combo("Repository", ref _selectedRepo, repos.Select(x => x.Name).ToArray(), repos.Count, 30);
             ImGui.Combo("UIElements", ref _selectedUiElement, items, items.Length, 30);
 
 
@@ -156,7 +163,7 @@ namespace autoplaysharp.Overlay.Windows
             ImGui.End();
         }
 
-        private void DrawSelectedElement(string[] items, UIElement element, float x, float y)
+        private void DrawSelectedElement(UIElement element, float x, float y)
         {
             var drawList = ImGui.GetBackgroundDrawList();
 

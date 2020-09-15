@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Core.Game.UI;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -8,33 +9,33 @@ namespace autoplaysharp.Game.UI
 {
     public class Repository : IUiRepository
     {
-        private Dictionary<string, UIElement> _repository = new Dictionary<string, UIElement>();
-        private Dictionary<string, string> _fileMapping = new Dictionary<string, string>();
+        private List<SubRepository> _subRepositories = new List<SubRepository>();
+        public IEnumerable<string> AllIds => _subRepositories.SelectMany(x => x.Ids).ToList();
 
-        public IEnumerable<string> Ids => _repository.Keys.ToList();
+        public IEnumerable<IUiSubRepository> SubRepositories => _subRepositories;
 
         public void Load()
         {
-            _repository.Clear();
-            _fileMapping.Clear();
+            _subRepositories.Clear();
 
             var files = Directory.GetFiles("ui", "*.json");
             foreach (var f in files)
             {
-                var elements = JsonConvert.DeserializeObject<List<UIElement>>(File.ReadAllText(f));
-                foreach (var e in elements)
-                {
-                    _fileMapping.Add(e.Id, f);
-                    _repository.Add(e.Id, e);
-                }
+                var subRepo = new SubRepository(f);
+                subRepo.Load();
+                _subRepositories.Add(subRepo);
             }
       
         }
 
         public UIElement this[string id]
         {
-            get { return _repository[id]; }
-            set { _repository[id] = value; }
+            get { return _subRepositories.First(x => x.Ids.Contains(id))[id]; }
+            set 
+            { 
+                var repo = _subRepositories.First(x => x.Ids.Contains(id));
+                repo[id] = value;
+            }
         }
 
         public UIElement this[string id, int column, int row] => GetGridElement(id, column, row);
@@ -51,13 +52,9 @@ namespace autoplaysharp.Game.UI
 
         public void Save()
         {
-            var lists = _repository.Values.GroupBy(x => _fileMapping[x.Id]).ToList();
-            foreach(var l in lists)
+            foreach (var repository in _subRepositories)
             {
-                var settings = new JsonSerializerSettings();
-                settings.NullValueHandling = NullValueHandling.Ignore;
-                var json = JsonConvert.SerializeObject(l.ToArray(), Formatting.Indented, settings);
-                File.WriteAllText(l.Key, json);
+                repository.Save();
             }
         }
     }
