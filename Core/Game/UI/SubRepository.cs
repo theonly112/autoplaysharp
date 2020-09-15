@@ -57,5 +57,10 @@ namespace autoplaysharp.Core.Game.UI
             }
             _repository.Add(element.Id, element);
         }
+
+        public void Remove(string id)
+        {
+            _repository.Remove(id);
+        }
     }
 }

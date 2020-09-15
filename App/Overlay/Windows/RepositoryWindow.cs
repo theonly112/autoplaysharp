@@ -18,6 +18,7 @@ namespace autoplaysharp.Overlay.Windows
         private readonly IUiRepository _repository;
         private readonly IGame _game;
         private IEmulatorWindow _noxWindow;
+        private string _id;
 
         public RepositoryWindow(IUiRepository repository, IEmulatorWindow window, IGame game)
         {
@@ -33,105 +34,49 @@ namespace autoplaysharp.Overlay.Windows
 
         private void ShowRepository()
         {
-            if(!ImGui.Begin("Repository"))
+            if (!ImGui.Begin("Repository"))
             {
                 ImGui.End();
                 return;
             }
 
             var repos = _repository.SubRepositories.ToList();
-            var items = repos[_selectedRepo].Ids.ToArray();
-            if(_selectedUiElement > items.Length)
+            var subRepo = repos[_selectedRepo];
+            var items = subRepo.Ids.ToArray();
+            _selectedUiElement = Math.Min(_selectedUiElement, items.Length - 1);
+
+            ImGui.Combo("Repository", ref _selectedRepo, repos.Select(x => x.Name).ToArray(), repos.Count, 30);
+
+            if (ImGui.Button("Add"))
             {
-                _selectedUiElement = 0;
+                subRepo.Add(_id);
+            }
+            ImGui.SameLine();
+            _id = "new_id";
+            ImGui.InputText("Id", ref _id, 64);
+
+            ImGui.Combo("UIElements", ref _selectedUiElement, items, items.Length, 30);
+            if (ImGui.Button("Remove"))
+            {
+                subRepo.Remove(items[_selectedUiElement]);
+                items = subRepo.Ids.ToArray();
+                _selectedUiElement = Math.Min(_selectedUiElement, items.Length - 1);
             }
 
             var element = _repository[items[_selectedUiElement]];
+            ShowElementProperties(element);
 
-            var x = element.X.Value;
-            ImGui.SliderFloat("X", ref x, 0, 1);
-            element.X = x;
-
-            var y = element.Y.Value;
-            ImGui.SliderFloat("Y", ref y, 0, 1);
-            element.Y = y;
-
-            if (element.W.HasValue)
-            {
-                var w = element.W.Value;
-                ImGui.SliderFloat("W", ref w, 0, 1);
-                element.W = w;
-            }
-
-            if (element.H.HasValue)
-            {
-                var h = element.H.Value;
-                ImGui.SliderFloat("H", ref h, 0, 1);
-                element.H = h;
-            }
 
             // Draw selected.
-            DrawSelectedElement(element, x, y);
-
-            var hasThreshold = element.Threshold.HasValue;
-            ImGui.Checkbox("Treshhold", ref hasThreshold);
-            if (hasThreshold)
+            if (element.X.HasValue && element.Y.HasValue)
             {
-                ImGui.SameLine();
-                if (!element.Threshold.HasValue)
-                {
-                    element.Threshold = 128;
-                }
-
-                var thresh = element.Threshold.Value;
-                ImGui.SliderInt("Threshold", ref thresh, 0, 255);
-                element.Threshold = thresh;
-            }
-            else
-            {
-                element.Threshold = null;
+                DrawSelectedElement(element);
             }
 
-            var hasText = element.Text != null;
-            ImGui.Checkbox("Text", ref hasText);
-            if(hasText)
-            {
-                ImGui.SameLine();
-                if(element.Text == null)
-                {
-                    element.Text = _game.GetText(element);
-                }
-                var text = element.Text;
-                ImGui.InputText("Text", ref text, 64);
-                element.Text = text;
-            }
-            else
-            {
-                element.Text = null;
-            }
-
-
-
-
-            if (element.PSM.HasValue)
-            {
-                var psm = element.PSM.Value;
-                string[] mode = Enumerable.Range(0, 14).Select(x => x.ToString()).ToArray();
-                var selectedIndex = Array.IndexOf(mode, psm.ToString());
-                ImGui.Combo("PSM", ref selectedIndex, mode, mode.Length);
-                element.PSM = int.Parse(mode[selectedIndex]);
-            }
-
-
-            if(element.Image != null)
+            if (element.Image != null)
             {
                 ImGui.Text($"Is Visible: {_game.IsVisible(items[_selectedUiElement])}");
             }
-
-
-            ImGui.Combo("Repository", ref _selectedRepo, repos.Select(x => x.Name).ToArray(), repos.Count, 30);
-            ImGui.Combo("UIElements", ref _selectedUiElement, items, items.Length, 30);
-
 
             if (ImGui.Button("Reload Repo"))
             {
@@ -155,15 +100,100 @@ namespace autoplaysharp.Overlay.Windows
                 }
             }
 
-
-            ImGui.Checkbox("Preview Text", ref _previewText);
             ImGui.Checkbox("Save raw images", ref Settings.SaveRawImages);
             ImGui.SameLine();
             ImGui.Checkbox("Save image?", ref Settings.SaveImages);
             ImGui.End();
         }
 
-        private void DrawSelectedElement(UIElement element, float x, float y)
+        private void ShowElementProperties(UIElement element)
+        {
+            ShowFloatProperty(() => element.X, x => element.X = x, "X");
+            ShowFloatProperty(() => element.Y, y => element.Y = y, "Y");
+            ShowFloatProperty(() => element.W, w => element.W = w, "W");
+            ShowFloatProperty(() => element.H, h => element.H = h, "H");
+
+            var hasThreshold = element.Threshold.HasValue;
+            ImGui.Checkbox("Treshhold", ref hasThreshold);
+            if (hasThreshold)
+            {
+                ImGui.SameLine();
+                if (!element.Threshold.HasValue)
+                {
+                    element.Threshold = 128;
+                }
+
+                var thresh = element.Threshold.Value;
+                ImGui.SliderInt("Threshold", ref thresh, 0, 255);
+                element.Threshold = thresh;
+            }
+            else
+            {
+                element.Threshold = null;
+            }
+
+            var hasText = element.Text != null;
+            ImGui.Checkbox("Text", ref hasText);
+            if (hasText)
+            {
+                ImGui.SameLine();
+                if (element.Text == null)
+                {
+                    if (element.X.HasValue && element.Y.HasValue &&
+                        element.W.HasValue && element.H.HasValue)
+                    {
+                        element.Text = _game.GetText(element);
+                    }
+                    else
+                    {
+                        element.Text = "ABC";
+                    }
+                }
+                var text = element.Text;
+                ImGui.InputText("Text", ref text, 64);
+                element.Text = text;
+            }
+            else
+            {
+                element.Text = null;
+            }
+            ImGui.Checkbox("Preview Text", ref _previewText);
+
+
+
+            if (element.PSM.HasValue)
+            {
+                var psm = element.PSM.Value;
+                string[] mode = Enumerable.Range(0, 14).Select(x => x.ToString()).ToArray();
+                var selectedIndex = Array.IndexOf(mode, psm.ToString());
+                ImGui.Combo("PSM", ref selectedIndex, mode, mode.Length);
+                element.PSM = int.Parse(mode[selectedIndex]);
+            }
+        }
+
+        private static void ShowFloatProperty(Func<float?> getter, Action<float?> setter, string name)
+        {
+            var property = getter();
+            var hasValue = property.HasValue;
+            ImGui.Checkbox(name, ref hasValue);
+            if (hasValue)
+            {
+                if (!property.HasValue)
+                {
+                    property = 0;
+                }
+                ImGui.SameLine();
+                var value = property.Value;
+                ImGui.SliderFloat(name, ref value, 0, 1);
+                setter(value);
+            }
+            else
+            {
+                setter(null);
+            }
+        }
+
+        private void DrawSelectedElement(UIElement element)
         {
             var drawList = ImGui.GetBackgroundDrawList();
 
