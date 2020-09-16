@@ -223,14 +223,19 @@ namespace autoplaysharp.Overlay.Windows
 
                         element.X = _pickStartPos.X / _noxWindow.Width;
                         element.Y = _pickStartPos.Y / _noxWindow.Height;
+
                         var w = Math.Max(0, (endPos.X - _pickStartPos.X));
                         var h = Math.Max(0, (endPos.Y - _pickStartPos.Y));
-                        element.W = w / _noxWindow.Width;
-                        element.H = h / _noxWindow.Height;
-                        var img = _noxWindow.GrabScreen((int)_pickStartPos.X, (int)_pickStartPos.Y, (int)w, (int)h);
-                        using var stream = new MemoryStream();
-                        img.Save(stream, ImageFormat.Png);
-                        element.Image = stream.ToArray();
+                        
+                        if(w > 0 && h > 0)
+                        {
+                            element.W = w / _noxWindow.Width;
+                            element.H = h / _noxWindow.Height;
+                            var img = _noxWindow.GrabScreen((int)_pickStartPos.X, (int)_pickStartPos.Y, (int)w, (int)h);
+                            using var stream = new MemoryStream();
+                            img.Save(stream, ImageFormat.Png);
+                            element.Image = stream.ToArray();
+                        }
                     }
 
                     if (_currentlyPicking)
