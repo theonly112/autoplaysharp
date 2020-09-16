@@ -235,7 +235,8 @@ namespace autoplaysharp.Overlay.Windows
                     }
                 }
                 var text = element.Text;
-                ImGui.InputText("Text", ref text, 64);
+                var height = text.Contains("\n") ? 48 : 24;
+                ImGui.InputTextMultiline("Text", ref text, 64, new Vector2(256, height));
                 element.Text = text;
             }
             else
@@ -269,13 +270,19 @@ namespace autoplaysharp.Overlay.Windows
 
             ShowImageProperties(element);
 
-            if (element.PSM.HasValue)
+            bool hasPSM = element.PSM.HasValue;
+            ImGui.Checkbox("Has PSM", ref hasPSM);
+            if(hasPSM)
             {
                 var psm = element.PSM.Value;
                 string[] mode = Enumerable.Range(0, 14).Select(x => x.ToString()).ToArray();
                 var selectedIndex = Array.IndexOf(mode, psm.ToString());
                 ImGui.Combo("PSM", ref selectedIndex, mode, mode.Length);
                 element.PSM = int.Parse(mode[selectedIndex]);
+            }
+            else
+            {
+                element.PSM = null;
             }
         }
 
