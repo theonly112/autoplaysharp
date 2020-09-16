@@ -27,6 +27,7 @@ namespace autoplaysharp.Overlay.Windows
         private bool _pickingImage;
         private bool _currentlyPicking;
         private Vector2 _pickStartPos;
+        private bool _pickingArea;
 
         public RepositoryWindow(IUiRepository repository, IEmulatorWindow window, IGame game, ImGuiOverlay imGuiOverlay)
         {
@@ -118,6 +119,53 @@ namespace autoplaysharp.Overlay.Windows
             ShowFloatProperty(() => element.Y, y => element.Y = y, "Y");
             ShowFloatProperty(() => element.W, w => element.W = w, "W");
             ShowFloatProperty(() => element.H, h => element.H = h, "H");
+
+            if (!_pickingArea && ImGui.Button("Select area"))
+            {
+                _pickingArea = true;
+            }
+            else if(_pickingArea && ImGui.Button("Stop picking"))
+            {
+                _pickingArea = false;
+            }
+            
+            if (_pickingArea)
+            {
+                ImGui.Text("NOTE: Currently picking area. Press CTRL to start and release to end.");
+                if (ImGui.IsKeyDown((int)Key.ControlLeft) && !_currentlyPicking)
+                {
+                    _currentlyPicking = true;
+                    var p = User32.GetCursorPos();
+                    _pickStartPos = new Vector2(p.x - _noxWindow.X, p.y - _noxWindow.Y);
+                    ImGui.Text($"{_pickStartPos}");
+                }
+                else if (ImGui.IsKeyReleased((int)Key.ControlLeft) && _currentlyPicking)
+                {
+                    _currentlyPicking = false;
+                    var p = User32.GetCursorPos();
+                    var endPos = new Vector2(p.x - _noxWindow.X, p.y - _noxWindow.Y);
+
+                    element.X = _pickStartPos.X / _noxWindow.Width;
+                    element.Y = _pickStartPos.Y / _noxWindow.Height;
+
+                    var w = Math.Max(0, (endPos.X - _pickStartPos.X));
+                    var h = Math.Max(0, (endPos.Y - _pickStartPos.Y));
+
+                    if (w > 0 && h > 0)
+                    {
+                        element.W = w / _noxWindow.Width;
+                        element.H = h / _noxWindow.Height;
+                    }
+                }
+
+                if (_currentlyPicking)
+                {
+                    var cursorPos = User32.GetCursorPos();
+                    var cursorPosVec = new Vector2(cursorPos.x - _noxWindow.X, cursorPos.y - _noxWindow.Y);
+                    var drawList = ImGui.GetBackgroundDrawList();
+                    drawList.AddRect(_pickStartPos, cursorPosVec, 0xff00ff00);
+                }
+            }
 
             var hasThreshold = element.Threshold.HasValue;
             ImGui.Checkbox("Treshhold", ref hasThreshold);
@@ -217,7 +265,6 @@ namespace autoplaysharp.Overlay.Windows
                     else if (ImGui.IsKeyReleased((int)Key.ControlLeft) && _currentlyPicking)
                     {
                         _currentlyPicking = false;
-                        _pickingImage = false;
                         var p = User32.GetCursorPos();
                         var endPos = new Vector2(p.x - _noxWindow.X, p.y - _noxWindow.Y);
 
@@ -248,9 +295,13 @@ namespace autoplaysharp.Overlay.Windows
                 }
             }
 
-            if (ImGui.Button("Pick image"))
+            if (!_pickingImage && ImGui.Button("Pick image"))
             {
                 _pickingImage = true;
+            }
+            else if (_pickingImage && ImGui.Button("Stop picking"))
+            {
+                _pickingImage = false;
             }
 
             if (element.Image != null)
