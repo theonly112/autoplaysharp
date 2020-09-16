@@ -139,8 +139,9 @@ namespace autoplaysharp.Game.Tasks
                     {
                         var chargePercentageText = Game.GetText(GetSkillId(i));
                         var t3Locked = Game.IsVisible(UIds.BATTLE_SKILL_T3_LOCKED);
+                        var t3Charging = Game.IsVisible(UIds.BATTLE_T3_PERCENTAGE_SIGN);
                         var couldParseChargePercentage = int.TryParse(chargePercentageText, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out var chargePercentage);
-                        if (t3Locked || couldParseChargePercentage || chargePercentageText.Any(char.IsDigit))
+                        if (t3Locked || t3Charging || couldParseChargePercentage || chargePercentageText.Any(char.IsDigit))
                         {
                             Logger.LogDebug($"T3 not ready yet...");
                         }

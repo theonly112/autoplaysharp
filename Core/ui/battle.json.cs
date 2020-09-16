@@ -60,4 +60,8 @@ partial class UIds
 	/// BATTLE_SKILL_6_NUM
 	/// </summary>
 	public const string BATTLE_SKILL_6_NUM="BATTLE_SKILL_6_NUM";
+	/// <summary>
+	/// BATTLE_T3_PERCENTAGE_SIGN
+	/// </summary>
+	public const string BATTLE_T3_PERCENTAGE_SIGN="BATTLE_T3_PERCENTAGE_SIGN";
 }

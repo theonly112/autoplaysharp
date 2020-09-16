@@ -137,5 +137,15 @@
     "PSM": 8,
     "Threshold": 150,
     "Text": "6"
+  },
+  {
+    "Id": "BATTLE_T3_PERCENTAGE_SIGN",
+    "X": 0.640625,
+    "Y": 0.88703704,
+    "W": 0.0125,
+    "H": 0.028703704,
+    "PSM": 8,
+    "Threshold": 150,
+    "Text": "%"
   }
 ]
