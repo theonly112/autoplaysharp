@@ -4,8 +4,9 @@ using autoplaysharp.Game.UI;
 using autoplaysharp.Overlay.Windows;
 using ImGuiNET;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Numerics;
 using Veldrid;
+using System.Linq;
 
 namespace autoplaysharp.Overlay
 {
@@ -42,7 +43,7 @@ namespace autoplaysharp.Overlay
 
         private class UiElementOverlayElement : OverlayElement
         {
-            protected readonly UIElement UIElement;
+            public readonly UIElement UIElement;
             protected readonly IEmulatorWindow EmulatorWindow;
             protected uint Color = 0xff00FFFF;
 
@@ -63,9 +64,20 @@ namespace autoplaysharp.Overlay
 
         private class IsVisibleUiElement : UiElementOverlayElement
         {
-            public IsVisibleUiElement(UIElement element, IEmulatorWindow window, bool isVisible) : base(element, window, isVisible ? 5000 : 3000)
+            private readonly double? _certainty;
+
+            public IsVisibleUiElement(UIElement element, IEmulatorWindow window, bool isVisible, double? certainty = null) : base(element, window, isVisible ? 5000 : 3000)
             {
                 Color = isVisible ? 0xff00ff00 : 0xff0000ff; // Green for found, red for not found.
+                _certainty = certainty;
+            }
+
+            public override void Render(int delta)
+            {
+                base.Render(delta);
+                var drawList = ImGui.GetBackgroundDrawList();
+                var certainty = $"{_certainty * 100f:0}%";
+                drawList.AddText(ImGui.GetFont(), 16, UIElement.GetDenormalizedLocation(EmulatorWindow) + new Vector2(0,16), Color, certainty);
             }
         }
 
@@ -76,6 +88,8 @@ namespace autoplaysharp.Overlay
         {
             lock (_lock)
             {
+                var toRemove = _elementsToRenders.OfType<UiElementOverlayElement>().Where(x => x.UIElement == uIElement);
+                _elementsToRenders.RemoveAll(x => toRemove.Contains(x));
                 _elementsToRenders.Add(new UiElementOverlayElement(uIElement, NoxWindow));
             }
         }
@@ -84,6 +98,8 @@ namespace autoplaysharp.Overlay
         {
             lock (_lock)
             {
+                var toRemove = _elementsToRenders.OfType<UiElementOverlayElement>().Where(x => x.UIElement == uIElement);
+                _elementsToRenders.RemoveAll(x => toRemove.Contains(x));
                 _elementsToRenders.Add(new IsVisibleUiElement(uIElement, NoxWindow, isVisible));
             }
         }
@@ -115,9 +131,14 @@ namespace autoplaysharp.Overlay
             }
         }
 
-        public void ShowImage(Bitmap bitmap)
+        public void ShowIsVisibile(UIElement uIElement, bool isVisible, double certainty)
         {
-            throw new System.NotImplementedException();
+            lock (_lock)
+            {
+                var toRemove = _elementsToRenders.OfType<UiElementOverlayElement>().Where(x => x.UIElement == uIElement);
+                _elementsToRenders.RemoveAll(x => toRemove.Contains(x));
+                _elementsToRenders.Add(new IsVisibleUiElement(uIElement, NoxWindow, isVisible, certainty));
+            }
         }
     }
 }

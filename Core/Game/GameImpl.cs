@@ -178,7 +178,9 @@ namespace autoplaysharp.Game
             Cv2.MatchTemplate(uielement_mat_gray_scaled, tempalte_mat_gray, result, TemplateMatchModes.CCoeffNormed);
             Cv2.MinMaxLoc(result, out var _, out var maxval, out var _, out var maxloc);
 
-            if (maxval > confidence)
+            Overlay?.ShowIsVisibile(element, maxval > confidence, maxval);
+
+            if (maxval >= confidence)
                 return true;
             return false;
         }

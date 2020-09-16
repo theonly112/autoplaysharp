@@ -3,8 +3,10 @@ using autoplaysharp.Core;
 using autoplaysharp.Game.UI;
 using ImGuiNET;
 using OpenCvSharp;
+using PInvoke;
 using System;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -22,6 +24,9 @@ namespace autoplaysharp.Overlay.Windows
         private readonly ImGuiOverlay _imguiOverlay;
         private IEmulatorWindow _noxWindow;
         private string _id;
+        private bool _pickingImage;
+        private bool _currentlyPicking;
+        private Vector2 _pickStartPos;
 
         public RepositoryWindow(IUiRepository repository, IEmulatorWindow window, IGame game, ImGuiOverlay imGuiOverlay)
         {
@@ -77,10 +82,7 @@ namespace autoplaysharp.Overlay.Windows
                 DrawSelectedElement(element);
             }
 
-            if (element.Image != null)
-            {
-                ImGui.Text($"Is Visible: {_game.IsVisible(items[_selectedUiElement])}");
-            }
+ 
 
             if (ImGui.Button("Reload Repo"))
             {
@@ -163,7 +165,7 @@ namespace autoplaysharp.Overlay.Windows
             }
             ImGui.Checkbox("Preview Text", ref _previewText);
 
-            if(element.Image != null)
+            if (element.Image != null)
             {
                 using var mat = Cv2.ImDecode(element.Image, ImreadModes.AnyColor);
                 using var rgba = new Mat();
@@ -172,7 +174,7 @@ namespace autoplaysharp.Overlay.Windows
                 var gd = _imguiOverlay.GraphicsDevice;
                 using var texture = gd.ResourceFactory.CreateTexture(TextureDescription.Texture2D((uint)rgba.Cols, (uint)rgba.Height, 1, 1,
                     Veldrid.PixelFormat.R8_G8_B8_A8_UInt, TextureUsage.Sampled));
-                
+
                 var id = _imguiOverlay.Controller.GetOrCreateImGuiBinding(gd.ResourceFactory, texture);
 
                 unsafe
@@ -186,6 +188,8 @@ namespace autoplaysharp.Overlay.Windows
                 ImGui.Image(id2, new Vector2(rgba.Cols, rgba.Height));
             }
 
+            ShowImageProperties(element);
+
             if (element.PSM.HasValue)
             {
                 var psm = element.PSM.Value;
@@ -193,6 +197,60 @@ namespace autoplaysharp.Overlay.Windows
                 var selectedIndex = Array.IndexOf(mode, psm.ToString());
                 ImGui.Combo("PSM", ref selectedIndex, mode, mode.Length);
                 element.PSM = int.Parse(mode[selectedIndex]);
+            }
+        }
+
+        private void ShowImageProperties(UIElement element)
+        {
+            if (element.Image == null)
+            {
+                if (_pickingImage)
+                {
+                    ImGui.Text("NOTE: Currently picking image. Press CTRL to start and release to end.");
+                    if (ImGui.IsKeyDown((int)Key.ControlLeft) && !_currentlyPicking)
+                    {
+                        _currentlyPicking = true;
+                        var p = User32.GetCursorPos();
+                        _pickStartPos = new Vector2(p.x - _noxWindow.X, p.y - _noxWindow.Y);
+                        ImGui.Text($"{_pickStartPos}");
+                    }
+                    else if (ImGui.IsKeyReleased((int)Key.ControlLeft) && _currentlyPicking)
+                    {
+                        _currentlyPicking = false;
+                        _pickingImage = false;
+                        var p = User32.GetCursorPos();
+                        var endPos = new Vector2(p.x - _noxWindow.X, p.y - _noxWindow.Y);
+
+                        element.X = _pickStartPos.X / _noxWindow.Width;
+                        element.Y = _pickStartPos.Y / _noxWindow.Height;
+                        var w = Math.Max(0, (endPos.X - _pickStartPos.X));
+                        var h = Math.Max(0, (endPos.Y - _pickStartPos.Y));
+                        element.W = w / _noxWindow.Width;
+                        element.H = h / _noxWindow.Height;
+                        var img = _noxWindow.GrabScreen((int)_pickStartPos.X, (int)_pickStartPos.Y, (int)w, (int)h);
+                        using var stream = new MemoryStream();
+                        img.Save(stream, ImageFormat.Png);
+                        element.Image = stream.ToArray();
+                    }
+
+                    if (_currentlyPicking)
+                    {
+                        var cursorPos = User32.GetCursorPos();
+                        var cursorPosVec = new Vector2(cursorPos.x - _noxWindow.X, cursorPos.y - _noxWindow.Y);
+                        var drawList = ImGui.GetBackgroundDrawList();
+                        drawList.AddRect(_pickStartPos, cursorPosVec, 0xff00ff00);
+                    }
+                }
+            }
+
+            if (ImGui.Button("Pick image"))
+            {
+                _pickingImage = true;
+            }
+
+            if (element.Image != null)
+            {
+                ImGui.Text($"Is Visible: {_game.IsVisible(element)}");
             }
         }
 

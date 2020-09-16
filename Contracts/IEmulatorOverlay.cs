@@ -6,5 +6,6 @@ namespace autoplaysharp.Contracts
     {
         void ShowGetText(UIElement uIElement);
         void ShowIsVisibile(UIElement uIElement, bool isVisible);
+        void ShowIsVisibile(UIElement uIElement, bool isVisible, double certainty);
     }
 }
