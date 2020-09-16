@@ -161,12 +161,12 @@ namespace autoplaysharp.Game
 
             if(Settings.SaveImages)
             {
-                Directory.CreateDirectory($"logs\\{Path.GetDirectoryName(element.Image)}");
-                uielement.Save($"logs\\{element.Image}");
+                Directory.CreateDirectory("logs");
+                uielement.Save($"logs\\{element.Id}.bmp");
             }
 
             using var uielement_mat = uielement.ToMat();
-            using var template_mat = Cv2.ImRead(element.Image);
+            using var template_mat = Cv2.ImDecode(element.Image, ImreadModes.AnyColor);
             using var uielement_mat_gray = new Mat();
             using var tempalte_mat_gray = new Mat();
             Cv2.CvtColor(uielement_mat, uielement_mat_gray, ColorConversionCodes.BGR2GRAY);

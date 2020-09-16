@@ -64,8 +64,8 @@
         public int? Scale { get; set; }
 
         /// <summary>
-        /// File path to image.
+        /// Raw image data.
         /// </summary>
-        public string Image { get; set; }
+        public byte[] Image { get; set; }
     }
 }

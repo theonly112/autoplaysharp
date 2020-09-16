@@ -163,9 +163,9 @@ namespace autoplaysharp.Overlay.Windows
             }
             ImGui.Checkbox("Preview Text", ref _previewText);
 
-            if(File.Exists(element.Image))
+            if(element.Image != null)
             {
-                using var mat = Cv2.ImRead(element.Image);
+                using var mat = Cv2.ImDecode(element.Image, ImreadModes.AnyColor);
                 using var rgba = new Mat();
                 Cv2.CvtColor(mat, rgba, ColorConversionCodes.BGRA2RGBA);
 
