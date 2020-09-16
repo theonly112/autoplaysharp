@@ -1,5 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Core;
+using autoplaysharp.Core.Game.UI;
 using autoplaysharp.Game.UI;
 using ImGuiNET;
 using OpenCvSharp;
@@ -57,14 +58,7 @@ namespace autoplaysharp.Overlay.Windows
 
             ImGui.Combo("Repository", ref _selectedRepo, repos.Select(x => x.Name).ToArray(), repos.Count, 30);
 
-            if (ImGui.Button("Add"))
-            {
-                subRepo.Add(_id);
-            }
-            ImGui.SameLine();
-            _id = "new_id";
-            ImGui.InputText("Id", ref _id, 64);
-
+            var before = _selectedUiElement;
             ImGui.Combo("UIElements", ref _selectedUiElement, items, items.Length, 30);
             if (ImGui.Button("Remove"))
             {
@@ -72,8 +66,45 @@ namespace autoplaysharp.Overlay.Windows
                 items = subRepo.Ids.ToArray();
                 _selectedUiElement = Math.Min(_selectedUiElement, items.Length - 1);
             }
-
             var element = _repository[items[_selectedUiElement]];
+
+            ImGui.SameLine();
+
+            if (ImGui.Button("Clone"))
+            {
+                var cloned = element.Clone();
+                cloned.Id += "_2";
+                subRepo.Add(cloned);
+            }
+
+            if (_id == null)
+            {
+                _id = element.Id;
+            }
+            if (before != _selectedUiElement)
+            {
+                _id = element.Id;
+            }
+
+            ImGui.InputText("Id", ref _id, 64);
+
+            if (ImGui.Button("Add New"))
+            {
+                if(!subRepo.Ids.Contains(_id))
+                {
+                    subRepo.Add(_id);
+                }
+            }
+
+            ImGui.SameLine();
+
+            if (ImGui.Button("Rename"))
+            {
+                subRepo.Remove(element.Id);
+                element.Id = _id;
+                subRepo.Add(element);
+            }
+
             ShowElementProperties(element);
 
 
