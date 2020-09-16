@@ -116,6 +116,24 @@ namespace autoplaysharp.Overlay
 
         protected abstract void SubmitUI(InputSnapshot snapshot);
 
+        public GraphicsDevice GraphicsDevice
+        {
+            get
+            {
+                return _gd;
+            }
+        }
+
+
+        public ImGuiController Controller
+        {
+            get
+            {
+                return _controller;
+            }
+        }
+
+
         public void Dispose()
         {
             // Clean up Veldrid resources

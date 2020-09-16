@@ -4,8 +4,7 @@ using autoplaysharp.Game.UI;
 using autoplaysharp.Overlay.Windows;
 using ImGuiNET;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+using System.Drawing;
 using Veldrid;
 
 namespace autoplaysharp.Overlay
@@ -18,7 +17,7 @@ namespace autoplaysharp.Overlay
         public ImGuiOverlay(ITaskExecutioner taskExecutioner, IGame game, IEmulatorWindow window, IUiRepository repository) : base(window)
         {
             _subWindows.Add(new TaskWindow(taskExecutioner, game, repository));
-            _subWindows.Add(new RepositoryWindow(repository, window, game));
+            _subWindows.Add(new RepositoryWindow(repository, window, game, this));
             _window = window;
         }
 
@@ -114,6 +113,11 @@ namespace autoplaysharp.Overlay
             {
                 w.Render();
             }
+        }
+
+        public void ShowImage(Bitmap bitmap)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

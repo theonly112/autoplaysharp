@@ -2,11 +2,13 @@
 using autoplaysharp.Core;
 using autoplaysharp.Game.UI;
 using ImGuiNET;
+using OpenCvSharp;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using Veldrid;
 
 namespace autoplaysharp.Overlay.Windows
 {
@@ -17,14 +19,16 @@ namespace autoplaysharp.Overlay.Windows
         private bool _previewText = false;
         private readonly IUiRepository _repository;
         private readonly IGame _game;
+        private readonly ImGuiOverlay _imguiOverlay;
         private IEmulatorWindow _noxWindow;
         private string _id;
 
-        public RepositoryWindow(IUiRepository repository, IEmulatorWindow window, IGame game)
+        public RepositoryWindow(IUiRepository repository, IEmulatorWindow window, IGame game, ImGuiOverlay imGuiOverlay)
         {
             _repository = repository;
             _noxWindow = window;
             _game = game;
+            _imguiOverlay = imGuiOverlay;
         }
 
         public void Render()
@@ -159,7 +163,28 @@ namespace autoplaysharp.Overlay.Windows
             }
             ImGui.Checkbox("Preview Text", ref _previewText);
 
+            if(File.Exists(element.Image))
+            {
+                using var mat = Cv2.ImRead(element.Image);
+                using var rgba = new Mat();
+                Cv2.CvtColor(mat, rgba, ColorConversionCodes.BGRA2RGBA);
 
+                var gd = _imguiOverlay.GraphicsDevice;
+                using var texture = gd.ResourceFactory.CreateTexture(TextureDescription.Texture2D((uint)rgba.Cols, (uint)rgba.Height, 1, 1,
+                    Veldrid.PixelFormat.R8_G8_B8_A8_UInt, TextureUsage.Sampled));
+                
+                var id = _imguiOverlay.Controller.GetOrCreateImGuiBinding(gd.ResourceFactory, texture);
+
+                unsafe
+                {
+                    gd.UpdateTexture(texture, (IntPtr)rgba.DataPointer, (uint)(rgba.Cols * 4 * rgba.Height), 0, 0, 0, (uint)rgba.Cols, (uint)rgba.Height, 1, 0, 0);
+                }
+
+                var viewDesc = new TextureViewDescription(texture, Veldrid.PixelFormat.R8_G8_B8_A8_UNorm);
+                using var textureView = gd.ResourceFactory.CreateTextureView(viewDesc);
+                var id2 = _imguiOverlay.Controller.GetOrCreateImGuiBinding(gd.ResourceFactory, textureView);
+                ImGui.Image(id2, new Vector2(rgba.Cols, rgba.Height));
+            }
 
             if (element.PSM.HasValue)
             {
