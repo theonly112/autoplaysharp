@@ -218,7 +218,7 @@ namespace autoplaysharp.Overlay.Windows
             }
 
             var hasText = element.Text != null;
-            ImGui.Checkbox("Text", ref hasText);
+            ImGui.Checkbox("Has Text", ref hasText);
             if (hasText)
             {
                 ImGui.SameLine();
