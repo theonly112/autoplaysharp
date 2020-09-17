@@ -48,13 +48,16 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             await Task.Delay(1000, token);
 
-            if(Game.IsVisible(UIds.CHALLENGES_DAILY_TRIVIA_REMAINING_UNTIL_RESET))
+            if(!Game.IsVisible(UIds.CHALLENGES_DAILY_START_BUTTON) && !Game.IsVisible(UIds.CHALLENGES_DAILY_TRIVIA_BASIC_REWARD))
             {
                 Logger.LogInformation("Daily trivia already completed");
                 return;
             }
 
-            Game.Click(UIds.CHALLENGES_DAILY_START_BUTTON);
+            if(Game.IsVisible(UIds.CHALLENGES_DAILY_START_BUTTON))
+            {
+                Game.Click(UIds.CHALLENGES_DAILY_START_BUTTON);
+            }
 
             await Task.Delay(2000, token);
 
@@ -71,7 +74,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             var nl = new NormalizedLevenshtein();
 
-            while(!Game.IsVisible(UIds.CHALLENGES_DAILY_TRIVIA_REMAINING_UNTIL_RESET) && !token.IsCancellationRequested)
+            while(Game.IsVisible(UIds.CHALLENGES_DAILY_TRIVIA_BASIC_REWARD) && !token.IsCancellationRequested)
             {
                 var question = Game.GetText(UIds.CHALLENGES_DAILY_TRIVIA_QUESTION);
                 string answer = null;
@@ -87,7 +90,8 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
                 if(answer == null)
                 {
-                    Logger.LogError("Could not find answer");
+                    Logger.LogError($"Could not find answer: Q: {question}");
+                    return;
                 }
 
                 for (int i = 0; i < 4; i++)
