@@ -147,5 +147,24 @@
     "PSM": 8,
     "Threshold": 150,
     "Text": "%"
+  },
+  {
+    "Id": "BATTLE_DANGER_ROOM_SPECIAL_SKILL_PERCENTAGE",
+    "X": 0.5494792,
+    "Y": 0.8888889,
+    "W": 0.011979166,
+    "H": 0.025925925,
+    "PSM": 8,
+    "Threshold": 150,
+    "Text": "%"
+  },
+  {
+    "Id": "BATTLE_SKILL_7",
+    "X": 0.516,
+    "Y": 0.873,
+    "W": 0.038,
+    "H": 0.077,
+    "PSM": 8,
+    "Threshold": 150
   }
 ]

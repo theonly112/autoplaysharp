@@ -64,4 +64,12 @@ partial class UIds
 	/// BATTLE_T3_PERCENTAGE_SIGN
 	/// </summary>
 	public const string BATTLE_T3_PERCENTAGE_SIGN="BATTLE_T3_PERCENTAGE_SIGN";
+	/// <summary>
+	/// BATTLE_DANGER_ROOM_SPECIAL_SKILL_PERCENTAGE
+	/// </summary>
+	public const string BATTLE_DANGER_ROOM_SPECIAL_SKILL_PERCENTAGE="BATTLE_DANGER_ROOM_SPECIAL_SKILL_PERCENTAGE";
+	/// <summary>
+	/// BATTLE_SKILL_7
+	/// </summary>
+	public const string BATTLE_SKILL_7="BATTLE_SKILL_7";
 }
