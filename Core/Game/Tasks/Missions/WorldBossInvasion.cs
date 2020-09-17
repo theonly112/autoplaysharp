@@ -117,7 +117,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 case "Twilight":
                      opponentFmtStr = "WBI_TWILIGHT_OPPONENT_{0}_ACTIVE";
                     break;
-                case "Black Order":
+                case "Thanos and the Black Order":
                     opponentFmtStr = "WBI_BLACKORDER_OPPONENT_{0}_ACTIVE";
                     break;
                 default:
