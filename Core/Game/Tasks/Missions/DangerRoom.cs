@@ -1,8 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Globalization;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,45 +15,44 @@ namespace autoplaysharp.Game.Tasks.Missions
 
         protected override async Task RunCore(CancellationToken token)
         {
-            if(!await GoToMainScreen())
-            {
-                Logger.LogError("could not go to main screen");
-                return;
-            }
-
-            var username = Game.GetText(UIds.MAIN_MENU_USERNAME);
-
             if(await StartContentBoardMission("DANGER ROOM") == null)
             {
                 return;
             }
-            if (!await WaitUntilVisible("DANGER_ROOM_START_NORMAL_MODE"))
+            if (!await WaitUntilVisible(UIds.DANGER_ROOM_EXTREMEL_MODE))
             {
+                Logger.LogError("Could not find extreme mode selection");
                 return;
             }
-            await Task.Delay(1000);
-            Game.Click("DANGER_ROOM_START_NORMAL_MODE");
-            if(!await WaitUntilVisible("DANGER_ROOM_LOBBY_HEADER"))
+            
+            await Task.Delay(1000, token);
+            Game.Click(UIds.DANGER_ROOM_EXTREMEL_MODE);
+
+            await Task.Delay(500, token);
+            Game.Click(UIds.DANGER_ROOM_ENTER_DANGER_ROOM);
+
+            
+            if(!await WaitUntilVisible(UIds.DANGER_ROOM_EXTREME_MODE_LOBBY_HEADER))
             {
                 return;
             }
 
-            await Task.Delay(2000); // What do we wait for here???
+            await Task.Delay(2000, token); // What do we wait for here???
 
             // Re-using normal mode button for now... TODO: should be its own entry.
-            Game.Click("DANGER_ROOM_START_NORMAL_MODE");
-            await Task.Delay(2000); // What do we wait for here???
+            Game.Click(UIds.DANGER_ROOM_JOIN_BUTTON);
+            await Task.Delay(2000, token); // What do we wait for here???
 
             await WaitForCharacterSelection();
 
-            await SelectCharacter(username);
+            await SelectCharacter();
 
-            if(!await WaitUntilVisible("DANGER_ROOM_WAITING_FOR_HEROES", 60, 0.2f))
+            if(!await WaitUntilVisible(UIds.DANGER_ROOM_WAITING_FOR_HEROES, 60, 0.2f))
             {
-                if (Game.IsVisible("DANGER_ROOM_GAME_CANCELED_NOTICE"))
+                if (Game.IsVisible(UIds.DANGER_ROOM_GAME_CANCELED_NOTICE))
                 {
-                    Game.Click("DANGER_ROOM_GAME_CANCELED_NOTICE_OK");
-                    await Task.Delay(2000);
+                    Game.Click(UIds.DANGER_ROOM_GAME_CANCELED_NOTICE_OK);
+                    await Task.Delay(2000, token);
                     Logger.LogError("Game was cancelled. Restarting");
                     await RunCore(token);
                 }
@@ -74,23 +71,23 @@ namespace autoplaysharp.Game.Tasks.Missions
                 return;
             }
 
-            await Task.Delay(3000);
+            await Task.Delay(3000, token);
 
-            Game.Click("DANGER_ROOM_ENDSCREEN_NEXT");
+            Game.Click(UIds.DANGER_ROOM_ENDSCREEN_NEXT);
 
-            await Task.Delay(5000);
+            await Task.Delay(5000, token);
 
-            Game.Click("DANGER_ROOM_ENDSCREEN_HOME");
+            Game.Click(UIds.DANGER_ROOM_ENDSCREEN_HOME);
 
-            await Task.Delay(5000);
+            await Task.Delay(5000, token);
         }
 
         private async Task<bool> RunAutoFight(CancellationToken token)
         {
-            var autoFight = new AutoFight(Game, Repository, () => Game.IsVisible("DANGER_ROOM_HIGHEST_EXCLUSIV_SKILL_COUNT"));
+            var autoFight = new AutoFight(Game, Repository, () => Game.IsVisible(UIds.DANGER_ROOM_HIGHEST_EXCLUSIV_SKILL_COUNT));
             var autoFightTask = autoFight.Run(token);
 
-            if (await Task.WhenAny(autoFightTask, Task.Delay(300 * 1000)) == autoFightTask)
+            if (await Task.WhenAny(autoFightTask, Task.Delay(300 * 1000, token)) == autoFightTask)
             {
                 await autoFightTask; // catch exception if thrown...
                 return true;
@@ -99,15 +96,8 @@ namespace autoplaysharp.Game.Tasks.Missions
             return false;
         }
 
-        internal async Task SelectCharacter(string myUserName)
+        internal async Task SelectCharacter()
         {
-            var userNames = Enumerable.Range(0, 3).Select(x => Game.GetText(Repository["DANGER_ROOM_USER_NAME_DYN", x, 0])).ToArray();
-            Logger.LogInformation($"Usernames: {string.Join(",", userNames)}");
-            Logger.LogInformation("Waiting for our turn");
-            var myPosition = Array.IndexOf(userNames, myUserName);
-            await WaitUntilVisible(Repository["DANGER_ROOM_CURRENTLY_SELECTING_DYN", myPosition, 0], 30, 1);
-            Logger.LogInformation("Our turn. Selecting first availabe character");
-
             Regex percentageRegex = new Regex(@"(\d+.+)%");
             int bestX = 0, bestY = 0;
             float highestPercentage = 0f;
@@ -115,7 +105,8 @@ namespace autoplaysharp.Game.Tasks.Missions
             {
                 for (var x = 0; x < 3; x++)
                 {
-                    var text = Game.GetText(Repository["DANGER_ROOM_CHARACTER_PERCENTAGE_DYN", x, y]);
+                    var percentageElement = Repository[UIds.DANGER_ROOM_CHARACTER_PERCENTAGE_DYN, x, y];
+                    var text = Game.GetText(percentageElement);
                     var match = percentageRegex.Match(text);
                     if(match.Success)
                     {
@@ -125,7 +116,9 @@ namespace autoplaysharp.Game.Tasks.Missions
                             if(percentage > highestPercentage)
                             {
                                 Logger.LogDebug($"Found new best character. ({x}/{y})");
-                                if(!Game.IsVisible(Repository["DANGER_ROOM_CHARACTER_ALREADY_SELECTED_DYN", x,y]))
+                                Game.Click(percentageElement);
+                                await Task.Delay(250);
+                                if (Game.IsVisible(UIds.DANGER_ROOM_CHARACTER_REWARD_AVAILABLE))
                                 {
                                     bestX = x;
                                     bestY = y;
@@ -135,14 +128,13 @@ namespace autoplaysharp.Game.Tasks.Missions
                                 {
                                     Logger.LogDebug("Unfortunately character already taken");
                                 }
-
                             }
                         }
                     }
                 }
             }
 
-            Game.Click(Repository["DANGER_ROOM_CHARACTER_PERCENTAGE_DYN", bestX, bestY]);
+            Game.Click(Repository[UIds.DANGER_ROOM_CHARACTER_PERCENTAGE_DYN, bestX, bestY]);
 
         }
 
@@ -151,9 +143,9 @@ namespace autoplaysharp.Game.Tasks.Missions
             bool waiting = true;
             while (waiting)
             {
-                var searchingForTeam = WaitUntilVisible("DANGER_ROOM_SEARCHING_FOR_TEAM", 10, 1);
-                var searchingForOpponent = WaitUntilVisible("DANGER_ROOM_SEARCHING_FOR_OPPONENT", 10, 1);
-                var characterSelection = WaitUntilVisible("DANGER_ROOM_CHARACTER_SELECTION_HEADER", 10, 1);
+                var searchingForTeam = WaitUntilVisible(UIds.DANGER_ROOM_SEARCHING_FOR_TEAM, 5, 1);
+                var searchingForOpponent = WaitUntilVisible(UIds.DANGER_ROOM_SEARCHING_FOR_OPPONENT, 5, 1);
+                var characterSelection = WaitUntilVisible(UIds.DANGER_ROOM_CHARACTER_SELECTION_HEADER, 5, 1);
 
                 var completed = await Task.WhenAny(searchingForTeam, searchingForOpponent, characterSelection);
                 if (completed == characterSelection)

@@ -29,9 +29,9 @@ partial class UIds
 	/// </summary>
 	public const string DANGER_ROOM_MENU_HEADER="DANGER_ROOM_MENU_HEADER";
 	/// <summary>
-	/// DANGER_ROOM_START_NORMAL_MODE
+	/// DANGER_ROOM_NORMAL_MODE
 	/// </summary>
-	public const string DANGER_ROOM_START_NORMAL_MODE="DANGER_ROOM_START_NORMAL_MODE";
+	public const string DANGER_ROOM_NORMAL_MODE="DANGER_ROOM_NORMAL_MODE";
 	/// <summary>
 	/// DANGER_ROOM_LOBBY_HEADER
 	/// </summary>
@@ -80,4 +80,24 @@ partial class UIds
 	/// DANGER_ROOM_GAME_CANCELED_NOTICE_OK
 	/// </summary>
 	public const string DANGER_ROOM_GAME_CANCELED_NOTICE_OK="DANGER_ROOM_GAME_CANCELED_NOTICE_OK";
+	/// <summary>
+	/// DANGER_ROOM_EXTREMEL_MODE
+	/// </summary>
+	public const string DANGER_ROOM_EXTREMEL_MODE="DANGER_ROOM_EXTREMEL_MODE";
+	/// <summary>
+	/// DANGER_ROOM_EXTREME_MODE_LOBBY_HEADER
+	/// </summary>
+	public const string DANGER_ROOM_EXTREME_MODE_LOBBY_HEADER="DANGER_ROOM_EXTREME_MODE_LOBBY_HEADER";
+	/// <summary>
+	/// DANGER_ROOM_JOIN_BUTTON
+	/// </summary>
+	public const string DANGER_ROOM_JOIN_BUTTON="DANGER_ROOM_JOIN_BUTTON";
+	/// <summary>
+	/// DANGER_ROOM_ENTER_DANGER_ROOM
+	/// </summary>
+	public const string DANGER_ROOM_ENTER_DANGER_ROOM="DANGER_ROOM_ENTER_DANGER_ROOM";
+	/// <summary>
+	/// DANGER_ROOM_CHARACTER_REWARD_AVAILABLE
+	/// </summary>
+	public const string DANGER_ROOM_CHARACTER_REWARD_AVAILABLE="DANGER_ROOM_CHARACTER_REWARD_AVAILABLE";
 }

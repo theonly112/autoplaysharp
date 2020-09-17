@@ -55,11 +55,11 @@
     "Text": "DANGER ROOM"
   },
   {
-    "Id": "DANGER_ROOM_START_NORMAL_MODE",
-    "X": 0.867,
-    "Y": 0.916,
-    "W": 0.076,
-    "H": 0.04,
+    "Id": "DANGER_ROOM_NORMAL_MODE",
+    "X": 0.84010416,
+    "Y": 0.19814815,
+    "W": 0.08385417,
+    "H": 0.047222223,
     "Text": "Normal"
   },
   {
@@ -88,20 +88,20 @@
   },
   {
     "Id": "DANGER_ROOM_CHARACTER_SELECTION_HEADER",
-    "X": 0.604,
+    "X": 0.601,
     "Y": 0.089,
-    "W": 0.076,
-    "H": 0.04,
-    "Text": "Characters"
+    "W": 0.142,
+    "H": 0.032,
+    "Text": "SELECT CHARACTERS"
   },
   {
     "Id": "DANGER_ROOM_CHARACTER_PERCENTAGE_DYN",
-    "X": 0.683,
-    "Y": 0.158,
+    "X": 0.626,
+    "Y": 0.224,
     "W": 0.039,
     "H": 0.023,
-    "XOffset": 0.124,
-    "YOffset": 0.274,
+    "XOffset": 0.09,
+    "YOffset": 0.163,
     "Scale": 2
   },
   {
@@ -164,5 +164,46 @@
     "H": 0.051,
     "Threshold": 140,
     "Text": "OK"
+  },
+  {
+    "Id": "DANGER_ROOM_EXTREMEL_MODE",
+    "X": 0.6484375,
+    "Y": 0.20185184,
+    "W": 0.0796875,
+    "H": 0.039814815,
+    "Text": "EXTREME"
+  },
+  {
+    "Id": "DANGER_ROOM_EXTREME_MODE_LOBBY_HEADER",
+    "X": 0.053645834,
+    "Y": 0.0064814813,
+    "W": 0.1296875,
+    "H": 0.08055556,
+    "Text": "EXTREME MODE\nLOBBY"
+  },
+  {
+    "Id": "DANGER_ROOM_JOIN_BUTTON",
+    "X": 0.8989583,
+    "Y": 0.9138889,
+    "W": 0.041666668,
+    "H": 0.047222223,
+    "Text": "Join"
+  },
+  {
+    "Id": "DANGER_ROOM_ENTER_DANGER_ROOM",
+    "X": 0.6984375,
+    "Y": 0.912037,
+    "W": 0.171875,
+    "H": 0.049074072,
+    "Threshold": 155,
+    "Text": "Enter Danger Room"
+  },
+  {
+    "Id": "DANGER_ROOM_CHARACTER_REWARD_AVAILABLE",
+    "X": 0.636,
+    "Y": 0.743,
+    "W": 0.241,
+    "H": 0.04,
+    "Text": "Rank points and participation rewards can be acquired."
   }
 ]
