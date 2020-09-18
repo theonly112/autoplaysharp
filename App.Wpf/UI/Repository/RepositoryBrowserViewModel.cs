@@ -1,8 +1,9 @@
 ﻿using autoplaysharp.Contracts;
 using Prism.Commands;
 using Prism.Mvvm;
-using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 
@@ -16,8 +17,14 @@ namespace autoplaysharp.App.UI.Repository
         private string _selectedSubRepository;
         private UiElementViewModel _selectedElement;
         private readonly IEmulatorWindow _window;
+        private readonly IGame _game;
 
-        public RepositoryBrowserViewModel(IUiRepository repository, IEmulatorOverlay overlay, IAreaPicker picker, IEmulatorWindow window)
+        public RepositoryBrowserViewModel(
+            IUiRepository repository, 
+            IEmulatorOverlay overlay, 
+            IAreaPicker picker, 
+            IEmulatorWindow window,
+            IGame game)
         {
             _repository = repository;
             _overlay = overlay;
@@ -25,6 +32,7 @@ namespace autoplaysharp.App.UI.Repository
             SubRepositories = new ObservableCollection<string>(_repository.SubRepositories.Select(x => x.Name));
             SelectedSubRepository = SubRepositories.First();
             _window = window;
+            _game = game;
             SaveRepo = new DelegateCommand(Save);
             ReloadRepo = new DelegateCommand(Reload);
             AddNew = new DelegateCommand(Add);
@@ -53,6 +61,14 @@ namespace autoplaysharp.App.UI.Repository
         private void Save()
         {
             _repository.Save();
+            var files = Directory.GetFiles("ui", "*.json");
+            var relativPath = @"..\..\..\..\Core\";
+            Debug.Assert(Directory.Exists(relativPath));
+
+            foreach (var f in files)
+            {
+                File.Copy(f, Path.Combine(relativPath, f), true);
+            }
         }
 
         public ObservableCollection<UiElementViewModel> UIElements { get; } = new ObservableCollection<UiElementViewModel>();
@@ -80,7 +96,7 @@ namespace autoplaysharp.App.UI.Repository
         private void ReloadSubRepoItems()
         {
             var subRepo = _repository.SubRepositories.First(x => x.Name == _selectedSubRepository);
-            var items = subRepo.Ids.Select(x => new UiElementViewModel(subRepo, subRepo[x], _areaPicker, _window));
+            var items = subRepo.Ids.Select(x => new UiElementViewModel(subRepo, subRepo[x], _areaPicker, _window, _game));
             foreach (var item in items)
             {
                 UIElements.Add(item);

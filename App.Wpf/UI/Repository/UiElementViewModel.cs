@@ -17,10 +17,11 @@ namespace autoplaysharp.App.UI.Repository
         private string _id;
         private readonly IAreaPicker _areaPicker;
         private readonly IEmulatorWindow _window;
+        private readonly IGame _game;
         private ImageSource _image;
         private bool _hasImage;
 
-        public UiElementViewModel(IUiSubRepository repository, UIElement element, IAreaPicker areaPicker, IEmulatorWindow window)
+        public UiElementViewModel(IUiSubRepository repository, UIElement element, IAreaPicker areaPicker, IEmulatorWindow window, IGame game)
         {
             _repository = repository;
             UIElement = element;
@@ -29,7 +30,15 @@ namespace autoplaysharp.App.UI.Repository
             PickImageCommand = new DelegateCommand(PickImage);
             _areaPicker = areaPicker;
             _window = window;
+            _game = game;
             Image = UIElement.Image == null ? null : ByteToImage(UIElement.Image);
+            GetTextCommand = new DelegateCommand(GetText);
+        }
+
+        private void GetText()
+        {
+            UIElement.Text = _game.GetText(UIElement);
+            RaisePropertyChanged(nameof(UIElement)); // so text is updated...
         }
 
         public static ImageSource ByteToImage(byte[] imageData)
@@ -126,5 +135,6 @@ namespace autoplaysharp.App.UI.Repository
 
         public ICommand PickAreaCommand { get; }
         public ICommand PickImageCommand { get; }
+        public ICommand GetTextCommand { get; }
     }
 }

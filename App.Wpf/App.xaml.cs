@@ -59,6 +59,7 @@ namespace autoplaysharp.App.Wpf
 
             var picker = new AreaPicker(noxWindow, overlay);
 
+            serviceCollection.AddSingleton<IGame>(game);
             serviceCollection.AddSingleton<IAreaPicker>(picker);
             serviceCollection.AddSingleton<IUiRepository>(repository);
             serviceCollection.AddSingleton<IEmulatorWindow>(noxWindow);

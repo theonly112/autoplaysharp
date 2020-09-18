@@ -60,6 +60,8 @@
                         </Image.Style>
                     </Image>
                     <Button Command="{Binding SelectedElement.PickImageCommand}">Pick Image</Button>
+                    <repository:TextProperty Label="Text" Value="{Binding SelectedElement.UIElement.Text}"/>
+                    <Button Command="{Binding SelectedElement.GetTextCommand}">Get Text</Button>
                     <CheckBox Content="Preview Text" IsChecked="{Binding PreviewText}"/>
                 </StackPanel>
             </GroupBox>
