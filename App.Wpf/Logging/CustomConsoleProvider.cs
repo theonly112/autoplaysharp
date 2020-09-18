@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 
 namespace autoplaysharp
@@ -36,7 +37,7 @@ namespace autoplaysharp
 
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
             {
-                Console.WriteLine(FormatMessage(_categoryName, logLevel, state, exception, formatter));
+                Trace.WriteLine(FormatMessage(_categoryName, logLevel, state, exception, formatter));
             }
 
             internal static string FormatMessage<TState>(string categoryName, LogLevel logLevel, TState state, Exception exception, Func<TState, Exception, string> formatter)

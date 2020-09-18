@@ -15,6 +15,13 @@ namespace autoplaysharp.Helper
             }
         }
 
+        public static byte[] ToByteArray(this Bitmap bitmap)
+        {
+            using var stream = new MemoryStream();
+            bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+            return stream.ToArray();
+        }
+
         public static Bitmap Crop(this Bitmap bitmap, int x, int y, int width, int height)
         {
             var format = bitmap.PixelFormat;

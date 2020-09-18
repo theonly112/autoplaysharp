@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp", "App\autoplaysharp.csproj", "{B2420558-46C5-48BF-AF25-2CE16FF5DC67}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp.Contracts", "Contracts\autoplaysharp.Contracts.csproj", "{50DED78F-8357-493E-ABC4-835D9D937B84}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp.Core", "Core\autoplaysharp.Core.csproj", "{78EF46AC-9A41-4A71-A830-2169708F11A1}"
@@ -13,16 +11,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp.Build", "Buil
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp.Bench", "Bench\autoplaysharp.Bench.csproj", "{9839E4D1-E39E-4607-8AD9-D252FD726165}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp.App", "App.Wpf\autoplaysharp.App.csproj", "{7E15FB88-4ABC-47A7-BBAD-9559DD24BB0F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp.Overlay", "Overlay\autoplaysharp.Overlay.csproj", "{F5823677-B0CA-4CBA-924F-D665C3F5690D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B2420558-46C5-48BF-AF25-2CE16FF5DC67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2420558-46C5-48BF-AF25-2CE16FF5DC67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2420558-46C5-48BF-AF25-2CE16FF5DC67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2420558-46C5-48BF-AF25-2CE16FF5DC67}.Release|Any CPU.Build.0 = Release|Any CPU
 		{50DED78F-8357-493E-ABC4-835D9D937B84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{50DED78F-8357-493E-ABC4-835D9D937B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50DED78F-8357-493E-ABC4-835D9D937B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -40,6 +38,14 @@ Global
 		{9839E4D1-E39E-4607-8AD9-D252FD726165}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9839E4D1-E39E-4607-8AD9-D252FD726165}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9839E4D1-E39E-4607-8AD9-D252FD726165}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E15FB88-4ABC-47A7-BBAD-9559DD24BB0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E15FB88-4ABC-47A7-BBAD-9559DD24BB0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E15FB88-4ABC-47A7-BBAD-9559DD24BB0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E15FB88-4ABC-47A7-BBAD-9559DD24BB0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5823677-B0CA-4CBA-924F-D665C3F5690D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5823677-B0CA-4CBA-924F-D665C3F5690D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5823677-B0CA-4CBA-924F-D665C3F5690D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5823677-B0CA-4CBA-924F-D665C3F5690D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Game.UI;
+using System.Numerics;
 
 namespace autoplaysharp.Contracts
 {
@@ -7,5 +8,8 @@ namespace autoplaysharp.Contracts
         void ShowGetText(UIElement uIElement);
         void ShowIsVisibile(UIElement uIElement, bool isVisible);
         void ShowIsVisibile(UIElement uIElement, bool isVisible, double certainty);
+        UIElement SelectedUiElement { get; set; }
+        (Vector2 Position, Vector2 Size) SelectionBox { get; set; }
+        bool PreviewElementText { get; set; }
     }
 }

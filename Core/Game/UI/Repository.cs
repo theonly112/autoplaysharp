@@ -44,8 +44,8 @@ namespace autoplaysharp.Game.UI
         {
             var element = this[id];
             var cloned = JsonConvert.DeserializeObject<UIElement>(JsonConvert.SerializeObject(element));
-            cloned.X += cloned.XOffset * column;
-            cloned.Y += cloned.YOffset * row;
+            cloned.X += cloned.XOffset.HasValue ? cloned.XOffset.Value *  column : 0;
+            cloned.Y += cloned.YOffset.HasValue ? cloned.YOffset.Value * row : 0;
             cloned.Id += $"_{column}_{row}";
             return cloned;
         }

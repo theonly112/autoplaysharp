@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="autoplaysharp.App.UI.Repository.RepositoryBrowser"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:autoplaysharp.App.UI.Converters" xmlns:repository="clr-namespace:autoplaysharp.App.UI.Repository"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{Binding Path=RepositoryBrowserViewModel, Source={StaticResource Locator}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <GroupBox Header="Repository">
+        <StackPanel>
+            <ComboBox ItemsSource="{Binding SubRepositories}" SelectedItem="{Binding SelectedSubRepository, Mode=OneWayToSource}"/>
+            <ComboBox ItemsSource="{Binding Path=UIElements}" DisplayMemberPath="Id" SelectedItem="{Binding SelectedElement, Mode=OneWayToSource}"/>
+            <Button Command="{Binding SaveRepo}">Save</Button>
+            <Button Command="{Binding ReloadRepo}">Reload</Button>
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding AddNew}">Add New</Button>
+                <TextBox MinWidth="120" Text="{Binding NewId}"/>
+            </StackPanel>
+            <GroupBox Header="Selected Element">
+                <StackPanel>
+                    <TextBox Text="{Binding SelectedElement.Id}"/>
+                    <repository:FloatProperty Label="X" Value="{Binding SelectedElement.UIElement.X}" />
+                    <repository:FloatProperty Label="Y" Value="{Binding SelectedElement.UIElement.Y}" />
+                    <repository:FloatProperty Label="W" Value="{Binding SelectedElement.UIElement.W}" />
+                    <repository:FloatProperty Label="H" Value="{Binding SelectedElement.UIElement.H}" />
+                    <repository:FloatProperty Label="XOffset" Value="{Binding SelectedElement.UIElement.XOffset}" />
+                    <repository:FloatProperty Label="XYOffset" Value="{Binding SelectedElement.UIElement.YOffset}" />
+                    <Button Command="{Binding SelectedElement.PickAreaCommand}">Pick Area</Button>
+                    <CheckBox IsChecked="{Binding SelectedElement.HasImage}" Content="Image">
+                        <CheckBox.Style>
+                            <Style TargetType="CheckBox">
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Value="True">
+                                        <Setter Property="IsEnabled" Value="True" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </CheckBox.Style>
+                    </CheckBox>
+                    <Image Source="{Binding SelectedElement.Image}"
+                           Stretch="None">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedElement.Image}" Value="{x:Null}">
+                                        <DataTrigger.Setters>
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <Button Command="{Binding SelectedElement.PickImageCommand}">Pick Image</Button>
+                    <CheckBox Content="Preview Text" IsChecked="{Binding PreviewText}"/>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </GroupBox>
+</UserControl>

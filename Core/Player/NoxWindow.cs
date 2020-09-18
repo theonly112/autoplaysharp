@@ -135,7 +135,9 @@ namespace autoplaysharp.Game
                 return rect.top;
             }
         }
-       
+
+        public IntPtr Handle => _noxGameAreaHwnd;
+
         public Bitmap GrabScreen()
         {
             User32.GetWindowRect(_noxMainWindow, out var mainWindowRect);

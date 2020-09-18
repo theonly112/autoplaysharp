@@ -9,7 +9,7 @@ using Veldrid.StartupUtilities;
 
 namespace autoplaysharp.Overlay
 {
-    abstract class ImGuiOverlayBase : IDisposable
+    public abstract class ImGuiOverlayBase : IDisposable
     {
         private static Sdl2Window _window;
         private static GraphicsDevice _gd;
@@ -37,14 +37,8 @@ namespace autoplaysharp.Overlay
             var handle = _window.Handle;
             User32.SetWindowLong(handle, User32.WindowLongIndexFlags.GWL_EXSTYLE, User32.SetWindowLongFlags.WS_EX_LAYERED | User32.SetWindowLongFlags.WS_EX_TOPMOST);
             SetLayeredWindowAttributes(handle, 0xFF000000, 255, 1);
-            //_window.X = NoxWindow.X;
-            //_window.Y = NoxWindow.Y;
             User32.SetWindowPos(handle, new IntPtr(-1), 0, 0, 0, 0, User32.SetWindowPosFlags.SWP_NOMOVE | User32.SetWindowPosFlags.SWP_NOSIZE | User32.SetWindowPosFlags.SWP_SHOWWINDOW);
-            //User32.SetWindowLong(handle, User32.WindowLongIndexFlags.GWL_STYLE, User32.SetWindowLongFlags.WS_VISIBLE | User32.SetWindowLongFlags.WS_POPUP);
 
-
-            //int[] marg = new[] { 0, 0, _window.Width, _window.Height };
-            //DwmExtendFrameIntoClientArea(_window.Handle, ref marg);
             SetWindowClasses();
 
             _gd = VeldridStartup.CreateGraphicsDevice(_window,
@@ -115,24 +109,6 @@ namespace autoplaysharp.Overlay
         }
 
         protected abstract void SubmitUI(InputSnapshot snapshot);
-
-        public GraphicsDevice GraphicsDevice
-        {
-            get
-            {
-                return _gd;
-            }
-        }
-
-
-        public ImGuiController Controller
-        {
-            get
-            {
-                return _controller;
-            }
-        }
-
 
         public void Dispose()
         {
