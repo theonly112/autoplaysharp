@@ -51,6 +51,17 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             Game.Click(UIds.ALLIANCE_BATTLE_EXTREME_MODE_START);
 
+            await Task.Delay(1000);
+
+            if (Game.IsVisible(UIds.ALLIANCE_BATTLE_NOTICE_THREE_CHARACTERS_REQUIRED))
+            {
+                Game.Click(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED_OK);
+                await Task.Delay(1000);
+                await SelectHeroes();
+                await Task.Delay(1000);
+                Game.Click(UIds.ALLIANCE_BATTLE_EXTREME_MODE_START);
+            }
+
             if (!await HandleStartNotices())
             {
                 Logger.LogError("Failed to start mission...");
@@ -93,7 +104,16 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             Game.Click(UIds.ALLIANCE_BATTLE_NORMAL_MODE_START);
 
-            await Task.Delay(500);
+            await Task.Delay(1000);
+
+            if (Game.IsVisible(UIds.ALLIANCE_BATTLE_NOTICE_THREE_CHARACTERS_REQUIRED))
+            {
+                Game.Click(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED_OK);
+                await Task.Delay(1000);
+                await SelectHeroes();
+                await Task.Delay(1000);
+                Game.Click(UIds.ALLIANCE_BATTLE_NORMAL_MODE_START);
+            }
 
             if (!await HandleStartNotices())
             {

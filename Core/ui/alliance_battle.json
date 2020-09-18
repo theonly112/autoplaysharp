@@ -20,8 +20,8 @@
   },
   {
     "Id": "ALLIANCE_BATTLE_NORMAL_MODE_READY",
-    "X": 0.689,
-    "Y": 0.907,
+    "X": 0.71652293,
+    "Y": 0.9161743,
     "W": 0.191,
     "H": 0.062,
     "PSM": 3,
@@ -30,8 +30,8 @@
   },
   {
     "Id": "ALLIANCE_BATTLE_EXTREME_MODE_READY",
-    "X": 0.684,
-    "Y": 0.907,
+    "X": 0.71152294,
+    "Y": 0.9161743,
     "W": 0.2,
     "H": 0.062,
     "PSM": 3,
@@ -40,8 +40,8 @@
   },
   {
     "Id": "ALLIANCE_BATTLE_HERO_SELECTION_DYN",
-    "X": 0.667,
-    "Y": 0.218,
+    "X": 0.662,
+    "Y": 0.285,
     "W": 0.093,
     "H": 0.164,
     "XOffset": 0.093,
@@ -49,26 +49,26 @@
   },
   {
     "Id": "ALLIANCE_BATTLE_HERO_SELECTION_HEADER",
-    "X": 0.698,
-    "Y": 0.151,
-    "W": 0.222,
-    "H": 0.04,
-    "Text": "Select a character for your team."
+    "X": 0.5651042,
+    "Y": 0.14351852,
+    "W": 0.14999998,
+    "H": 0.039814815,
+    "Text": "SELECT CHARACTERS"
   },
   {
     "Id": "ALLIANCE_BATTLE_NORMAL_MODE_START",
-    "X": 0.676,
-    "Y": 0.893,
+    "X": 0.671,
+    "Y": 0.91,
     "W": 0.191,
-    "H": 0.062,
+    "H": 0.051,
     "PSM": 3,
     "Threshold": 165,
     "Text": "NORMAL MODE START"
   },
   {
     "Id": "ALLIANCE_BATTLE_EXTREME_MODE_START",
-    "X": 0.669,
-    "Y": 0.893,
+    "X": 0.65982574,
+    "Y": 0.9021743,
     "W": 0.209,
     "H": 0.062,
     "PSM": 3,
@@ -89,5 +89,13 @@
     "Y": 0.871,
     "W": 0.044,
     "H": 0.069
+  },
+  {
+    "Id": "ALLIANCE_BATTLE_NOTICE_THREE_CHARACTERS_REQUIRED",
+    "X": 0.3078125,
+    "Y": 0.45092592,
+    "W": 0.3848958,
+    "H": 0.058333367,
+    "Text": "3 characters are required for an Alliance Battle."
   }
 ]
