@@ -63,6 +63,9 @@
                     <repository:TextProperty Label="Text" Value="{Binding SelectedElement.UIElement.Text}"/>
                     <Button Command="{Binding SelectedElement.GetTextCommand}">Get Text</Button>
                     <CheckBox Content="Preview Text" IsChecked="{Binding PreviewText}"/>
+                    <repository:IntProperty Label="Threshold" DefaultValue="128" MinValue="1" MaxValue="255" Value="{Binding SelectedElement.UIElement.Threshold}" />
+                    <repository:IntProperty Label="Scale" DefaultValue="1" MinValue="1" MaxValue="10" Value="{Binding SelectedElement.UIElement.Scale}" />
+                    <repository:IntProperty Label="PSM" DefaultValue="3" MinValue="1" MaxValue="13" Value="{Binding SelectedElement.UIElement.PSM}" />
                 </StackPanel>
             </GroupBox>
         </StackPanel>
