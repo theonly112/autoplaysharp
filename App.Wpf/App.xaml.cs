@@ -1,4 +1,5 @@
 ﻿using App.Wpf;
+using autoplaysharp.App.Logging;
 using autoplaysharp.App.UI;
 using autoplaysharp.App.UI.Repository;
 using autoplaysharp.Contracts;
@@ -35,12 +36,14 @@ namespace autoplaysharp.App.Wpf
 
         private void ConfigureSerivces(ServiceCollection serviceCollection)
         {
+            var uiLogger = new CustomUILoggerProvider();
             ILoggerFactory loggerFactory = LoggerFactory.Create(
                                 (builder) =>
                                 {
                                     builder
                                                 .AddProvider(new CustomConsoleProvider())
                                                 .AddProvider(new CustomTraceProvider())
+                                                .AddProvider(uiLogger)
                                                 .SetMinimumLevel(LogLevel.Debug);
                                 });
 
@@ -63,6 +66,7 @@ namespace autoplaysharp.App.Wpf
             serviceCollection.AddSingleton<IAreaPicker>(picker);
             serviceCollection.AddSingleton<IUiRepository>(repository);
             serviceCollection.AddSingleton<IEmulatorWindow>(noxWindow);
+            serviceCollection.AddSingleton<IUiLogger>(uiLogger);
             ViewModelLocator.ConfigureServices(serviceCollection);
 
 
