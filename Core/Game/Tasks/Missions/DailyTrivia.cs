@@ -1,9 +1,9 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Game.Tasks;
+using autoplaysharp.Game.UI;
 using F23.StringSimilarity;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -77,40 +77,53 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             while(Game.IsVisible(UIds.CHALLENGES_DAILY_TRIVIA_BASIC_REWARD) && !token.IsCancellationRequested)
             {
                 var question = Game.GetText(UIds.CHALLENGES_DAILY_TRIVIA_QUESTION);
+                Logger.LogDebug($"Question is: {question}");
                 string answer = null;
+                double highestSimilarityQuestion = 0;
                 foreach (var item in _questionsAndAnswers)
                 {
                     var similarity = nl.Similarity(question, item.Question);
-                    if (similarity >= 0.9)
+                    if (similarity > highestSimilarityQuestion)
                     {
+                        highestSimilarityQuestion = similarity;
+                        Logger.LogDebug($"Found question that matches better: {item.Question}");
                         answer = item.Answer;
-                        break;
                     }
                 }
 
-                if(answer == null)
-                {
-                    Logger.LogError($"Could not find answer: Q: {question}");
-                    return;
-                }
+                Logger.LogDebug($"Expected answer is: {answer}");
 
+                double highestSimilarityAnswer = 0;
+                UIElement bestAnswerElement = null;
                 for (int i = 0; i < 4; i++)
                 {
                     var answerId = Repository[UIds.CHALLENGES_DAILY_TRIVIA_ANSWER_DYN, 0, i];
-                    if (nl.Similarity(Game.GetText(answerId), answer) > 0.9) // 90% should be fine.
+                    var potentialAnswer = Game.GetText(answerId);
+                    var similarity = nl.Similarity(potentialAnswer, answer);
+                    Logger.LogDebug($"Found potential answer '{potentialAnswer}' that has a similarity of: {similarity * 100f}%");
+                    if(similarity > highestSimilarityAnswer)
                     {
-                        Game.Click(answerId);
-                        if(!await WaitUntilVisible(UIds.CHALLENGES_DAILY_TRIVIA_CLOSE_BUTTON))
-                        {
-                            Logger.LogError($"Close button did not appear. Wrong answer? Q: {question} A: {answer}");
-                            return;
-                        }
-                        await Task.Delay(500);
-                        Game.Click(UIds.CHALLENGES_DAILY_TRIVIA_CLOSE_BUTTON);
-
-                        await Task.Delay(2000);
+                        highestSimilarityAnswer = similarity;
+                        bestAnswerElement = answerId;
                     }
                 }
+
+                if(bestAnswerElement == null)
+                {
+                    Logger.LogError("Could not find answer for question.");
+                    return;
+                }
+
+                Game.Click(bestAnswerElement);
+                if (!await WaitUntilVisible(UIds.CHALLENGES_DAILY_TRIVIA_CLOSE_BUTTON))
+                {
+                    Logger.LogError($"Close button did not appear. Wrong answer? Q: {question} A: {answer}");
+                    return;
+                }
+                await Task.Delay(500, token);
+                Game.Click(UIds.CHALLENGES_DAILY_TRIVIA_CLOSE_BUTTON);
+
+                await Task.Delay(2000, token);
             }
 
             Logger.LogInformation("Daily trivia completed");
