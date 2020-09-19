@@ -20,6 +20,7 @@ namespace autoplaysharp.Game
         private readonly IUiRepository _repository;
         private readonly ILoggerFactory _loggerFactory;
         private readonly ILogger _logger;
+        private readonly Random _random = new Random();
 
         public IEmulatorOverlay Overlay { get; set; }
 
@@ -36,6 +37,13 @@ namespace autoplaysharp.Game
             Click(_repository[id]);
         }
 
+        private float RandomizeWithinRange(float min, float max)
+        {
+            // using 20%-80% range to avoid clicking on borders.
+            var scale = _random.Next(20, 80) * 0.01f;
+            return min + ((max - min) * scale);
+        }
+
         public void Click(UIElement element)
         {
             var x = element.X.Value;
@@ -43,12 +51,12 @@ namespace autoplaysharp.Game
 
             if (element.W.HasValue)
             {
-                x += element.W.Value / 2f;
+                x = RandomizeWithinRange(x, x + element.W.Value);
             }
 
             if(element.H.HasValue)
             {
-                y += element.H.Value / 2f;
+                y = RandomizeWithinRange(y, y + element.H.Value);
             }
 
             _window.ClickAt(x, y);
