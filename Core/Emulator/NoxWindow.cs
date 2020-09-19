@@ -7,7 +7,7 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace autoplaysharp.Game
+namespace autoplaysharp.Core.Emulator
 {
     public class NoxWindow : IEmulatorWindow
     {
@@ -43,7 +43,7 @@ namespace autoplaysharp.Game
             User32.SendMessage(_noxGameAreaHwnd, User32.WindowMessage.WM_LBUTTONDOWN, new IntPtr(1), new IntPtr(lparam));
             int duration = 500;
             int steps = 10;
-            for(int i = 0; i < steps; i++)
+            for (int i = 0; i < steps; i++)
             {
                 var delta = (vectorEnd - vectorStart) / steps;
                 x_start += (int)(delta.X * Width);
@@ -59,7 +59,7 @@ namespace autoplaysharp.Game
 
         private int MakeLong(int lo, int hi)
         {
-            return (hi << 16) | (lo & 0xFFFF);
+            return hi << 16 | lo & 0xFFFF;
         }
 
         public NoxWindow()
@@ -143,9 +143,9 @@ namespace autoplaysharp.Game
             User32.GetWindowRect(_noxMainWindow, out var mainWindowRect);
             var width = mainWindowRect.right - mainWindowRect.left;
             var height = mainWindowRect.bottom - mainWindowRect.top;
-            
+
             using var bitmap = new Bitmap(width, height);
-            
+
             using (Graphics g = Graphics.FromImage(bitmap))
             {
                 var res = User32.PrintWindow(_noxMainWindow, g.GetHdc(), User32.PrintWindowFlags.PW_FULLWINDOW);
