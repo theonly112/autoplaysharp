@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using F23.StringSimilarity;
+using System.Text.RegularExpressions;
 
 namespace autoplaysharp.Core.Helper
 {
@@ -20,6 +21,12 @@ namespace autoplaysharp.Core.Helper
             var success = int.TryParse(match.Groups["Current"].Value, out var current);
             success &= int.TryParse(match.Groups["Max"].Value, out var max);
             return (success, current, max);
+        }
+
+        public static double Similarity(this string expected, string actual)
+        {
+            var nl = new NormalizedLevenshtein();
+            return nl.Similarity(expected, actual);
         }
     }
 }

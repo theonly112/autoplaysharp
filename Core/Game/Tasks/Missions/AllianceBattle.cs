@@ -7,23 +7,20 @@ namespace autoplaysharp.Game.Tasks.Missions
 {
     public class AllianceBattle : ContentStatusBoardDependenTask
     {
+        private const string MissionName = "ALLIANCE BATTLE";
+
         public AllianceBattle(IGame game, IUiRepository repository) : base(game, repository)
         {
         }
 
         protected override async Task RunCore(CancellationToken token)
         {
-            const string MissionName = "ALLIANCE BATTLE";
-            if(await StartContentBoardMission(MissionName) == null)
-            {
-                Logger.LogError($"Failed to go to {MissionName}");
-                return;
-            }
-            await WaitUntilVisible(UIds.ALLIANCE_BATTLE_MODE_HEADER);
-
-
             await RunNormalMode(token);
+            await RunExtremeMode(token);
+        }
 
+        private async Task RunExtremeMode(CancellationToken token)
+        {
             if (await StartContentBoardMission(MissionName) == null)
             {
                 Logger.LogError($"Failed to go to {MissionName}");
@@ -31,12 +28,6 @@ namespace autoplaysharp.Game.Tasks.Missions
             }
             await WaitUntilVisible(UIds.ALLIANCE_BATTLE_MODE_HEADER);
 
-            await RunExtremeMode(token);
-
-        }
-
-        private async Task RunExtremeMode(CancellationToken token)
-        {
             if (!await WaitUntilVisible(UIds.ALLIANCE_BATTLE_EXTREME_MODE_READY))
             {
                 Logger.LogError("Extreme mode not available.");
@@ -81,8 +72,15 @@ namespace autoplaysharp.Game.Tasks.Missions
             await Task.Delay(5000);
         }
 
-        private async Task RunNormalMode(CancellationToken token)
+        internal async Task RunNormalMode(CancellationToken token)
         {
+            if (await StartContentBoardMission(MissionName) == null)
+            {
+                Logger.LogError($"Failed to go to {MissionName}");
+                return;
+            }
+            await WaitUntilVisible(UIds.ALLIANCE_BATTLE_MODE_HEADER);
+
             if (!await WaitUntilVisible(UIds.ALLIANCE_BATTLE_NORMAL_MODE_READY, token))
             {
                 Logger.LogError("Normal mode not available.");

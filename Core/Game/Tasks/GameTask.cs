@@ -129,7 +129,7 @@ namespace autoplaysharp.Game.Tasks
 
         protected Task<bool> HandleStartNotices()
         {
-            if(Game.IsVisible("GENERIC_MISSION_INVENTORY_FULL_NOTICE"))
+            if (Game.IsVisible("GENERIC_MISSION_INVENTORY_FULL_NOTICE"))
             {
                 Logger.LogError("Inventory is full. TODO: at the moment this is not handled...");
                 return Task.FromResult(false);
@@ -137,5 +137,17 @@ namespace autoplaysharp.Game.Tasks
 
             return Task.FromResult(true);
         }
-    }
+
+        protected async Task<bool> ClickWhenVisible(string uid)
+        {
+            if(!await WaitUntilVisible(uid))
+            {
+                return false;
+            }
+            
+            Game.Click(uid);
+            return true;
+        }
+
+     }
 }

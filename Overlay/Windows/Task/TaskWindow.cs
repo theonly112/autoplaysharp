@@ -44,6 +44,7 @@ namespace autoplaysharp.Overlay.Windows
             _taskToggleButtons.Add(new TaskToggleButton(() => new SquadBattle(_game, _repository), "Squad Battle", taskExecutioner));
             _taskToggleButtons.Add(new TaskToggleButton(() => new LegendaryBattle(_game, _repository), "Legendary Battle", taskExecutioner));
 
+            _taskToggleButtons.Add(new TaskToggleButton(() => new HeroicQuest(_game, _repository), "Heroic Quest", taskExecutioner));
 
             _taskToggleButtons.Add(new TaskToggleButton(() => new AutoFight(_game, _repository), "Auto Fight++", taskExecutioner));
         }
