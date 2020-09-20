@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:tasks="clr-namespace:autoplaysharp.App.UI.Tasks"
+             xmlns:a="clr-namespace:autoplaysharp.App.UI.Tasks.AllianceBattle"
+             xmlns:t="clr-namespace:autoplaysharp.App.UI.Tasks.TimelineBattle"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Path=TasksViewModel, Source={StaticResource Locator}}">
@@ -37,8 +38,11 @@
             <ComboBox ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" x:Name="_tasksComboBox"/>
             <ContentControl Content="{Binding Path=SelectedItem, ElementName=_tasksComboBox}">
                 <ContentControl.Resources>
-                    <DataTemplate DataType="{x:Type tasks:AllianceBattleViewModel}">
-                        <tasks:AllianceBattleSettings/>
+                    <DataTemplate DataType="{x:Type a:AllianceBattleSettingsViewModel}">
+                        <a:AllianceBattleSettings/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type t:TimelineBattleSettingsViewModel}">
+                        <t:TimelineBattleSettings/>
                     </DataTemplate>
                 </ContentControl.Resources>
             </ContentControl>

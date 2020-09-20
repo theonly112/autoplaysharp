@@ -1,4 +1,6 @@
-﻿using autoplaysharp.Contracts;
+﻿using autoplaysharp.App.UI.Tasks.AllianceBattle;
+using autoplaysharp.App.UI.Tasks.TimelineBattle;
+using autoplaysharp.Contracts;
 using autoplaysharp.Core.Game.Tasks.Missions;
 using autoplaysharp.Core.Game.Tasks.Missions.DeluxeEpicQuests;
 using autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests;
@@ -40,7 +42,7 @@ namespace autoplaysharp.App.UI.Tasks
 
         private static readonly Type[] _viewModelTypes =
         {
-            typeof(AllianceBattleViewModel),
+            typeof(AllianceBattleSettingsViewModel),
             typeof(TaskBaseViewModel<CoopMission>),
             typeof(TaskBaseViewModel<DailyTrivia>),
             typeof(TaskBaseViewModel<DangerRoom>),
@@ -48,7 +50,7 @@ namespace autoplaysharp.App.UI.Tasks
             typeof(TaskBaseViewModel<HeroicQuest>),
             typeof(TaskBaseViewModel<LegendaryBattle>),
             typeof(TaskBaseViewModel<SquadBattle>),
-            typeof(TaskBaseViewModel<TimelineBattle>),
+            typeof(TimelineBattleSettingsViewModel),
             typeof(TaskBaseViewModel<WorldBossInvasion>),
 
             // Epic Quest

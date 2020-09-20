@@ -1,11 +1,10 @@
 ﻿using autoplaysharp.Contracts;
-using autoplaysharp.Game.Tasks.Missions;
 
-namespace autoplaysharp.App.UI.Tasks
+namespace autoplaysharp.App.UI.Tasks.AllianceBattle
 {
-    internal class AllianceBattleViewModel : TaskBaseViewModel<AllianceBattle>
+    internal class AllianceBattleSettingsViewModel : TaskBaseViewModel<Game.Tasks.Missions.AllianceBattle>
     {
-        public AllianceBattleViewModel(IGame game, IUiRepository repo, ITaskExecutioner executioner) : base(game, repo, executioner)
+        public AllianceBattleSettingsViewModel(IGame game, IUiRepository repo, ITaskExecutioner executioner) : base(game, repo, executioner)
         {
         }
 
@@ -14,7 +13,7 @@ namespace autoplaysharp.App.UI.Tasks
 
         protected override IGameTask CreateTask()
         {
-            var task = (AllianceBattle)base.CreateTask();
+            var task = (Game.Tasks.Missions.AllianceBattle)base.CreateTask();
             task.ShouldRunNormalMode = RunNormalMode;
             task.ShouldRunExtremeMode = RunExtremeMode;
             return task;

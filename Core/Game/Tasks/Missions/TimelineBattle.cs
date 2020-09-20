@@ -19,6 +19,8 @@ namespace autoplaysharp.Game.Tasks.Missions
         {
         }
 
+        public int Team { get; set; } = 1;
+
         protected override async Task RunCore(CancellationToken token)
         {
             while(true)
@@ -50,6 +52,11 @@ namespace autoplaysharp.Game.Tasks.Missions
                 {
                     return;
                 }
+
+                await Task.Delay(1000);
+
+                var team = Repository[UIds.TIMELINE_TEAM_SELECTION_DYN, 0, Team - 1];
+                Game.Click(team);
 
                 await Task.Delay(1000);
 

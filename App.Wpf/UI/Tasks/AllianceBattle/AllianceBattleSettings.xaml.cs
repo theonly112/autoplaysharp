@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace autoplaysharp.App.UI.Tasks
+namespace autoplaysharp.App.UI.Tasks.AllianceBattle
 {
     /// <summary>
     /// Interaction logic for AllianceBattleSettings.xaml

@@ -20,4 +20,8 @@ partial class UIds
 	/// TIMELINE_AUTO_REPEAT
 	/// </summary>
 	public const string TIMELINE_AUTO_REPEAT="TIMELINE_AUTO_REPEAT";
+	/// <summary>
+	/// TIMELINE_TEAM_SELECTION_DYN
+	/// </summary>
+	public const string TIMELINE_TEAM_SELECTION_DYN="TIMELINE_TEAM_SELECTION_DYN";
 }
