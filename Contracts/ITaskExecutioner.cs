@@ -5,5 +5,6 @@
         void QueueTask(IGameTask task);
 
         void CancelActiveTask();
+        void Cancel(IGameTask task);
     }
 }

@@ -13,10 +13,20 @@ namespace autoplaysharp.Game.Tasks.Missions
         {
         }
 
+        public bool ShouldRunNormalMode { get; set; } = true;
+        public bool ShouldRunExtremeMode { get; set; } = true;
+        
         protected override async Task RunCore(CancellationToken token)
         {
-            await RunNormalMode(token);
-            await RunExtremeMode(token);
+            if(ShouldRunNormalMode)
+            {
+                await RunNormalMode(token);
+            }
+
+            if(ShouldRunExtremeMode)
+            {
+                await RunExtremeMode(token);
+            }
         }
 
         private async Task RunExtremeMode(CancellationToken token)

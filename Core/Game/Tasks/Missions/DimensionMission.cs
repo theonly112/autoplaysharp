@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace autoplaysharp.Core.Game.Tasks.Missions
 {
-    internal class DimensionMission : ContentStatusBoardDependenTask
+    public class DimensionMission : ContentStatusBoardDependenTask
     {
         public DimensionMission(IGame game, IUiRepository repository) : base(game, repository)
         {

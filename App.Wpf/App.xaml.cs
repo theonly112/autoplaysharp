@@ -54,13 +54,15 @@ namespace autoplaysharp.App.Wpf
             var game = new GameImpl(noxWindow, repository, loggerFactory);
 
 
-            var overlay = new ImGuiOverlay(executioner, game, noxWindow, repository);
+            var overlay = new ImGuiOverlay(game, noxWindow, repository);
             //circular dependency. find better solution.
             game.Overlay = overlay;
             serviceCollection.AddSingleton<IEmulatorOverlay>(overlay);
 
             var picker = new AreaPicker(noxWindow, overlay);
 
+            serviceCollection.AddSingleton<ITaskExecutioner>(executioner);
+            serviceCollection.AddSingleton<ITaskQueue>(executioner);
             serviceCollection.AddSingleton<IGame>(game);
             serviceCollection.AddSingleton<IAreaPicker>(picker);
             serviceCollection.AddSingleton<IUiRepository>(repository);

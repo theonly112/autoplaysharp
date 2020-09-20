@@ -5,16 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:repository="clr-namespace:autoplaysharp.App.UI.Repository" 
         xmlns:log="clr-namespace:autoplaysharp.App.UI.Log"
+        xmlns:tasks="clr-namespace:autoplaysharp.App.UI.Tasks"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         DataContext="{Binding Path=MainViewModel, Source={StaticResource Locator}}">
     <Grid>
         <TabControl>
+            <TabItem Header="Tasks">
+                <DockPanel>
+                    <tasks:TaskView DockPanel.Dock="Top" />
+                    <log:LogView DockPanel.Dock="Bottom" />
+                </DockPanel>
+            </TabItem>
             <TabItem Header="Repository">
                 <repository:RepositoryBrowser />
-            </TabItem>
-            <TabItem Header="Log">
-                <log:LogView/>
             </TabItem>
         </TabControl>
     </Grid>

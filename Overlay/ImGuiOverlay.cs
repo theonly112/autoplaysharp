@@ -1,6 +1,5 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Game.UI;
-using autoplaysharp.Overlay.Windows;
 using ImGuiNET;
 using System.Collections.Generic;
 using System.Numerics;
@@ -15,14 +14,12 @@ namespace autoplaysharp.Overlay
         private readonly IGame _game;
         private readonly IEmulatorWindow _window;
         private readonly IUiRepository _repository;
-        private List<IOverlaySubWindow> _subWindows = new List<IOverlaySubWindow>();
         private readonly object _lock = new object();
         private readonly List<OverlayElement> _elementsToRenders = new List<OverlayElement>();
 
-        public ImGuiOverlay(ITaskExecutioner taskExecutioner, IGame game, IEmulatorWindow window, IUiRepository repository) : base(window)
+        public ImGuiOverlay(IGame game, IEmulatorWindow window, IUiRepository repository) : base(window)
         {
             _game = game;
-            _subWindows.Add(new TaskWindow(taskExecutioner, game, repository));
             _window = window;
             _repository = repository;
         }
@@ -76,11 +73,6 @@ namespace autoplaysharp.Overlay
             {
                 var windowSize = new Vector2(_window.Width, _window.Height);
                 drawList.AddRect(SelectionBox.Position * windowSize, (SelectionBox.Position + SelectionBox.Size) * windowSize, 0xFF00FF00);
-            }
-
-            foreach (var w in _subWindows)
-            {
-                w.Render();
             }
         }
 
