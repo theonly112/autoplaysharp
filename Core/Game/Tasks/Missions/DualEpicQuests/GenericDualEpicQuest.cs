@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Core.Helper;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,27 +42,25 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests
                 return false;
             }
 
-            await WaitUntil(() => { return Game.GetText("EPIC_QUEST_DUAL_MISSION_LEFT").Contains("/"); }, token);
+            await WaitUntil(() => { return Game.GetText(UIds.EPIC_QUEST_DUAL_MISSION_LEFT).Contains("/"); }, token);
             await Task.Delay(1000, token);
 
-            var text = Game.GetText("EPIC_QUEST_DUAL_MISSION_LEFT");
-            var statusMatch = ContentStatus.StatusRegex.Match(text);
-            if (int.TryParse(statusMatch.Groups[1].Value, out var num))
+            var status = Game.GetText(UIds.EPIC_QUEST_DUAL_MISSION_LEFT).TryParseStatus();
+            if (status.Success)
             {
-                if (num > 0)
+                if (status.Current > 0)
                 {
-                    Game.Click("EPIC_QUEST_DUAL_MISSION_LEFT");
+                    Game.Click(UIds.EPIC_QUEST_DUAL_MISSION_LEFT);
                     return await RunMissionCore(token);
                 }
             }
 
-            text = Game.GetText("EPIC_QUEST_DUAL_MISSION_RIGHT");
-            statusMatch = ContentStatus.StatusRegex.Match(text);
-            if (int.TryParse(statusMatch.Groups[1].Value, out num))
+            status = Game.GetText(UIds.EPIC_QUEST_DUAL_MISSION_RIGHT).TryParseStatus();
+            if (status.Success)
             {
-                if (num > 0)
+                if (status.Current > 0)
                 {
-                    Game.Click("EPIC_QUEST_DUAL_MISSION_RIGHT");
+                    Game.Click(UIds.EPIC_QUEST_DUAL_MISSION_RIGHT);
                     return await RunMissionCore(token);
                 }
             }

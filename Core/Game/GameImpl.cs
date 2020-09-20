@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Errors;
 using autoplaysharp.Core;
 using autoplaysharp.Game.UI;
 using autoplaysharp.Helper;
@@ -201,6 +202,69 @@ namespace autoplaysharp.Game
         public ILogger CreateLogger(Type t)
         {
             return _loggerFactory.CreateLogger(t);
+        }
+
+        
+        public void OnError(TaskError taskError)
+        {
+            switch (taskError)
+            {
+                case ElementNotFoundError elementNotFoundError when taskError is ElementNotFoundError:
+                    {
+                        using var screen = _window.GrabScreen(0, 0, _window.Width, _window.Height);
+                        using var screenMat = screen.ToMat();
+
+                        var missingElement = elementNotFoundError.MissingElement;
+                        var x = (int)(missingElement.X * _window.Width);
+                        var y = (int)(missingElement.Y * _window.Height);
+                        var w = (int)(missingElement.W * _window.Width);
+                        var h = (int)(missingElement.H * _window.Height);
+
+                        Cv2.Rectangle(screenMat, new Rect(x, y, w, h), new Scalar(0, 0, 255));
+
+                        var fontScale = 0.75;
+                        var font = HersheyFonts.HersheyComplex;
+                        var text = missingElement.Id;
+                        DrawText(screenMat, x, y, fontScale, font, text);
+
+                        using var cropped = screen.Crop(x, y, w, h);
+
+                        var timeStamp = $"{DateTime.Now:yyyyMMddTHHmmss}";
+                        var screenFileName = Path.Combine("logs", $"ElementNotFound {timeStamp} - Screen.bmp");
+
+                        if (missingElement.Image == null)
+                        {
+                            using var pix = cropped.ToPix();
+                            var foundText = TextRecognition.GetText(pix, missingElement.PSM.HasValue ? missingElement.PSM.Value : 3);
+                            text = $"Found Text: {foundText}";
+                            var size = Cv2.GetTextSize(text, font, fontScale, 1, out var _);
+                            DrawText(screenMat, x, y + size.Height, fontScale, font, text);
+                        }
+                        else
+                        {
+                            var missingElementFileName = Path.Combine("logs", $"ElementNotFound {timeStamp} - MissingElement.bmp");
+                            cropped.Save(missingElementFileName);
+                        }
+#if DEBUG
+                        Cv2.ImShow("Error", screenMat);
+                        Cv2.WaitKey();
+#endif
+                        screenMat.SaveImage(screenFileName);
+                    }
+                    break;
+            }
+
+            void DrawText(Mat screenMat, int x, int y, double fontScale, HersheyFonts font, string text)
+            {
+                var size = Cv2.GetTextSize(text, font, fontScale, 1, out var _);
+                var textX = x;
+                if (textX + size.Width > _window.Width)
+                {
+                    // Move text so it fits onto the screenshot.
+                    textX -= (textX + size.Width) - _window.Width;
+                }
+                Cv2.PutText(screenMat, text, new OpenCvSharp.Point(textX, y), font, fontScale, new Scalar(0, 0, 255));
+            }
         }
     }
 }

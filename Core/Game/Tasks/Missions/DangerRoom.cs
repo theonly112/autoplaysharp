@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Errors;
 using autoplaysharp.Core.Helper;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
@@ -32,13 +33,21 @@ namespace autoplaysharp.Game.Tasks.Missions
                 var dailyRewardStatus = Game.GetText(UIds.DANGER_ROOM_DAILY_ENTRY_REWARD_COUNT).TryParseStatus();
                 var dailyVictoryStatus = Game.GetText(UIds.DANGER_ROOM_DAILY_VICTORY_REWARD_COUNT).TryParseStatus();
 
-                if(!dailyRewardStatus.Success || !dailyVictoryStatus.Success)
+                if(!dailyRewardStatus.Success )
                 {
                     Logger.LogError("Could not detect danger room status");
+                    Game.OnError(new ElementNotFoundError(Repository[UIds.DANGER_ROOM_DAILY_ENTRY_REWARD_COUNT]));
                     return;
                 }
 
-                if(dailyRewardStatus.Current == 0 &&
+                if(!dailyVictoryStatus.Success)
+                {
+                    Logger.LogError("Could not detect danger room status");
+                    Game.OnError(new ElementNotFoundError(Repository[UIds.DANGER_ROOM_DAILY_VICTORY_REWARD_COUNT]));
+                    return;
+                }
+
+                if (dailyRewardStatus.Current == 0 &&
                    dailyVictoryStatus.Current == 0)
                 {
                     Logger.LogInformation("Already collected all rewards");

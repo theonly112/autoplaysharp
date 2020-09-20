@@ -1,4 +1,5 @@
-﻿using autoplaysharp.Game.UI;
+﻿using autoplaysharp.Contracts.Errors;
+using autoplaysharp.Game.UI;
 using Microsoft.Extensions.Logging;
 using System;
 
@@ -18,5 +19,7 @@ namespace autoplaysharp.Contracts
         ILogger CreateLogger(Type t);
 
         IEmulatorOverlay Overlay { get; set; }
+
+        void OnError(TaskError error);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Errors;
 using autoplaysharp.Game.UI;
 using Microsoft.Extensions.Logging;
 using System;
@@ -45,7 +46,7 @@ namespace autoplaysharp.Game.Tasks
         protected bool IsOnMainScreen()
         {
             // TODO: make this more robust... enter is visible in other places...
-            return Game.IsVisible("MAIN_MENU_ENTER");
+            return Game.IsVisible(UIds.MAIN_MENU_ENTER);
         }
 
         protected async Task<bool> OpenMenu()
@@ -57,8 +58,8 @@ namespace autoplaysharp.Game.Tasks
                 return false;
             }
 
-            Game.Click("MAIN_MENU_MENU_BOTTON");
-            await WaitUntilVisible("MAIN_MENU_MENU_HEADER").ConfigureAwait(false);
+            Game.Click(UIds.MAIN_MENU_MENU_BOTTON);
+            await WaitUntilVisible(UIds.MAIN_MENU_MENU_HEADER).ConfigureAwait(false);
             return true;
         }
 
@@ -113,23 +114,24 @@ namespace autoplaysharp.Game.Tasks
 
         protected async Task<bool> GoToMainScreen(CancellationToken token)
         {
-            if(Game.IsVisible("MAIN_MENU_HOME_BUTTON_IMAGE"))
+            if(Game.IsVisible(UIds.MAIN_MENU_HOME_BUTTON_IMAGE))
             {
-                Game.Click("MAIN_MENU_HOME_BUTTON_IMAGE");
+                Game.Click(UIds.MAIN_MENU_HOME_BUTTON_IMAGE);
             }
 
-            if(!await WaitUntil(IsOnMainScreen))
+            if(!await WaitUntil(IsOnMainScreen, token))
             {
+                Game.OnError(new ElementNotFoundError(Repository[UIds.MAIN_MENU_ENTER]));
                 return false;
             }
-            await Task.Delay(500); // Screen is open but we should briefly wait before performing another action.
+            await Task.Delay(500, token); // Screen is open but we should briefly wait before performing another action.
             return true;
         }
 
 
         protected Task<bool> HandleStartNotices()
         {
-            if (Game.IsVisible("GENERIC_MISSION_INVENTORY_FULL_NOTICE"))
+            if (Game.IsVisible(UIds.GENERIC_MISSION_INVENTORY_FULL_NOTICE))
             {
                 Logger.LogError("Inventory is full. TODO: at the moment this is not handled...");
                 return Task.FromResult(false);
@@ -142,12 +144,12 @@ namespace autoplaysharp.Game.Tasks
         {
             if(!await WaitUntilVisible(uid))
             {
+                Game.OnError(new ElementNotFoundError(Repository[uid]));
                 return false;
             }
             
             Game.Click(uid);
             return true;
         }
-
      }
 }
