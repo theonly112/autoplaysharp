@@ -1,5 +1,4 @@
 ﻿using autoplaysharp.Contracts;
-using OpenCvSharp;
 using PInvoke;
 using System;
 using System.Diagnostics;
@@ -40,15 +39,15 @@ namespace autoplaysharp.App.UI.Repository
             using var curModule = curProcess.MainModule;
             using var modHandle = Kernel32.GetModuleHandle(curModule.ModuleName);
 
-            _keyboardHook = keyboard_hook;
-            _mouseHook = mouse_hook;
+            _keyboardHook = KeyboardHook;
+            _mouseHook = MouseHook;
             _keyboardHookId = User32.SetWindowsHookEx(User32.WindowsHookType.WH_KEYBOARD_LL, _keyboardHook, modHandle.DangerousGetHandle(), 0);
             _mouseHookId = User32.SetWindowsHookEx(User32.WindowsHookType.WH_MOUSE_LL, _mouseHook, modHandle.DangerousGetHandle(), 0);
 
             return _taskCompletionSource.Task;
         }
 
-        private int keyboard_hook(int nCode, IntPtr wParam, IntPtr lParam)
+        private int KeyboardHook(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)
             {
@@ -63,7 +62,34 @@ namespace autoplaysharp.App.UI.Repository
                         _taskCompletionSource.SetResult((true, Vector2.Zero, Vector2.Zero));
                     }
 
+                    if (args.vkCode == User32.VirtualKey.VK_LCONTROL && _posStart == Vector2.Zero)
+                    {
+                        Debug.WriteLine("Button down");
+                        var cursorPos = User32.GetCursorPos();
+                        _posStart = new Vector2(
+                            Math.Max(0, cursorPos.x - _emulatorWindow.X) / (float)_emulatorWindow.Width,
+                            Math.Max(0, cursorPos.y - _emulatorWindow.Y) / (float)_emulatorWindow.Height);
+                        _overlay.SelectionBox = (_posStart, Vector2.Zero);
+                    }
+
                 }
+                else if(msg == User32.WindowMessage.WM_KEYUP)
+                {
+                    var args = Marshal.PtrToStructure<KeyboardLowLevelHookStruct>(lParam);
+                    if (args.vkCode == User32.VirtualKey.VK_LCONTROL)
+                    {
+                        Debug.WriteLine("Button up");
+                        var cursorPos = User32.GetCursorPos();
+                        var posEnd = new Vector2(
+                            Math.Max(0, cursorPos.x - _emulatorWindow.X) / (float)_emulatorWindow.Width,
+                            Math.Max(0, cursorPos.y - _emulatorWindow.Y) / (float)_emulatorWindow.Height);
+                        _overlay.SelectionBox = (Vector2.Zero, Vector2.Zero);
+                        _taskCompletionSource.SetResult((false, _posStart, posEnd - _posStart));
+                        _posStart = Vector2.Zero;
+                        CleanUp();
+                    }
+                }
+
             }
 
             return User32.CallNextHookEx(_keyboardHookId.DangerousGetHandle(), nCode, wParam, lParam);
@@ -85,33 +111,12 @@ namespace autoplaysharp.App.UI.Repository
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        int mouse_hook(int nCode, IntPtr wParam, IntPtr lParam)
+        int MouseHook(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)
             {
                 var msg = (User32.WindowMessage)wParam;
-                if (msg == User32.WindowMessage.WM_LBUTTONDOWN)
-                {
-                    Debug.WriteLine("Button down");
-                    var cursorPos = User32.GetCursorPos();
-                    _posStart = new Vector2(
-                        Math.Max(0, cursorPos.x - _emulatorWindow.X) / (float)_emulatorWindow.Width,
-                        Math.Max(0, cursorPos.y - _emulatorWindow.Y) / (float)_emulatorWindow.Height);
-                    _overlay.SelectionBox = (_posStart, Vector2.Zero);
-                }
-                else if (msg == User32.WindowMessage.WM_LBUTTONUP)
-                {
-                    Debug.WriteLine("Button up");
-                    var cursorPos = User32.GetCursorPos();
-                    var posEnd = new Vector2(
-                        Math.Max(0, cursorPos.x - _emulatorWindow.X) / (float)_emulatorWindow.Width,
-                        Math.Max(0, cursorPos.y - _emulatorWindow.Y) / (float)_emulatorWindow.Height);
-                    _overlay.SelectionBox = (Vector2.Zero, Vector2.Zero);
-                    _taskCompletionSource.SetResult((false, _posStart, posEnd-_posStart));
-                    _posStart = Vector2.Zero;
-                    CleanUp();
-                }
-                else if (msg == User32.WindowMessage.WM_MOUSEMOVE)
+                if (msg == User32.WindowMessage.WM_MOUSEMOVE)
                 {
                     var args = Marshal.PtrToStructure<MouseLowLevelHookStruct>(lParam);
                     var posEnd = new Vector2(
@@ -119,7 +124,6 @@ namespace autoplaysharp.App.UI.Repository
                         Math.Max(0, args.pt.y - _emulatorWindow.Y) / (float)_emulatorWindow.Height);
                     _overlay.SelectionBox = (_posStart, posEnd - _posStart);
                 }
-
             }
 
             return User32.CallNextHookEx(_mouseHookId.DangerousGetHandle(), nCode, wParam, lParam);
