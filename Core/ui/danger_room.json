@@ -205,5 +205,21 @@
     "W": 0.241,
     "H": 0.04,
     "Text": "Rank points and participation rewards can be acquired."
+  },
+  {
+    "Id": "DANGER_ROOM_DAILY_ENTRY_REWARD_COUNT",
+    "X": 0.6333333,
+    "Y": 0.8009259,
+    "W": 0.022916675,
+    "H": 0.029629648,
+    "Scale": 2
+  },
+  {
+    "Id": "DANGER_ROOM_DAILY_VICTORY_REWARD_COUNT",
+    "X": 0.70104164,
+    "Y": 0.8037037,
+    "W": 0.019270837,
+    "H": 0.024999976,
+    "Scale": 2
   }
 ]

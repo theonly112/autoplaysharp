@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Core.Helper;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -15,71 +16,91 @@ namespace autoplaysharp.Game.Tasks.Missions
 
         protected override async Task RunCore(CancellationToken token)
         {
-            if(await StartContentBoardMission("DANGER ROOM") == null)
+            while (true)
             {
-                return;
-            }
-            if (!await WaitUntilVisible(UIds.DANGER_ROOM_EXTREMEL_MODE))
-            {
-                Logger.LogError("Could not find extreme mode selection");
-                return;
-            }
-            
-            await Task.Delay(1000, token);
-            Game.Click(UIds.DANGER_ROOM_EXTREMEL_MODE);
-
-            await Task.Delay(500, token);
-            Game.Click(UIds.DANGER_ROOM_ENTER_DANGER_ROOM);
-
-            
-            if(!await WaitUntilVisible(UIds.DANGER_ROOM_EXTREME_MODE_LOBBY_HEADER))
-            {
-                return;
-            }
-
-            await Task.Delay(2000, token); // What do we wait for here???
-
-            // Re-using normal mode button for now... TODO: should be its own entry.
-            Game.Click(UIds.DANGER_ROOM_JOIN_BUTTON);
-            await Task.Delay(2000, token); // What do we wait for here???
-
-            await WaitForCharacterSelection();
-
-            await SelectCharacter();
-
-            if(!await WaitUntilVisible(UIds.DANGER_ROOM_WAITING_FOR_HEROES, 60, 0.2f))
-            {
-                if (Game.IsVisible(UIds.DANGER_ROOM_GAME_CANCELED_NOTICE))
+                if (await StartContentBoardMission("DANGER ROOM") == null)
                 {
-                    Game.Click(UIds.DANGER_ROOM_GAME_CANCELED_NOTICE_OK);
-                    await Task.Delay(2000, token);
-                    Logger.LogError("Game was cancelled. Restarting");
-                    await RunCore(token);
+                    return;
                 }
-                else
+
+                if (!await WaitUntilVisible(UIds.DANGER_ROOM_EXTREMEL_MODE))
                 {
-                    Logger.LogError("Start screen did not appear. Cancelling...");
+                    Logger.LogError("Could not find extreme mode selection");
+                    return;
                 }
-                return;
+
+                var dailyRewardStatus = Game.GetText(UIds.DANGER_ROOM_DAILY_ENTRY_REWARD_COUNT).TryParseStatus();
+                var dailyVictoryStatus = Game.GetText(UIds.DANGER_ROOM_DAILY_VICTORY_REWARD_COUNT).TryParseStatus();
+
+                if(!dailyRewardStatus.Success || !dailyVictoryStatus.Success)
+                {
+                    Logger.LogError("Could not detect danger room status");
+                    return;
+                }
+
+                if(dailyRewardStatus.Current == 0 &&
+                   dailyVictoryStatus.Current == 0)
+                {
+                    Logger.LogInformation("Already collected all rewards");
+                    return;
+                }
+
+                await Task.Delay(1000, token);
+                Game.Click(UIds.DANGER_ROOM_EXTREMEL_MODE);
+
+                await Task.Delay(500, token);
+                Game.Click(UIds.DANGER_ROOM_ENTER_DANGER_ROOM);
+
+
+                if (!await WaitUntilVisible(UIds.DANGER_ROOM_EXTREME_MODE_LOBBY_HEADER))
+                {
+                    return;
+                }
+
+                await Task.Delay(2000, token); // What do we wait for here???
+
+                // Re-using normal mode button for now... TODO: should be its own entry.
+                Game.Click(UIds.DANGER_ROOM_JOIN_BUTTON);
+                await Task.Delay(2000, token); // What do we wait for here???
+
+                await WaitForCharacterSelection();
+
+                await SelectCharacter();
+
+                if (!await WaitUntilVisible(UIds.DANGER_ROOM_WAITING_FOR_HEROES, 60, 0.2f))
+                {
+                    if (Game.IsVisible(UIds.DANGER_ROOM_GAME_CANCELED_NOTICE))
+                    {
+                        Game.Click(UIds.DANGER_ROOM_GAME_CANCELED_NOTICE_OK);
+                        await Task.Delay(2000, token);
+                        Logger.LogError("Game was cancelled. Restarting");
+                        await RunCore(token);
+                    }
+                    else
+                    {
+                        Logger.LogError("Start screen did not appear. Cancelling...");
+                    }
+                    return;
+                }
+
+                Logger.LogInformation("Game started... Starting fight bot.");
+                // TODO: start battle bot.
+                if (!await RunAutoFight(token))
+                {
+                    Logger.LogError("Failed to run fight bot...");
+                    return;
+                }
+
+                await Task.Delay(3000, token);
+
+                Game.Click(UIds.DANGER_ROOM_ENDSCREEN_NEXT);
+
+                await Task.Delay(5000, token);
+
+                Game.Click(UIds.DANGER_ROOM_ENDSCREEN_HOME);
+
+                await Task.Delay(5000, token);
             }
-
-            Logger.LogInformation("Game started... Starting fight bot.");
-            // TODO: start battle bot.
-            if(!await RunAutoFight(token))
-            {
-                Logger.LogError("Failed to run fight bot...");
-                return;
-            }
-
-            await Task.Delay(3000, token);
-
-            Game.Click(UIds.DANGER_ROOM_ENDSCREEN_NEXT);
-
-            await Task.Delay(5000, token);
-
-            Game.Click(UIds.DANGER_ROOM_ENDSCREEN_HOME);
-
-            await Task.Delay(5000, token);
         }
 
         private async Task<bool> RunAutoFight(CancellationToken token)
