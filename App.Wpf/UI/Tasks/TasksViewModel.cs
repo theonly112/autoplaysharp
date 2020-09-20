@@ -4,6 +4,7 @@ using autoplaysharp.Contracts;
 using autoplaysharp.Core.Game.Tasks.Missions;
 using autoplaysharp.Core.Game.Tasks.Missions.DeluxeEpicQuests;
 using autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests;
+using autoplaysharp.Game.Tasks;
 using autoplaysharp.Game.Tasks.Missions;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Mvvm;
@@ -44,7 +45,6 @@ namespace autoplaysharp.App.UI.Tasks
         {
             typeof(AllianceBattleSettingsViewModel),
             typeof(TaskBaseViewModel<CoopMission>),
-            typeof(TaskBaseViewModel<DailyTrivia>),
             typeof(TaskBaseViewModel<DangerRoom>),
             typeof(TaskBaseViewModel<DimensionMission>),
             typeof(TaskBaseViewModel<HeroicQuest>),
@@ -65,6 +65,10 @@ namespace autoplaysharp.App.UI.Tasks
             typeof(TaskBaseViewModel<DoomsDay>),
             typeof(TaskBaseViewModel<FateOfTheUniverse>),
             typeof(TaskBaseViewModel<MutualEnemy>),
+
+            // Misc
+            typeof(TaskBaseViewModel<DailyTrivia>),
+            typeof(TaskBaseViewModel<AutoFight>),
         };
 
         private readonly ITaskQueue _queue;
