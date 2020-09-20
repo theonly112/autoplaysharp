@@ -23,7 +23,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests
 
             for (int i = 0; i < status.Available; i++)
             {
-                if (!await RunMission())
+                if (!await RunMission(token))
                 {
                     Logger.LogError("Failed to run mission...");
                     break;
@@ -33,7 +33,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests
             Logger.LogInformation($"Done running {MissionName}");
         }
 
-        private async Task<bool> RunMission()
+        private async Task<bool> RunMission(CancellationToken token)
         {
             if (await StartContentBoardMission(MissionName) == null)
             {
@@ -41,8 +41,8 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests
                 return false;
             }
 
-            await WaitUntil(() => { return Game.GetText("EPIC_QUEST_DUAL_MISSION_LEFT").Contains("/"); });
-            await Task.Delay(1000);
+            await WaitUntil(() => { return Game.GetText("EPIC_QUEST_DUAL_MISSION_LEFT").Contains("/"); }, token);
+            await Task.Delay(1000, token);
 
             var text = Game.GetText("EPIC_QUEST_DUAL_MISSION_LEFT");
             var statusMatch = ContentStatus.StatusRegex.Match(text);
@@ -51,7 +51,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests
                 if (num > 0)
                 {
                     Game.Click("EPIC_QUEST_DUAL_MISSION_LEFT");
-                    return await RunMissionCore();
+                    return await RunMissionCore(token);
                 }
             }
 
@@ -62,7 +62,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests
                 if (num > 0)
                 {
                     Game.Click("EPIC_QUEST_DUAL_MISSION_RIGHT");
-                    return await RunMissionCore();
+                    return await RunMissionCore(token);
                 }
             }
 

@@ -7,7 +7,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DeluxeEpicQuests
 {
     public abstract class GenericDeluxeEpicQuest : GenericEpicQuest
     {
-        public GenericDeluxeEpicQuest(IGame game, IUiRepository repository) : base(game, repository)
+        protected GenericDeluxeEpicQuest(IGame game, IUiRepository repository) : base(game, repository)
         {
         }
 
@@ -24,13 +24,13 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DeluxeEpicQuests
 
             for (int i = 0; i < status.Available; i++)
             {
-                await RunMissionCore();
+                await RunMissionCore(token);
 
                 await StartContentBoardMission(MissionName);
             }
 
-            await Task.Delay(2000);
-            await GoToMainScreen();
+            await Task.Delay(2000, token);
+            await GoToMainScreen(token);
         }
     }
 }
