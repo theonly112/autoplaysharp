@@ -95,6 +95,7 @@ namespace autoplaysharp.App.UI.Repository
 
         private void ReloadSubRepoItems()
         {
+            UIElements.Clear();
             var subRepo = _repository.SubRepositories.First(x => x.Name == _selectedSubRepository);
             var items = subRepo.Ids.Select(x => new UiElementViewModel(subRepo, subRepo[x], _areaPicker, _window, _game));
             foreach (var item in items)
