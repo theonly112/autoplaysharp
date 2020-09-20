@@ -44,4 +44,8 @@ partial class UIds
 	/// COOP_REWARD_NOTICE_DAILY_LIMIT_OK
 	/// </summary>
 	public const string COOP_REWARD_NOTICE_DAILY_LIMIT_OK="COOP_REWARD_NOTICE_DAILY_LIMIT_OK";
+	/// <summary>
+	/// COOP_AUTO_REPEAT_IMAGE
+	/// </summary>
+	public const string COOP_AUTO_REPEAT_IMAGE="COOP_AUTO_REPEAT_IMAGE";
 }

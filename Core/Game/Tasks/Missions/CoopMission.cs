@@ -28,7 +28,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             while(true)
             {
-                var text = Game.GetText("COOP_REWARD_COUNT");
+                var text = Game.GetText(UIds.COOP_REWARD_COUNT);
                 var match = ContentStatus.StatusRegex.Match(text);
                 if (!match.Success)
                 {
@@ -48,27 +48,32 @@ namespace autoplaysharp.Game.Tasks.Missions
                     return;
                 }
 
-                if (Game.IsVisible("COOP_REWARD_ACQUIRED"))
+                if (Game.IsVisible(UIds.COOP_REWARD_ACQUIRED))
                 {
-                    Game.Click("COOP_REWARD_ACQUIRED");
+                    Game.Click(UIds.COOP_REWARD_ACQUIRED);
                     await Task.Delay(5000);
-                    Game.Click("COOP_REWARD_ACQUIRE_REWARD");
+                    Game.Click(UIds.COOP_REWARD_ACQUIRE_REWARD);
                     await Task.Delay(5000);
-                    Game.Click("COOP_REWARD_ACQUIRE_REWARD_OK");
+                    Game.Click(UIds.COOP_REWARD_ACQUIRE_REWARD_OK);
                     await Task.Delay(5000);
                 }
 
-                if (!Game.IsVisible("COOP_START"))
+                if(Game.IsVisible(UIds.COOP_AUTO_REPEAT_IMAGE))
                 {
-                    Game.Click("COOP_DEPLOY_CHARACTER");
+                    Game.Click(UIds.COOP_AUTO_REPEAT_IMAGE);
                 }
 
-                if (!await WaitUntilVisible("COOP_START", token))
+                if (!Game.IsVisible(UIds.COOP_START))
+                {
+                    Game.Click(UIds.COOP_DEPLOY_CHARACTER);
+                }
+
+                if (!await WaitUntilVisible(UIds.COOP_START, token))
                 {
                     Logger.LogError("Start button not available.");
                     return;
                 }
-                Game.Click("COOP_START");
+                Game.Click(UIds.COOP_START);
 
                 if(!await HandleStartNotices())
                 {
@@ -76,7 +81,7 @@ namespace autoplaysharp.Game.Tasks.Missions
                     return;
                 }
 
-                if (!await WaitUntilVisible("COOP_ENDSCREEN_MISSION_SUCCESS", token, 60, 1))
+                if (!await WaitUntilVisible(UIds.COOP_ENDSCREEN_MISSION_SUCCESS, token, 60, 1))
                 {
                     if(Game.IsVisible(UIds.COOP_REWARD_NOTICE_DAILY_LIMIT))
                     {
@@ -91,7 +96,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
                 await Task.Delay(5000);
 
-                Game.Click("COOP_ENDSCREEN_NEXT_BUTTON");
+                Game.Click(UIds.COOP_ENDSCREEN_NEXT_BUTTON);
 
                 await Task.Delay(5000);
             }
