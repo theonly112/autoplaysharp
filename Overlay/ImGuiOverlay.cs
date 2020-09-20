@@ -76,11 +76,6 @@ namespace autoplaysharp.Overlay
             }
         }
 
-        private bool IsVisible(UIElement element)
-        {
-            return element.Y + element.H <= 1 && element.X + element.W <= 1;
-        }
-
         private Vector2 GetAbsoluteSize(UIElement dynUiElement)
         {
             return new Vector2(dynUiElement.W.Value, dynUiElement.H.Value) * new Vector2(_window.Width, _window.Height);

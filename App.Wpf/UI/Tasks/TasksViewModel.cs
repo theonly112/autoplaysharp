@@ -1,17 +1,14 @@
-﻿using autoplaysharp.App.UI.Tasks.ViewModels;
-using autoplaysharp.Contracts;
+﻿using autoplaysharp.Contracts;
 using autoplaysharp.Core.Game.Tasks.Missions;
 using autoplaysharp.Core.Game.Tasks.Missions.DeluxeEpicQuests;
 using autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests;
 using autoplaysharp.Game.Tasks.Missions;
 using Microsoft.Extensions.DependencyInjection;
-using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
-using System.Windows.Input;
 
 namespace autoplaysharp.App.UI.Tasks
 {
@@ -88,27 +85,5 @@ namespace autoplaysharp.App.UI.Tasks
                 yield return (TaskBaseViewModel)Wpf.App.ServiceProvider.GetService(item);
             }
         }
-    }
-
-    public class TaskQueueItemViewModel
-    {
-        private readonly IGameTask _task;
-        private readonly ITaskExecutioner _executioner;
-
-        public TaskQueueItemViewModel(IGameTask task, ITaskExecutioner executioner)
-        {
-            _task = task;
-            Cancel = new DelegateCommand(CancelTask);
-            _executioner = executioner;
-            Name = task.GetType().Name;
-        }
-
-        private void CancelTask()
-        {
-            _executioner.Cancel(_task);
-        }
-
-        public string Name { get; set; }
-        public ICommand Cancel { get; set; }
     }
 }

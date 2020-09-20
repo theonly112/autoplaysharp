@@ -3,7 +3,7 @@ using Prism.Commands;
 using System;
 using System.Windows.Input;
 
-namespace autoplaysharp.App.UI.Tasks.ViewModels
+namespace autoplaysharp.App.UI.Tasks
 {
     internal abstract class TaskBaseViewModel
     {

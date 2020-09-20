@@ -1,5 +1,4 @@
-﻿using autoplaysharp.App.UI.Tasks.ViewModels;
-using autoplaysharp.Contracts;
+﻿using autoplaysharp.Contracts;
 using autoplaysharp.Game.Tasks.Missions;
 
 namespace autoplaysharp.App.UI.Tasks

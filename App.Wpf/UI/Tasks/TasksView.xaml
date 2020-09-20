@@ -14,9 +14,9 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
             <StackPanel Orientation="Horizontal">
-                <TextBlock>Active:</TextBlock>
-                <TextBlock Text="{Binding Active.Name}"/>
-                <Button Command="{Binding Active.Cancel}">Cancel</Button>
+                <TextBlock VerticalAlignment="Center">Active:</TextBlock>
+                <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" Text="{Binding Active.Name}"/>
+                <Button VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding Active.Cancel}">Cancel</Button>
             </StackPanel>
             <ListView ItemsSource="{Binding Queue}">
                 <ListView.ItemTemplate>
@@ -38,10 +38,7 @@
             <ContentControl Content="{Binding Path=SelectedItem, ElementName=_tasksComboBox}">
                 <ContentControl.Resources>
                     <DataTemplate DataType="{x:Type tasks:AllianceBattleViewModel}">
-                        <StackPanel>
-                            <CheckBox Content="Run Normal Mode?" IsChecked="{Binding RunNormalMode}"/>
-                            <CheckBox Content="Run Extreme Mode?" IsChecked="{Binding RunExtremeMode}"/>
-                        </StackPanel>
+                        <tasks:AllianceBattleSettings/>
                     </DataTemplate>
                 </ContentControl.Resources>
             </ContentControl>
