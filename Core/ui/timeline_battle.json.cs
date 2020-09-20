@@ -16,4 +16,8 @@ partial class UIds
 	/// TIMELINE_ENDSCREEN_HOME_BUTTON_IMAGE
 	/// </summary>
 	public const string TIMELINE_ENDSCREEN_HOME_BUTTON_IMAGE="TIMELINE_ENDSCREEN_HOME_BUTTON_IMAGE";
+	/// <summary>
+	/// TIMELINE_AUTO_REPEAT
+	/// </summary>
+	public const string TIMELINE_AUTO_REPEAT="TIMELINE_AUTO_REPEAT";
 }

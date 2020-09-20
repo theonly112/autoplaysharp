@@ -38,7 +38,6 @@ namespace autoplaysharp.Game.Tasks.Missions
                     return;
                 }
 
-
                 if (!await WaitUntilVisible("TIMELINE_GET_READY"))
                 {
                     return;
@@ -53,6 +52,14 @@ namespace autoplaysharp.Game.Tasks.Missions
                 }
 
                 await Task.Delay(1000);
+
+                if (Game.IsVisible(UIds.TIMELINE_AUTO_REPEAT))
+                {
+                    Logger.LogDebug("Disabling auto-repeat");
+                    Game.Click(UIds.TIMELINE_AUTO_REPEAT);
+                    await Task.Delay(250);
+                }
+
                 Game.Click("TIMELINE_SEARCH_FOR_OPPONENT");
 
                 if (!await WaitUntilVisible("TIMELINE_FIGHT"))
