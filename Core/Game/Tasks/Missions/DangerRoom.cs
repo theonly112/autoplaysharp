@@ -30,6 +30,9 @@ namespace autoplaysharp.Game.Tasks.Missions
                     return;
                 }
 
+                // Wait briefly for UI to load.
+                await Task.Delay(1000);
+
                 var dailyRewardStatus = Game.GetText(UIds.DANGER_ROOM_DAILY_ENTRY_REWARD_COUNT).TryParseStatus();
                 var dailyVictoryStatus = Game.GetText(UIds.DANGER_ROOM_DAILY_VICTORY_REWARD_COUNT).TryParseStatus();
 
