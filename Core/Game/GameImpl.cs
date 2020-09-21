@@ -220,25 +220,30 @@ namespace autoplaysharp.Game
                         var w = (int)(missingElement.W * _window.Width);
                         var h = (int)(missingElement.H * _window.Height);
 
-                        Cv2.Rectangle(screenMat, new Rect(x, y, w, h), new Scalar(0, 0, 255));
-
-                        var fontScale = 0.75;
-                        var font = HersheyFonts.HersheyComplex;
-                        var text = missingElement.Id;
-                        DrawText(screenMat, x, y, fontScale, font, text);
-
-                        using var cropped = screen.Crop(x, y, w, h);
 
                         var timeStamp = $"{DateTime.Now:yyyyMMddTHHmmss}";
                         var screenFileName = Path.Combine("logs", $"ElementNotFound {timeStamp} - Screen.bmp");
+
+                        if (missingElement.XOffset.HasValue || missingElement.YOffset.HasValue)
+                        {
+                            DrawElementGrid(screenMat, missingElement);
+                        }
+                        else
+                        {
+                            DrawElement(screenMat, missingElement);
+                        }
+
+
+                        using var cropped = screen.Crop(x, y, w, h);
+
 
                         if (missingElement.Image == null)
                         {
                             using var pix = cropped.ToPix();
                             var foundText = TextRecognition.GetText(pix, missingElement.PSM.HasValue ? missingElement.PSM.Value : 3);
-                            text = $"Found Text: {foundText}";
-                            var size = Cv2.GetTextSize(text, font, fontScale, 1, out var _);
-                            DrawText(screenMat, x, y + size.Height, fontScale, font, text);
+                            var text = $"Found Text: {foundText}";
+                            var size = GetTextSize(text);
+                            DrawText(screenMat, x, y + size.Height, text);
                         }
                         else
                         {
@@ -254,8 +259,45 @@ namespace autoplaysharp.Game
                     break;
             }
 
-            void DrawText(Mat screenMat, int x, int y, double fontScale, HersheyFonts font, string text)
+
+            void DrawElementGrid(Mat screenMat, UIElement element)
             {
+                var x_count = element.XOffset.HasValue ? Math.Ceiling((1f - element.X.Value) / element.XOffset.Value) : 1;
+                var y_count = element.YOffset.HasValue ? Math.Ceiling((1f - element.Y.Value) / element.YOffset.Value) : 1;
+                int y = 0, x = 0;
+                for (y = 0; y < y_count; y++)
+                {
+                    for (x = 0; x < x_count; x++)
+                    {
+                        var dynUiElement = _repository[element.Id, x, y];
+                        DrawElement(screenMat, dynUiElement);
+                    }
+                }
+            }
+
+            OpenCvSharp.Size GetTextSize(string text)
+            {
+                var fontScale = 0.75;
+                var font = HersheyFonts.HersheyComplex;
+                var size = Cv2.GetTextSize(text, font, fontScale, 1, out var _);
+                return size;
+            }
+
+            void DrawElement(Mat screenMat, UIElement uiElement)
+            {
+                var x = (int)(uiElement.X * _window.Width);
+                var y = (int)(uiElement.Y * _window.Height);
+                var w = (int)(uiElement.W * _window.Width);
+                var h = (int)(uiElement.H * _window.Height);
+
+                Cv2.Rectangle(screenMat, new Rect(x, y, w, h), new Scalar(0, 0, 255));
+            }
+
+
+            void DrawText(Mat screenMat, int x, int y, string text)
+            {
+                var fontScale = 0.75;
+                var font = HersheyFonts.HersheyComplex;
                 var size = Cv2.GetTextSize(text, font, fontScale, 1, out var _);
                 var textX = x;
                 if (textX + size.Width > _window.Width)
