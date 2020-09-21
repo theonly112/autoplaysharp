@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp.Core", "Core\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp.Build", "Build\autoplaysharp.Build.csproj", "{61E3533C-7AC3-4335-BD31-5F460A7C21A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp.Bench", "Bench\autoplaysharp.Bench.csproj", "{9839E4D1-E39E-4607-8AD9-D252FD726165}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp.App", "App.Wpf\autoplaysharp.App.csproj", "{7E15FB88-4ABC-47A7-BBAD-9559DD24BB0F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "autoplaysharp.Overlay", "Overlay\autoplaysharp.Overlay.csproj", "{F5823677-B0CA-4CBA-924F-D665C3F5690D}"
@@ -29,15 +27,10 @@ Global
 		{78EF46AC-9A41-4A71-A830-2169708F11A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78EF46AC-9A41-4A71-A830-2169708F11A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78EF46AC-9A41-4A71-A830-2169708F11A1}.Release|Any CPU.Build.0 = Release|Any CPU
-
 		{61E3533C-7AC3-4335-BD31-5F460A7C21A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61E3533C-7AC3-4335-BD31-5F460A7C21A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61E3533C-7AC3-4335-BD31-5F460A7C21A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61E3533C-7AC3-4335-BD31-5F460A7C21A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9839E4D1-E39E-4607-8AD9-D252FD726165}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9839E4D1-E39E-4607-8AD9-D252FD726165}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9839E4D1-E39E-4607-8AD9-D252FD726165}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9839E4D1-E39E-4607-8AD9-D252FD726165}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7E15FB88-4ABC-47A7-BBAD-9559DD24BB0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7E15FB88-4ABC-47A7-BBAD-9559DD24BB0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E15FB88-4ABC-47A7-BBAD-9559DD24BB0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
