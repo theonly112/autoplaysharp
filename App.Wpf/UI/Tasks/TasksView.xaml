@@ -14,39 +14,47 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center">Active:</TextBlock>
-                <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" Text="{Binding Active.Name}"/>
-                <Button VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding Active.Cancel}">Cancel</Button>
-            </StackPanel>
-            <ListView ItemsSource="{Binding Queue}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}">
-                            <TextBlock.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem HorizontalContentAlignment="Stretch" Header="Cancel" Command="{Binding Cancel}"/>
-                                </ContextMenu>
-                            </TextBlock.ContextMenu>
-                        </TextBlock>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <GroupBox Header="Tasks">
+                <StackPanel>
+                    <ComboBox ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" x:Name="_tasksComboBox"/>
+                    <ContentControl Content="{Binding Path=SelectedItem, ElementName=_tasksComboBox}">
+                        <ContentControl.Resources>
+                            <DataTemplate DataType="{x:Type a:AllianceBattleSettingsViewModel}">
+                                <a:AllianceBattleSettings/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type t:TimelineBattleSettingsViewModel}">
+                                <t:TimelineBattleSettings/>
+                            </DataTemplate>
+                        </ContentControl.Resources>
+                    </ContentControl>
+                    <Button Command="{Binding Path=SelectedItem.AddToQueue, ElementName=_tasksComboBox}">Run</Button>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
-
         <StackPanel Grid.Column="1">
-            <ComboBox ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" x:Name="_tasksComboBox"/>
-            <ContentControl Content="{Binding Path=SelectedItem, ElementName=_tasksComboBox}">
-                <ContentControl.Resources>
-                    <DataTemplate DataType="{x:Type a:AllianceBattleSettingsViewModel}">
-                        <a:AllianceBattleSettings/>
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type t:TimelineBattleSettingsViewModel}">
-                        <t:TimelineBattleSettings/>
-                    </DataTemplate>
-                </ContentControl.Resources>
-            </ContentControl>
-            <Button Command="{Binding Path=SelectedItem.AddToQueue, ElementName=_tasksComboBox}">Add</Button>
+            
+            <GroupBox Header="Queue">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center">Active:</TextBlock>
+                        <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" Text="{Binding Active.Name}"/>
+                        <Button VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding Active.Cancel}">Cancel</Button>
+                    </StackPanel>
+                    <ListView ItemsSource="{Binding Queue}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}">
+                                    <TextBlock.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem HorizontalContentAlignment="Stretch" Header="Cancel" Command="{Binding Cancel}"/>
+                                        </ContextMenu>
+                                    </TextBlock.ContextMenu>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
     </Grid>
 </UserControl>

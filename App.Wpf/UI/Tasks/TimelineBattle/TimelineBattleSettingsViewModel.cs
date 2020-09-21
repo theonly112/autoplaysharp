@@ -1,19 +1,31 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
+using autoplaysharp.Contracts.Configuration.Tasks;
 
 namespace autoplaysharp.App.UI.Tasks.TimelineBattle
 {
     internal class TimelineBattleSettingsViewModel : TaskBaseViewModel<Game.Tasks.Missions.TimelineBattle>
     {
-        public TimelineBattleSettingsViewModel(IGame game, IUiRepository repo, ITaskExecutioner taskExecutioner) : base(game, repo, taskExecutioner)
+        private readonly ISettings _settings;
+
+        public TimelineBattleSettingsViewModel(
+            IGame game,
+            IUiRepository repo,
+            ITaskExecutioner taskExecutioner,
+            ISettings settings) : base(game, repo, taskExecutioner)
         {
+            _settings = settings;
         }
 
-        public int TeamIndex { get; set; }
+        public ITimelineBattleSettings Settings
+        {
+            get { return _settings.TimelineBattle; }
+        }
 
         protected override IGameTask CreateTask()
         {
             var task = (Game.Tasks.Missions.TimelineBattle)base.CreateTask();
-            task.Team = TeamIndex + 1;
+            task.Team = Settings.Team;
             return task;
         }
     }

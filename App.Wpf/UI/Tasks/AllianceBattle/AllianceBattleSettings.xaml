@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel>
-        <CheckBox Content="Run Normal Mode?" IsChecked="{Binding RunNormalMode}"/>
-        <CheckBox Content="Run Extreme Mode?" IsChecked="{Binding RunExtremeMode}"/>
+        <CheckBox Content="Run Normal Mode?" IsChecked="{Binding Settings.RunNormalMode}"/>
+        <CheckBox Content="Run Extreme Mode?" IsChecked="{Binding Settings.RunExtremeMode}"/>
     </StackPanel>
 </UserControl>

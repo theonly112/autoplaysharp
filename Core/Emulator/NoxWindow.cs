@@ -7,7 +7,7 @@ namespace autoplaysharp.Core.Emulator
     {
         private IntPtr _noxMainWindow;
         private IntPtr _noxGameAreaHwnd;
-        public NoxWindow()
+        public NoxWindow(string windowName)
         {
             _noxMainWindow = IntPtr.Zero;
             _noxGameAreaHwnd = IntPtr.Zero;
@@ -17,7 +17,7 @@ namespace autoplaysharp.Core.Emulator
                 char[] text = new char[32];
                 User32.GetWindowText(hwnd, text, text.Length);
                 var name = new string(text).TrimEnd('\0');
-                if (_noxMainWindow == IntPtr.Zero && name == "NoxPlayer")
+                if (_noxMainWindow == IntPtr.Zero && name == windowName)
                 {
                     _noxMainWindow = hwnd;
                     return false;
