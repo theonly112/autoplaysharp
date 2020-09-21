@@ -1,4 +1,6 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Errors;
+using autoplaysharp.Core.Helper;
 using autoplaysharp.Game.Tasks;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,6 +14,8 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         public LegendaryBattle(IGame game, IUiRepository repository) : base(game, repository)
         {
         }
+
+        public string BattleName { get; set; } = "MARVEL'S AVENGERS: ENDGAME";
 
         protected override async Task RunCore(CancellationToken token)
         {
@@ -28,8 +32,6 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 return;
             }
 
-            var missionToRun = "MARVEL'S AVENGERS: ENDGAME";
-
             await Task.Delay(1000);
 
             bool found = false;
@@ -38,7 +40,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             {
                 var mission = Repository["LEGENDARY_BATTLE_NAME_DYN", 0, y];
                 var missionText = Game.GetText(mission);
-                if (missionText == missionToRun)
+                if (missionText.Similarity(BattleName) > 0.9) // Accept small changes. TODO: figure out if this is sufficent.
                 {
                     found = true;
                     Game.Click(mission);
@@ -48,12 +50,14 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             if(!found)
             {
-                Logger.LogError($"Failed to find mission {missionToRun}.");
+                Logger.LogError($"Failed to find mission {BattleName}.");
+                Game.OnError(new ElementNotFoundError(Repository["LEGENDARY_BATTLE_NAME_DYN"]));
             }
 
             await Task.Delay(1000);
 
             Game.Click("LEGENDARY_BATTLE_NORMAL_MODE_BUTTON");
+            Logger.LogDebug("Starting normal mode");
 
             await Task.Delay(1000);
 
@@ -62,28 +66,40 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             if (!await WaitUntilVisible(enter))
             {
                 Logger.LogError("Enter button did not appear");
+                Game.OnError(new ElementNotFoundError(enter));
                 return;
             }
 
             Game.Click(enter);
+            Logger.LogDebug("Entering mission");
+
 
             for (int i = 0; i < status.Available; i++)
             {
+                Logger.LogDebug($"Running mission (1/{status.Available})");
+
                 await Task.Delay(3000);
 
+                Logger.LogDebug("Starting mission.");
                 Game.Click("LEGENDARY_BATTLE_MISSION_START");
-
+                
+                
+                Logger.LogDebug("Waiting for skip into button");
+                
                 if (await WaitUntilVisible("LEGENDARY_BATTLE_MISSION_SKIP_INTRO", 10))
                 {
                     Game.Click("LEGENDARY_BATTLE_MISSION_SKIP_INTRO");
                 }
+
+                Logger.LogDebug("Starting auto fight");
 
                 Func<bool> end = () => Game.IsVisible("LEGENDARY_BATTLE_MISSION_SUCCESS");
                 var fightBot = new AutoFight(Game, Repository, end);
                 await fightBot.Run(token);
 
                 await Task.Delay(1000);
-
+                
+                Logger.LogDebug("Starting auto fight finished. Repeating run.");
                 Game.Click("LEGENDARY_BATTLE_ENDSCREEN_REPEAT_RUN");
             }
         }
