@@ -63,6 +63,8 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Game.Click(UIds.WBI_HERO_START_MISSION);
 
                 await Fight(token);
+
+                await HandleHeroicQuestNotice();
             }
         }
 

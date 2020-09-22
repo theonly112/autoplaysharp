@@ -44,4 +44,8 @@ partial class UIds
 	/// HEROIC_QUEST_FINISHED_NOTICE
 	/// </summary>
 	public const string HEROIC_QUEST_FINISHED_NOTICE="HEROIC_QUEST_FINISHED_NOTICE";
+	/// <summary>
+	/// HEROIC_QUEST_FINISHED_NOTICE_OK
+	/// </summary>
+	public const string HEROIC_QUEST_FINISHED_NOTICE_OK="HEROIC_QUEST_FINISHED_NOTICE_OK";
 }
