@@ -10,5 +10,7 @@ namespace autoplaysharp.Contracts.Configuration
         EmulatorType EmulatorType { get; set; }
         ITimelineBattleSettings TimelineBattle { get; }
         IAllianceBattleSettings AllianceBattle { get; }
+        IDimensionMissionSettings DimensionMission { get; }
+
     }
 }

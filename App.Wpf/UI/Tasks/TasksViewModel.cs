@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.App.UI.Tasks.AllianceBattle;
+using autoplaysharp.App.UI.Tasks.DimensionMissions;
 using autoplaysharp.App.UI.Tasks.TimelineBattle;
 using autoplaysharp.Contracts;
 using autoplaysharp.Core.Game.Tasks.Missions;
@@ -46,7 +47,7 @@ namespace autoplaysharp.App.UI.Tasks
             typeof(AllianceBattleSettingsViewModel),
             typeof(TaskBaseViewModel<CoopMission>),
             typeof(TaskBaseViewModel<DangerRoom>),
-            typeof(TaskBaseViewModel<DimensionMission>),
+            typeof(DimensionMissionSettingsViewModel),
             typeof(TaskBaseViewModel<HeroicQuest>),
             typeof(TaskBaseViewModel<LegendaryBattle>),
             typeof(TaskBaseViewModel<SquadBattle>),

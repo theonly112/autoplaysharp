@@ -111,11 +111,10 @@
   },
   {
     "Id": "DIMENSION_MISSION_REWARD_COLLECT_BUTTON",
-    "X": 0.44577625,
-    "Y": 0.17038539,
-    "W": 0.11130139,
-    "H": 0.057809338,
-    "Text": "Acquired"
+    "X": 0.928125,
+    "Y": 0.87777776,
+    "W": 0.051562488,
+    "H": 0.08055556
   },
   {
     "Id": "DIMENSION_MISSION_REWARD_ACQUIRED_NOTICE_OK",

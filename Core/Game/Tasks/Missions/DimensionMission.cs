@@ -16,8 +16,9 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         /*
          * TODO: allow settings:
          * Use clear tickets?
-         * Collect specific amount of rewards.
          */
+
+        public int CollectRewardCount { get; set; } = 5;
 
         protected override async Task RunCore(CancellationToken token)
         {
@@ -34,18 +35,35 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 return;
             }
 
+            if(CollectRewardCount > missionStatus.Available)
+            {
+                Logger.LogError($"Cannot collect {CollectRewardCount}. Only {missionStatus.Available} left.");
+            }
+
             await Task.Delay(1000);
 
-            var statusText = Game.GetText(UIds.DIMENSION_MISSION_REWARD_STATUS);
-            var rewardStatus = statusText.TryParseStatus();
-            if(!rewardStatus.Success)
+            if(!await CollectRewards())
             {
-                Logger.LogError($"Failed to parse reward status: {statusText}");
+                Logger.LogError("Collection rewards failed");
                 return;
             }
 
-            // TODO: Check if reward availble?
+            if (CollectRewardCount == 0)
+            {
+                Logger.LogInformation("Collected required rewards. Stopping");
+                return;
+            }
 
+            while (CollectRewardCount > 0)
+            {
+                await RunDimensionMissions();
+
+                await CollectRewards();
+            }
+        }
+
+        private async Task RunDimensionMissions()
+        {
             Game.Click(UIds.DIMENSION_MISSION_READY_BUTTON);
 
             await ClickWhenVisible(UIds.DIMENSION_MISSION_CLEAR_BUTTON);
@@ -63,12 +81,12 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             await Task.Delay(5000);
 
-            statusText = Game.GetText(UIds.DIMENSION_MISSION_CLEAR_TICKET_ENDSCREEN_STATUS);
-            rewardStatus = statusText.TryParseStatus();
+            var statusText = Game.GetText(UIds.DIMENSION_MISSION_CLEAR_TICKET_ENDSCREEN_STATUS);
+            var rewardStatus = statusText.TryParseStatus();
 
-            while(rewardStatus.Current < rewardStatus.Max)
+            while (rewardStatus.Current < rewardStatus.Max)
             {
-                Logger.LogDebug("Running 1x Dimension Mission");
+                Logger.LogDebug("Running 1x Dimension Mission.");
                 Logger.LogDebug($"Status is: {rewardStatus}");
                 Game.Click(UIds.DIMENSION_MISSION_CLEAR_TICKET_ENDSCREEN_USE_1_TICKET);
                 await Task.Delay(5000);
@@ -81,18 +99,35 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             Game.Click(UIds.DIMENSION_MISSION_BACK_BUTTON);
             await Task.Delay(1000);
+        }
 
-            Game.Click(UIds.DIMENSION_MISSION_REWARD_COLLECT_BUTTON);
-            await Task.Delay(2000);
-
-            if(!await WaitUntilVisible(UIds.DIMENSION_MISSION_REWARD_ACQUIRED_NOTICE))
+        private async Task<bool> CollectRewards()
+        {
+            var statusText = Game.GetText(UIds.DIMENSION_MISSION_REWARD_STATUS);
+            var rewardStatus = statusText.TryParseStatus();
+            while (rewardStatus.Current >= rewardStatus.Max && CollectRewardCount > 0)
             {
-                Logger.LogError("Reward notice did not show up");
-                return;
+                Game.Click(UIds.DIMENSION_MISSION_REWARD_COLLECT_BUTTON);
+                await Task.Delay(2000);
+
+                if (!await WaitUntilVisible(UIds.DIMENSION_MISSION_REWARD_ACQUIRED_NOTICE))
+                {
+                    Logger.LogError("Reward notice did not show up");
+                    return false;
+                }
+                else
+                {
+                    CollectRewardCount--;
+                    Logger.LogInformation($"Collected Dimension Mission reward. Left to do: {CollectRewardCount}");
+                    Game.Click(UIds.DIMENSION_MISSION_REWARD_ACQUIRED_NOTICE_OK);
+                    await Task.Delay(1000);
+                    await HandleHeroicQuestNotice();
+                }
+
+                statusText = Game.GetText(UIds.DIMENSION_MISSION_REWARD_STATUS);
+                rewardStatus = statusText.TryParseStatus();
             }
-            await Task.Delay(1000);
-            Game.Click(UIds.DIMENSION_MISSION_REWARD_ACQUIRED_NOTICE_OK);
-            await Task.Delay(1000);
+            return true;
         }
     }
 }

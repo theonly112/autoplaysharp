@@ -99,6 +99,18 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 case var s when questInfo.StartsWith("[ENCHANTED URU]"):
                     await HandleUruQuest(questInfo, completionStatus, token);
                     break;
+                case var s when questInfo.StartsWith("Beat World Boss"):
+                    await HandleWorldBossQuest(questInfo, completionStatus, token);
+                    break;
+                case var s when questInfo.StartsWith("[ISO-8]"):
+                    await HandleIso8Quest(questInfo, completionStatus, token);
+                    break;
+                case var s when questInfo.StartsWith("[DANGER ROOM]"):
+                    await HandleDangerRoomQuest(questInfo, completionStatus, token);
+                    break;
+                case var s when new Regex(@"Use .* Energy").IsMatch(questInfo):
+                    await HandleUseEnergQuest(questInfo, completionStatus, token);
+                    break;
             }
 
             await Task.Delay(1000);
@@ -110,6 +122,38 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             // TODO: right here we could loop.
 
+        }
+
+        private Task HandleUseEnergQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        {
+            // TODO: run some mission to spend energy...
+            return Task.CompletedTask;
+        }
+
+        private async Task HandleDangerRoomQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        {
+            if(questInfo.Contains("Participate"))
+            {
+                // Text like: "[DANGER ROOM] Participate 1 time
+                var dangerRoom = new DangerRoom(Game, Repository);
+                // TODO: set options like how often to run.
+                await dangerRoom.Run(token);
+            }
+        }
+
+        private async Task HandleIso8Quest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        {
+            if(questInfo.Contains("Enhance"))
+            {
+                var enhance = new EnhanceIso8(Game, Repository);
+                await enhance.Run(token);
+            }
+        }
+
+        private Task HandleWorldBossQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        {
+            // TODO: run world boss...
+            return Task.CompletedTask;
         }
 
         private async Task HandleUruQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
@@ -153,6 +197,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 // TODO: Run dimension mission until we can get contribution reward 1 time.
 
                 var dimensionMission = new DimensionMission(Game, Repository);
+                dimensionMission.CollectRewardCount = 1;
                 await dimensionMission.Run(token);
             }
         }

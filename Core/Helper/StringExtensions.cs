@@ -5,7 +5,7 @@ namespace autoplaysharp.Core.Helper
 {
     internal static class StringExtensions
     {
-        internal static Regex StatusRegex = new Regex(@"(?<Current>\d*)/(?<Max>\d*)");
+        internal static Regex StatusRegex = new Regex(@"(?<Current>\d*)\s*/\s*(?<Max>\d*)");
 
         /// <summary>
         /// Tries to parse the content of a string like this 'X/Y'

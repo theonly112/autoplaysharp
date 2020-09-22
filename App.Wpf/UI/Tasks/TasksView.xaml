@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:a="clr-namespace:autoplaysharp.App.UI.Tasks.AllianceBattle"
              xmlns:t="clr-namespace:autoplaysharp.App.UI.Tasks.TimelineBattle"
+             xmlns:dimension="clr-namespace:autoplaysharp.App.UI.Tasks.DimensionMissions"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Path=TasksViewModel, Source={StaticResource Locator}}">
@@ -24,6 +25,9 @@
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type t:TimelineBattleSettingsViewModel}">
                                 <t:TimelineBattleSettings/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type dimension:DimensionMissionSettingsViewModel}">
+                                <dimension:DimensionMissionSettings/>
                             </DataTemplate>
                         </ContentControl.Resources>
                     </ContentControl>
