@@ -44,4 +44,8 @@ partial class UIds
 	/// MAIN_MENU_HOME_BUTTON_IMAGE
 	/// </summary>
 	public const string MAIN_MENU_HOME_BUTTON_IMAGE="MAIN_MENU_HOME_BUTTON_IMAGE";
+	/// <summary>
+	/// MAIN_MENU_INVENTORY_BUTTON
+	/// </summary>
+	public const string MAIN_MENU_INVENTORY_BUTTON="MAIN_MENU_INVENTORY_BUTTON";
 }

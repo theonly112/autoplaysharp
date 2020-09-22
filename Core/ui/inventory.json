@@ -1,0 +1,65 @@
+[
+  {
+    "Id": "INVENTORY_TAB_MATERIAL",
+    "X": 0.684375,
+    "Y": 0.14629629,
+    "W": 0.09062499,
+    "H": 0.04166667,
+    "Text": "MATERIAL"
+  },
+  {
+    "Id": "INVENTORY_TAB_MATERIAL_ITEM_GRID",
+    "X": 0.055208333,
+    "Y": 0.25277779,
+    "W": 0.09166666,
+    "H": 0.16388887,
+    "XOffset": 0.097,
+    "YOffset": 0.17431192
+  },
+  {
+    "Id": "INVENTORY_TAB_MATERIAL_SELECTED_ITEM_NAME",
+    "X": 0.6625,
+    "Y": 0.48796296,
+    "W": 0.28958333,
+    "H": 0.054629624
+  },
+  {
+    "Id": "INVENTORY_TAB_MATERIAL_URU_COMBINE_ALL",
+    "X": 0.7140625,
+    "Y": 0.89444447,
+    "W": 0.108854175,
+    "H": 0.059259236,
+    "Text": "Combine All",
+    "Scale": 2
+  },
+  {
+    "Id": "INVENTORY_TAB_MATERIAL_URU_COMBINE_X_TIMES_BUTTON",
+    "X": 0.58020836,
+    "Y": 0.8046296,
+    "W": 0.14635414,
+    "H": 0.05185187
+  },
+  {
+    "Id": "INVENTORY_TAB_MATERIAL_URU_COMBINE_SKIP",
+    "X": 0.45260417,
+    "Y": 0.8842593,
+    "W": 0.094270825,
+    "H": 0.048148096,
+    "Text": "Tap to skip"
+  },
+  {
+    "Id": "INVENTORY_TAB_MATERIAL_URU_COMBINE_OK",
+    "X": 0.47916666,
+    "Y": 0.9037037,
+    "W": 0.04583332,
+    "H": 0.052777767,
+    "Text": "OK"
+  },
+  {
+    "Id": "INVENTORY_TAB_MATERIAL_URU_COMBINE_ALL_CANCEL",
+    "X": 0.31510416,
+    "Y": 0.8046296,
+    "W": 0.077604175,
+    "H": 0.05185187
+  }
+]

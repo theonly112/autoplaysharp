@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Core.Game.Tasks.Inventory;
 using autoplaysharp.Core.Helper;
 using autoplaysharp.Game.Tasks;
 using autoplaysharp.Game.Tasks.Missions;
@@ -95,6 +96,9 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 case var s when questInfo.StartsWith("[CUSTOM GEAR]"):
                     await HandleCustomGearQuest(questInfo, completionStatus, token);
                     break;
+                case var s when questInfo.StartsWith("[ENCHANTED URU]"):
+                    await HandleUruQuest(questInfo, completionStatus, token);
+                    break;
             }
 
             await Task.Delay(1000);
@@ -106,6 +110,15 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             // TODO: right here we could loop.
 
+        }
+
+        private async Task HandleUruQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        {
+            if(questInfo.Similarity("[ENCHANTED URU] Combine 3 times") > 0.8)
+            {
+                var upgradeUru = new UpgradeUru(Game, Repository);
+                await upgradeUru.Run(token);
+            }
         }
 
         private async Task HandleCustomGearQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
