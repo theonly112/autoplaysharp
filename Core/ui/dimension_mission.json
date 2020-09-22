@@ -74,7 +74,6 @@
     "Y": 0.39553753,
     "W": 0.053653,
     "H": 0.03955376,
-    "Text": "12/60"
   },
   {
     "Id": "DIMENSION_MISSION_CLEAR_TICKET_ENDSCREEN_USE_1_TICKET",
@@ -122,7 +121,7 @@
     "Y": 0.76166326,
     "W": 0.041666627,
     "H": 0.04665315,
-    "Text": "0K"
+    "Text": "OK"
   },
   {
     "Id": "DIMENSION_MISSION_REWARD_ACQUIRED_NOTICE",
