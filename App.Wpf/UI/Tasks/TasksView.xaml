@@ -6,10 +6,21 @@
              xmlns:a="clr-namespace:autoplaysharp.App.UI.Tasks.AllianceBattle"
              xmlns:t="clr-namespace:autoplaysharp.App.UI.Tasks.TimelineBattle"
              xmlns:dimension="clr-namespace:autoplaysharp.App.UI.Tasks.DimensionMissions"
+             xmlns:coop="clr-namespace:autoplaysharp.App.UI.Tasks.CoopMission"
+             xmlns:danger="clr-namespace:autoplaysharp.App.UI.Tasks.DangerRoom"
+             xmlns:heroic="clr-namespace:autoplaysharp.App.UI.Tasks.HeroicQuest"
+             xmlns:legendary="clr-namespace:autoplaysharp.App.UI.Tasks.LegendaryBattle"
+             xmlns:squad="clr-namespace:autoplaysharp.App.UI.Tasks.SquadBattle"
+             xmlns:wbi="clr-namespace:autoplaysharp.App.UI.Tasks.WorldBossInvasion"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Path=TasksViewModel, Source={StaticResource Locator}}">
     <Grid>
+        <Grid.Resources>
+            <DataTemplate x:Key="PlaceHolder">
+                <TextBlock>Work in progress.</TextBlock>
+            </DataTemplate>
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -28,6 +39,24 @@
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type dimension:DimensionMissionSettingsViewModel}">
                                 <dimension:DimensionMissionSettings/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type coop:CoopMissionSettingsViewModel}">
+                                <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type danger:DangerRoomSettingsViewModel}">
+                                <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type heroic:HeroicQuestSettingsViewModel}">
+                                <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type legendary:LegendaryBattleSettingsViewModel}">
+                                <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type squad:SquadBattleSettingsViewModel}">
+                                <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type wbi:WorldBossInvasionSettingsViewModel}">
+                                <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
                             </DataTemplate>
                         </ContentControl.Resources>
                     </ContentControl>

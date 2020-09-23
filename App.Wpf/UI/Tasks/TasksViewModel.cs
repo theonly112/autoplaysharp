@@ -1,6 +1,12 @@
 ﻿using autoplaysharp.App.UI.Tasks.AllianceBattle;
+using autoplaysharp.App.UI.Tasks.CoopMission;
+using autoplaysharp.App.UI.Tasks.DangerRoom;
 using autoplaysharp.App.UI.Tasks.DimensionMissions;
+using autoplaysharp.App.UI.Tasks.HeroicQuest;
+using autoplaysharp.App.UI.Tasks.LegendaryBattle;
+using autoplaysharp.App.UI.Tasks.SquadBattle;
 using autoplaysharp.App.UI.Tasks.TimelineBattle;
+using autoplaysharp.App.UI.Tasks.WorldBossInvasion;
 using autoplaysharp.Contracts;
 using autoplaysharp.Core.Game.Tasks.Missions;
 using autoplaysharp.Core.Game.Tasks.Missions.DeluxeEpicQuests;
@@ -45,14 +51,14 @@ namespace autoplaysharp.App.UI.Tasks
         private static readonly Type[] _viewModelTypes =
         {
             typeof(AllianceBattleSettingsViewModel),
-            typeof(TaskBaseViewModel<CoopMission>),
-            typeof(TaskBaseViewModel<DangerRoom>),
+            typeof(CoopMissionSettingsViewModel),
+            typeof(DangerRoomSettingsViewModel),
             typeof(DimensionMissionSettingsViewModel),
-            typeof(TaskBaseViewModel<HeroicQuest>),
-            typeof(TaskBaseViewModel<LegendaryBattle>),
-            typeof(TaskBaseViewModel<SquadBattle>),
+            typeof(HeroicQuestSettingsViewModel),
+            typeof(LegendaryBattleSettingsViewModel),
+            typeof(SquadBattleSettingsViewModel),
             typeof(TimelineBattleSettingsViewModel),
-            typeof(TaskBaseViewModel<WorldBossInvasion>),
+            typeof(WorldBossInvasionSettingsViewModel),
 
             // Epic Quest
             typeof(TaskBaseViewModel<StupidXMen>),
