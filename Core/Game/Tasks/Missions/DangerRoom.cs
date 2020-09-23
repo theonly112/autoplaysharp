@@ -77,7 +77,8 @@ namespace autoplaysharp.Game.Tasks.Missions
 
                 await WaitForCharacterSelection();
 
-                await SelectCharacter();
+                // TODO: for now we can skip character selection. Game does it for us.
+                //await SelectCharacter();
 
                 if (!await WaitUntilVisible(UIds.DANGER_ROOM_WAITING_FOR_HEROES, 60, 0.2f))
                 {
