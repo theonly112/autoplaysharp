@@ -1,14 +1,16 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Errors;
 using autoplaysharp.Game.Tasks;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace autoplaysharp.Core.Game.Tasks.Inventory
 {
-    internal class UpgradeUru : GameTask
+    internal class CombineUru : GameTask
     {
-        public UpgradeUru(IGame game, IUiRepository repository) : base(game, repository)
+        public CombineUru(IGame game, IUiRepository repository) : base(game, repository)
         {
         }
 
@@ -41,24 +43,41 @@ namespace autoplaysharp.Core.Game.Tasks.Inventory
             Game.Click(UIds.INVENTORY_TAB_MATERIAL_URU_COMBINE_X_TIMES_BUTTON);
             await Task.Delay(1000);
 
-            if (Game.IsVisible(UIds.INVENTORY_TAB_MATERIAL_URU_COMBINE_SKIP))
-            {
-                Logger.LogDebug("Skipping combine animations.");
-                Game.Click(UIds.INVENTORY_TAB_MATERIAL_URU_COMBINE_SKIP);
-                await Task.Delay(1000);
-            }
+            Logger.LogDebug("Skipping combine animations.");
+            await ClickWhenVisible(UIds.INVENTORY_TAB_MATERIAL_URU_COMBINE_SKIP);
+            await Task.Delay(1000);
 
-            // TODO: somewhere here there should be a notice regarding heroic quests.
 
             Logger.LogDebug("Accepting combine result");
-            Game.Click(UIds.INVENTORY_TAB_MATERIAL_URU_COMBINE_OK);
+            var acceptedText = new[] { "OK", "0K", "oK" }; // Doesnt reliably dected OK.
+            if(!await WaitUntil(() => acceptedText.Any(x => Game.GetText(UIds.INVENTORY_TAB_MATERIAL_URU_COMBINE_OK) == x)))
+            {
+                Logger.LogError("Failed to accept combine result");
+                Game.OnError(new ElementNotFoundError(Repository[UIds.INVENTORY_TAB_MATERIAL_URU_COMBINE_OK]));
+                return;
+            }
+            else
+            {
+                Game.Click(UIds.INVENTORY_TAB_MATERIAL_URU_COMBINE_OK);
+            }
 
             await Task.Delay(1000);
 
             Logger.LogDebug("Closing combine dialog");
-            Game.Click(UIds.INVENTORY_TAB_MATERIAL_URU_COMBINE_ALL_CANCEL);
+            if(!await ClickWhenVisible(UIds.INVENTORY_TAB_MATERIAL_URU_COMBINE_ALL_CANCEL))
+            {
+                Logger.LogError("Failed to close combine dialog.");
+                Game.OnError(new ElementNotFoundError(Repository[UIds.INVENTORY_TAB_MATERIAL_URU_COMBINE_ALL_CANCEL]));
+                return;
+            }
 
             await Task.Delay(1000);
+            await HandleHeroicQuestNotice();
+
+            if(!await GoToMainScreen())
+            {
+                Logger.LogError("Failed to go back to main screen.");
+            }
         }
 
         private async Task FindUru()

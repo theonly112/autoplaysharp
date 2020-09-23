@@ -145,16 +145,17 @@ namespace autoplaysharp.Game.Tasks
 
         protected async Task HandleEndNotices()
         {
+            await Task.Delay(2000); // Give it some time for end messages to appear.
             if(Game.IsVisible(UIds.CHALLENGES_DAILY_NOTIFICATION_CHALLLENGES))
             {
+                // Collect daily challenge rewards?
                 Game.Click(UIds.CHALLENGES_DAILY_NOTIFICATION_CHALLLENGES_OK);
                 await Task.Delay(1000);
             }
 
             if (Game.IsVisible(UIds.HEROIC_QUEST_FINISHED_NOTICE))
             {
-                Game.Click(UIds.HEROIC_QUEST_FINISHED_NOTICE_OK);
-                await Task.Delay(1000);
+                await HandleHeroicQuestNotice();
             }
         }
 
@@ -164,8 +165,10 @@ namespace autoplaysharp.Game.Tasks
             if (await WaitUntilVisible(UIds.HEROIC_QUEST_FINISHED_NOTICE, timeout))
             {
                 Logger.LogDebug("Heroic quest notice appeared. Closing it.");
-                Game.Click(UIds.HEROIC_QUEST_FINISHED_NOTICE_OK);
-                await Task.Delay(2000);
+                Game.Click(UIds.HEROIC_QUEST_FINISHED_NOTICE);
+                await ClickWhenVisible(UIds.HEROIC_QUEST_QUEST_INFO_ACQUIRE);
+                await ClickWhenVisible(UIds.HEROIC_QUEST_TAB_THE_SCREEN_TO_CONTINUE);
+                await Task.Delay(1000);
             }
             else
             {

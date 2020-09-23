@@ -16,6 +16,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         }
 
         public string BattleName { get; set; } = "MARVEL'S AVENGERS: ENDGAME";
+        public int ClearCount { get; internal set; } = 5;
 
         protected override async Task RunCore(CancellationToken token)
         {
@@ -30,6 +31,15 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             {
                 Logger.LogInformation("Already completed");
                 return;
+            }
+
+            if(ClearCount > status.Available)
+            {
+                Logger.LogError($"Cannot run {ClearCount} times. Only {status.Available} available");
+            }
+            else
+            {
+                Logger.LogDebug($"Trying to clear legendary battle {ClearCount} times.");
             }
 
             await Task.Delay(1000);
@@ -74,7 +84,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             Logger.LogDebug("Entering mission");
 
 
-            for (int i = 0; i < status.Available; i++)
+            for (int i = 0; i < ClearCount; i++)
             {
                 Logger.LogDebug($"Running mission (1/{status.Available})");
 
@@ -102,6 +112,9 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Logger.LogDebug("Starting auto fight finished. Repeating run.");
                 Game.Click("LEGENDARY_BATTLE_ENDSCREEN_REPEAT_RUN");
             }
+
+            // Handle heroic quest notices.
+            await GoToMainScreen();
         }
     }
 }

@@ -25,6 +25,10 @@ partial class UIds
 	/// </summary>
 	public const string HEROIC_QUEST_TAB_THE_SCREEN="HEROIC_QUEST_TAB_THE_SCREEN";
 	/// <summary>
+	/// HEROIC_QUEST_TAB_THE_SCREEN_TO_CONTINUE
+	/// </summary>
+	public const string HEROIC_QUEST_TAB_THE_SCREEN_TO_CONTINUE="HEROIC_QUEST_TAB_THE_SCREEN_TO_CONTINUE";
+	/// <summary>
 	/// HEROIC_QUEST_QUEST_INFO
 	/// </summary>
 	public const string HEROIC_QUEST_QUEST_INFO="HEROIC_QUEST_QUEST_INFO";

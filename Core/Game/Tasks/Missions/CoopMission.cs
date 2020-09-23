@@ -20,14 +20,19 @@ namespace autoplaysharp.Game.Tasks.Missions
          
         protected override async Task RunCore(CancellationToken token)
         {
-            if(await StartContentBoardMission("CO-OP PLAY") == null)
+            if (await StartContentBoardMission("CO-OP PLAY") == null)
             {
                 return;
             }
 
             await Task.Delay(2000);
+            await RunCoopMissions(token);
+            await GoToMainScreen();
+        }
 
-            while(true)
+        private async Task RunCoopMissions(CancellationToken token)
+        {
+            while (true)
             {
                 var text = Game.GetText(UIds.COOP_REWARD_COUNT);
                 var status = text.TryParseStatus();
@@ -53,7 +58,7 @@ namespace autoplaysharp.Game.Tasks.Missions
                     await Task.Delay(5000);
                 }
 
-                if(Game.IsVisible(UIds.COOP_AUTO_REPEAT_IMAGE))
+                if (Game.IsVisible(UIds.COOP_AUTO_REPEAT_IMAGE))
                 {
                     Game.Click(UIds.COOP_AUTO_REPEAT_IMAGE);
                 }
@@ -70,7 +75,7 @@ namespace autoplaysharp.Game.Tasks.Missions
                 }
                 Game.Click(UIds.COOP_START);
 
-                if(!await HandleStartNotices())
+                if (!await HandleStartNotices())
                 {
                     Logger.LogError("Unable to handle mission start notice.");
                     return;
@@ -78,7 +83,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
                 if (!await WaitUntilVisible(UIds.COOP_ENDSCREEN_MISSION_SUCCESS, token, 60, 1))
                 {
-                    if(Game.IsVisible(UIds.COOP_REWARD_NOTICE_DAILY_LIMIT))
+                    if (Game.IsVisible(UIds.COOP_REWARD_NOTICE_DAILY_LIMIT))
                     {
                         Game.Click(UIds.COOP_REWARD_NOTICE_DAILY_LIMIT_OK);
                         await Task.Delay(2000);
@@ -95,9 +100,6 @@ namespace autoplaysharp.Game.Tasks.Missions
 
                 await Task.Delay(5000);
             }
-
-            await GoToMainScreen();
-
         }
     }
 }

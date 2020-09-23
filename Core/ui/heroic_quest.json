@@ -47,6 +47,14 @@
     "Text": "TAP THE SCREEN."
   },
   {
+    "Id": "HEROIC_QUEST_TAB_THE_SCREEN_TO_CONTINUE",
+    "X": 0.38802084,
+    "Y": 0.89444447,
+    "W": 0.22864583,
+    "H": 0.04444444,
+    "Text": "TAP THE SCREEN TO CONTINUE."
+  },
+  {
     "Id": "HEROIC_QUEST_QUEST_INFO",
     "X": 0.4261745,
     "Y": 0.4304175,

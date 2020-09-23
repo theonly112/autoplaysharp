@@ -59,6 +59,8 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 await Task.Delay(1000, token);
             }
 
+            // TODO: not sure if this it the correct.
+            // Should this also be HEROIC_QUEST_TAB_THE_SCREEN_TO_CONTINUE?
             if (Game.IsVisible(UIds.HEROIC_QUEST_TAB_THE_SCREEN))
             {
                 Logger.LogDebug("Taping screen to continue.");
@@ -66,13 +68,12 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 await Task.Delay(1000, token);
             }
 
-            if(Game.IsVisible(UIds.HEROIC_QUEST_QUEST_INFO_ACQUIRE))
+            if (Game.IsVisible(UIds.HEROIC_QUEST_QUEST_INFO_ACQUIRE))
             {
                 Logger.LogDebug("Attempting to acquire heroic quest reward.");
                 Game.Click(UIds.HEROIC_QUEST_QUEST_INFO_ACQUIRE);
                 await Task.Delay(1000, token);
                 await TabToContinue(token);
-
             }
 
             var questInfo = Game.GetText(UIds.HEROIC_QUEST_QUEST_INFO);
@@ -111,17 +112,23 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 case var s when new Regex(@"Use .* Energy").IsMatch(questInfo):
                     await HandleUseEnergQuest(questInfo, completionStatus, token);
                     break;
+                case var s when questInfo.StartsWith("[LEGENDARY BATTLE]"):
+                    await HandleLegendaryBattleQuest(questInfo, completionStatus, token);
+                    break;
+                default:
+                    Logger.LogError($"Unhandled heroic quest: {questInfo}");
+                    break;
             }
 
-            await Task.Delay(1000);
-            await ClickWhenVisible(UIds.HEROIC_QUEST_FINISHED_NOTICE);
-            await Task.Delay(2000);
-            await ClickWhenVisible(UIds.HEROIC_QUEST_QUEST_INFO_ACQUIRE);
-            await Task.Delay(1000);
-            Game.Click(UIds.HEROIC_QUEST_TAB_THE_SCREEN);
-
             // TODO: right here we could loop.
+        }
 
+        private async Task HandleLegendaryBattleQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        {
+            Logger.LogDebug("Running legendary battle to complete heroic quest.");
+            var legendaryBattle = new LegendaryBattle(Game, Repository);
+            legendaryBattle.ClearCount = completionStatus.Max - completionStatus.Current;
+            await legendaryBattle.Run(token);
         }
 
         private Task HandleUseEnergQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
@@ -148,10 +155,20 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 var enhance = new EnhanceIso8(Game, Repository);
                 await enhance.Run(token);
             }
+            else if(questInfo.Contains("Combine"))
+            {
+                var combine = new CombineIso8(Game, Repository);
+                await combine.Run(token);
+            }
         }
 
         private Task HandleWorldBossQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
         {
+            if(questInfo.Contains("Participate"))
+            {
+                // TODO: dont really run world boss. just exit immediatly.
+            }
+
             // TODO: run world boss...
             return Task.CompletedTask;
         }
@@ -160,7 +177,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         {
             if(questInfo.Similarity("[ENCHANTED URU] Combine 3 times") > 0.8)
             {
-                var upgradeUru = new UpgradeUru(Game, Repository);
+                var upgradeUru = new CombineUru(Game, Repository);
                 await upgradeUru.Run(token);
             }
         }
@@ -204,10 +221,10 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
         private async Task TabToContinue(CancellationToken token)
         {
-            if (Game.IsVisible(UIds.HEROIC_QUEST_TAB_THE_SCREEN))
+            if (Game.IsVisible(UIds.HEROIC_QUEST_TAB_THE_SCREEN_TO_CONTINUE))
             {
                 Logger.LogDebug("Taping screen to continue.");
-                Game.Click(UIds.HEROIC_QUEST_TAB_THE_SCREEN);
+                Game.Click(UIds.HEROIC_QUEST_TAB_THE_SCREEN_TO_CONTINUE);
                 await Task.Delay(1000, token);
             }
         }
