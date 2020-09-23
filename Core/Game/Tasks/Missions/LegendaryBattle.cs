@@ -36,6 +36,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             if(ClearCount > status.Available)
             {
                 Logger.LogError($"Cannot run {ClearCount} times. Only {status.Available} available");
+                return;
             }
             else
             {

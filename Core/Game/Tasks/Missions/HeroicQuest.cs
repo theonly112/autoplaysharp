@@ -115,12 +115,22 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 case var s when questInfo.StartsWith("[LEGENDARY BATTLE]"):
                     await HandleLegendaryBattleQuest(questInfo, completionStatus, token);
                     break;
+                case var s when questInfo.StartsWith("[TIMELINE BATTLE"):
+                    await HandleTimelineBattle(questInfo, completionStatus, token);
+                    break;
                 default:
                     Logger.LogError($"Unhandled heroic quest: {questInfo}");
                     break;
             }
 
             // TODO: right here we could loop.
+        }
+
+        private async Task HandleTimelineBattle(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        {
+            var timelineBattle = new TimelineBattle(Game, Repository);
+            // TODO: settings?!?!?!
+            await timelineBattle.Run(token);
         }
 
         private async Task HandleLegendaryBattleQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
