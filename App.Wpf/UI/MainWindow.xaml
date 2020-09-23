@@ -8,8 +8,8 @@
         xmlns:tasks="clr-namespace:autoplaysharp.App.UI.Tasks"
         xmlns:debug="clr-namespace:autoplaysharp.App.UI.DebugView"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-        DataContext="{Binding Path=MainViewModel, Source={StaticResource Locator}}">
+        Title="autoplay#" Height="450" Width="800"
+        DataContext="{Binding Path=MainViewModel, Source={StaticResource Locator}}" Icon="/Icon/autoplay.png">
     <Grid>
         <TabControl>
             <TabItem Header="Tasks">

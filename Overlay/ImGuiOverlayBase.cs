@@ -17,9 +17,6 @@ namespace autoplaysharp.Overlay
         private static ImGuiController _controller;
         protected readonly IEmulatorWindow NoxWindow;
 
-        [DllImport("dwmapi.dll")]
-        static extern void DwmExtendFrameIntoClientArea(IntPtr hWnd, ref int[] pMargins);
-
         [DllImport("user32.dll")]
         static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
 
@@ -31,11 +28,10 @@ namespace autoplaysharp.Overlay
 
         private void Setup()
         {
-            _window = VeldridStartup.CreateWindow(new WindowCreateInfo(NoxWindow.X, NoxWindow.Y, NoxWindow.Width, NoxWindow.Height, WindowState.Normal, "autoplaysharp"));
-            
+            _window = VeldridStartup.CreateWindow(new WindowCreateInfo(NoxWindow.X, NoxWindow.Y, NoxWindow.Width, NoxWindow.Height, WindowState.Normal, "autoplay# Overlay"));
 
             var handle = _window.Handle;
-            User32.SetWindowLong(handle, User32.WindowLongIndexFlags.GWL_EXSTYLE, User32.SetWindowLongFlags.WS_EX_LAYERED | User32.SetWindowLongFlags.WS_EX_TOPMOST);
+            User32.SetWindowLong(handle, User32.WindowLongIndexFlags.GWL_EXSTYLE, User32.SetWindowLongFlags.WS_EX_LAYERED | User32.SetWindowLongFlags.WS_EX_TOPMOST | User32.SetWindowLongFlags.WS_EX_TOOLWINDOW);
             SetLayeredWindowAttributes(handle, 0xFF000000, 255, 1);
             User32.SetWindowPos(handle, new IntPtr(-1), 0, 0, 0, 0, User32.SetWindowPosFlags.SWP_NOMOVE | User32.SetWindowPosFlags.SWP_NOSIZE | User32.SetWindowPosFlags.SWP_SHOWWINDOW);
 

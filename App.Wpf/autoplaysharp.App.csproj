@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Icon\autoplay.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Config.Net" Version="4.15.0" />
     <PackageReference Include="Config.Net.Json" Version="4.15.0" />
     <PackageReference Include="Prism.Core" Version="7.2.0.1422" />
@@ -15,6 +19,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\autoplaysharp.Core.csproj" />
     <ProjectReference Include="..\Overlay\autoplaysharp.Overlay.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icon\autoplay.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
