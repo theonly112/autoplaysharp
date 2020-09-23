@@ -114,7 +114,10 @@ namespace autoplaysharp.Game.Tasks
 
         protected async Task<bool> GoToMainScreen(CancellationToken token)
         {
-            if(Game.IsVisible(UIds.MAIN_MENU_HOME_BUTTON_IMAGE))
+            // TOOD: is this the right place?
+            await HandleEndNotices();
+
+            if (Game.IsVisible(UIds.MAIN_MENU_HOME_BUTTON_IMAGE))
             {
                 Game.Click(UIds.MAIN_MENU_HOME_BUTTON_IMAGE);
             }
@@ -138,6 +141,21 @@ namespace autoplaysharp.Game.Tasks
             }
 
             return Task.FromResult(true);
+        }
+
+        protected async Task HandleEndNotices()
+        {
+            if(Game.IsVisible(UIds.CHALLENGES_DAILY_NOTIFICATION_CHALLLENGES))
+            {
+                Game.Click(UIds.CHALLENGES_DAILY_NOTIFICATION_CHALLLENGES_OK);
+                await Task.Delay(1000);
+            }
+
+            if (Game.IsVisible(UIds.HEROIC_QUEST_FINISHED_NOTICE))
+            {
+                Game.Click(UIds.HEROIC_QUEST_FINISHED_NOTICE_OK);
+                await Task.Delay(1000);
+            }
         }
 
         protected async Task HandleHeroicQuestNotice(int timeout = 5)

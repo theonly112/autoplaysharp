@@ -87,7 +87,9 @@ namespace autoplaysharp.Game.Tasks.Missions
 
                 Game.Click("TIMELINE_ENDSCREEN_HOME_BUTTON_IMAGE");
 
-                await WaitUntil(IsOnMainScreen, token);
+                await Task.Delay(1000);
+
+                await HandleEndNotices();
                 await Task.Delay(1000);
             }
 

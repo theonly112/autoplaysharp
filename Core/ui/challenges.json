@@ -56,5 +56,21 @@
     "H": 0.028703704,
     "Threshold": 54,
     "Text": "BASIC REWARD"
+  },
+  {
+    "Id": "CHALLENGES_DAILY_NOTIFICATION_CHALLLENGES",
+    "X": 0.796875,
+    "Y": 0.7777778,
+    "W": 0.12031251,
+    "H": 0.047222197,
+    "Text": "CHALLENGES"
+  },
+  {
+    "Id": "CHALLENGES_DAILY_NOTIFICATION_CHALLLENGES_OK",
+    "X": 0.840625,
+    "Y": 0.8712963,
+    "W": 0.034895837,
+    "H": 0.0462963,
+    "Text": "OK"
   }
 ]

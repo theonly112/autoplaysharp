@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Core.Helper;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,20 +30,14 @@ namespace autoplaysharp.Game.Tasks.Missions
             while(true)
             {
                 var text = Game.GetText(UIds.COOP_REWARD_COUNT);
-                var match = ContentStatus.StatusRegex.Match(text);
-                if (!match.Success)
+                var status = text.TryParseStatus();
+                if (!status.Success)
                 {
                     Logger.LogError("Could not get avilable reward count");
                     return;
                 }
 
-                if (!int.TryParse(match.Groups[1].Value, out var num))
-                {
-                    Logger.LogError("Could not get avilable reward count. Try parse failed.");
-                    return;
-                }
-
-                if (num == 0)
+                if (status.Current == 0)
                 {
                     Logger.LogError("Done with co-op. No rewards available.");
                     return;
@@ -100,6 +95,8 @@ namespace autoplaysharp.Game.Tasks.Missions
 
                 await Task.Delay(5000);
             }
+
+            await GoToMainScreen();
 
         }
     }

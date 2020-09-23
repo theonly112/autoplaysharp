@@ -89,6 +89,9 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Logger.LogDebug("Running 1x Dimension Mission.");
                 Logger.LogDebug($"Status is: {rewardStatus}");
                 Game.Click(UIds.DIMENSION_MISSION_CLEAR_TICKET_ENDSCREEN_USE_1_TICKET);
+
+                // TODO: handle inventory full?
+
                 await Task.Delay(5000);
                 statusText = Game.GetText(UIds.DIMENSION_MISSION_CLEAR_TICKET_ENDSCREEN_STATUS);
                 rewardStatus = statusText.TryParseStatus();
