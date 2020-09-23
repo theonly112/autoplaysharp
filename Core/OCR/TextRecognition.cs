@@ -1,11 +1,11 @@
 using Tesseract;
 
-namespace autoplaysharp.OCR
+namespace autoplaysharp.Core.OCR
 {
-    public class TextRecognition
+    public static class TextRecognition
     {
-        private static object _lock = new object();
-        private static TesseractEngine _engine;
+        private static readonly object _lock = new object();
+        private static readonly TesseractEngine _engine;
 
         static TextRecognition()
         {
@@ -13,14 +13,12 @@ namespace autoplaysharp.OCR
             _engine.SetVariable("debug_file", "/dev/null");
         }
 
-        public static string GetText(Pix pix, int psm = 3)
+        public static TextRecognitionResult GetText(Pix pix, int psm = 3)
         {
             lock (_lock)
             {
-                using (var page = _engine.Process(pix, (PageSegMode)psm))
-                {
-                    return page.GetText();
-                }
+                using var page = _engine.Process(pix, (PageSegMode)psm);
+                return new TextRecognitionResult(page.GetMeanConfidence(), page.GetText());
             }
         }
     }

@@ -1,9 +1,9 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Errors;
 using autoplaysharp.Core;
+using autoplaysharp.Core.OCR;
 using autoplaysharp.Game.UI;
 using autoplaysharp.Helper;
-using autoplaysharp.OCR;
 using Microsoft.Extensions.Logging;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
@@ -88,9 +88,16 @@ namespace autoplaysharp.Game
             Cv2.CvtColor(element.Scale.HasValue ? scaled_section_mat : section_mat, grayscale_mat, ColorConversionCodes.BGR2GRAY);
             using var tresholded_mat = new Mat();
 
-            var threshold = element.Threshold.HasValue ? element.Threshold.Value : 128;
+            if(element.Threshold.HasValue)
+            {
+                var threshold = element.Threshold.Value;
+                Cv2.Threshold(grayscale_mat, tresholded_mat, threshold, 255, ThresholdTypes.Binary);
+            }
+            else
+            {
+                Cv2.Threshold(grayscale_mat, tresholded_mat, 0, 255, ThresholdTypes.Binary | ThresholdTypes.Otsu);
+            }
 
-            Cv2.Threshold(grayscale_mat, tresholded_mat, threshold, 255, ThresholdTypes.Binary);
             using var inverted_mat = (~tresholded_mat).ToMat();
             using var inverted_bitmap = inverted_mat.ToBitmap();
             using var pix = inverted_bitmap.ToPix();
@@ -103,12 +110,12 @@ namespace autoplaysharp.Game
 
 
             var result = TextRecognition.GetText(pix, element.PSM.HasValue ? element.PSM.Value : 3);
+            //_logger.LogDebug($"Detected text {result.Text} with confidence: {result.Confidence}");
 
             Overlay?.ShowGetText(element);
-            result = result.TrimStart().TrimEnd();
             //_logger.LogDebug($"{element.Id} Text: {result}");
             
-            return result;
+            return result.Text.TrimStart().TrimEnd();
         }
 
         private Bitmap GrabElement(UIElement element)
