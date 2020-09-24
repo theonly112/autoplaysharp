@@ -58,5 +58,21 @@
     "W": 0.035,
     "H": 0.05,
     "Text": "OK"
+  },
+  {
+    "Id": "GENERIC_MISSION_CUSTOM_OFFER_FOR_AGENTS",
+    "X": 0.36465323,
+    "Y": 0.038767397,
+    "W": 0.27181208,
+    "H": 0.05666004,
+    "Text": "CUSTOM OFFER FOR AGENTS"
+  },
+  {
+    "Id": "GENERIC_MISSION_CUSTOM_OFFER_FOR_AGENTS_CLOSE",
+    "X": 0.38199106,
+    "Y": 0.888668,
+    "W": 0.05872482,
+    "H": 0.051689863,
+    "Text": "CLOSE"
   }
 ]

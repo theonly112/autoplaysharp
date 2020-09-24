@@ -23,8 +23,8 @@ namespace autoplaysharp.Game.Tasks
             public string ContentName { get; }
             public string Status { get; }
             public bool Completed { get; }
-            public int Used 
-            { 
+            public int Used
+            {
                 get
                 {
                     return GetValue(2);
@@ -102,7 +102,14 @@ namespace autoplaysharp.Game.Tasks
                             Logger.LogDebug($"Clicking on element because it matches expected: {name} actual: {mission_name} similarity: {similarity}");
                             Game.Click(nameElement);
 
-                            await Task.Delay(500); // waiting briefly for page to change.
+                            await Task.Delay(1000); // waiting briefly for page to change.
+
+                            if (Game.IsVisible(UIds.GENERIC_MISSION_CUSTOM_OFFER_FOR_AGENTS))
+                            {
+                                Game.Click(UIds.GENERIC_MISSION_CUSTOM_OFFER_FOR_AGENTS_CLOSE);
+                                await Task.Delay(1000);
+                            }
+
                             return statusEntry;
                         }
                         else
