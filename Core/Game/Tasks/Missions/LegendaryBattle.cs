@@ -16,7 +16,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         }
 
         public string BattleName { get; set; } = "MARVEL'S AVENGERS: ENDGAME";
-        public int ClearCount { get; internal set; } = 5;
+        public int ClearCount { get; set; } = 5;
 
         protected override async Task RunCore(CancellationToken token)
         {
@@ -112,8 +112,10 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 
                 Logger.LogDebug("Starting auto fight finished. Repeating run.");
                 Game.Click("LEGENDARY_BATTLE_ENDSCREEN_REPEAT_RUN");
+
             }
 
+            await Task.Delay(2000);
             // Handle heroic quest notices.
             await GoToMainScreen();
         }

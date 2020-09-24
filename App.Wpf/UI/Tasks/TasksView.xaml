@@ -50,7 +50,7 @@
                                 <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type legendary:LegendaryBattleSettingsViewModel}">
-                                <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
+                                <legendary:LegendaryBattleSettingsView/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type squad:SquadBattleSettingsViewModel}">
                                 <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>

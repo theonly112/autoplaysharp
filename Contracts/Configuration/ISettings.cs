@@ -11,6 +11,6 @@ namespace autoplaysharp.Contracts.Configuration
         ITimelineBattleSettings TimelineBattle { get; }
         IAllianceBattleSettings AllianceBattle { get; }
         IDimensionMissionSettings DimensionMission { get; }
-
+        ILegendaryBattleSettings LegendaryBattle { get; }
     }
 }
