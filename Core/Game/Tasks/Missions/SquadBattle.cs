@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Errors;
 using autoplaysharp.Game.Tasks;
 using Microsoft.Extensions.Logging;
 using System;
@@ -85,15 +86,19 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             await Task.Delay(2000);
 
-            if(Game.IsVisible(UIds.SQUAD_BATTLE_SUMMARY_OVERALL_BATTLEPOINTS))
+            if(!await ClickWhenVisible(UIds.SQUAD_BATTLE_SUMMARY_OVERALL_BATTLEPOINTS))
             {
-                Game.Click(UIds.SQUAD_BATTLE_SUMMARY_OVERALL_BATTLEPOINTS);
+                Logger.LogDebug("Rank up/down notification did not appear. Did we already run this mode?");
+            }
+            
+            if (!await ClickWhenVisible(UIds.SQUAD_BATTLE_END_HOME_BUTTON))
+            {
+                Game.OnError(new ElementNotFoundError(Repository[UIds.SQUAD_BATTLE_END_HOME_BUTTON]));
+                Logger.LogError("Rank up/down notification did not appear.");
+                return;
             }
 
             await Task.Delay(2000);
-
-            Game.Click(UIds.SQUAD_BATTLE_END_HOME_BUTTON);
-            await Task.Delay(5000);
         }
 
         private async Task SelectHeroes()
