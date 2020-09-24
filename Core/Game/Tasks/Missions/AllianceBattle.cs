@@ -83,7 +83,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             Game.Click(UIds.ALLIANCE_BATTLE_END_SCREEN_HOME);
 
-            await Task.Delay(5000);
+            await HandleHeroicQuestNotice();
         }
 
         internal async Task RunNormalMode(CancellationToken token)

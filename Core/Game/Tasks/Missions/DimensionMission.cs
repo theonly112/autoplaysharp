@@ -44,6 +44,13 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             await Task.Delay(1000);
 
+            if(Game.IsVisible(UIds.DIMENSION_MISSION_REWARD_CLOSE_AD))
+            {
+                Game.Click(UIds.DIMENSION_MISSION_REWARD_CLOSE_AD);
+                await Task.Delay(1500);
+                Game.Click(UIds.DIMENSION_MISSION_REWARD_CLOSE_AD_NOTICE_OK);
+            }
+
             if(!await CollectRewards())
             {
                 Logger.LogError("Collection rewards failed");
@@ -101,6 +108,8 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             Game.Click(UIds.DIMENSION_MISSION_CLEAR_TICKET_ENDSCREEN_CLOSE);
             await Task.Delay(2000);
+
+            await HandleHeroicQuestNotice(1);
 
             Game.Click(UIds.DIMENSION_MISSION_BACK_BUTTON);
             await Task.Delay(1000);

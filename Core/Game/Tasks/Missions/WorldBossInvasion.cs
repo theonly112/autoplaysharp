@@ -61,11 +61,18 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
                 await SelectCharacters();
                 await Task.Delay(2000);
+                Logger.LogDebug("Starting mission");
                 Game.Click(UIds.WBI_HERO_START_MISSION);
 
                 await Fight(token);
 
-                await HandleHeroicQuestNotice();
+                if(await HandleHeroicQuestNotice())
+                {
+                    // We are back to the main screen. so we have to restart.
+                    // TODO: is this the best way to do this?
+                    await Run(token);
+                    break;
+                }
             }
         }
 
@@ -102,6 +109,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
         private async Task SelectCharacters()
         {
+            Logger.LogDebug("Selecting characters");
             for (int i = 0; i < 3; i++)
             {
                 var hero = Repository[UIds.WBI_HERO_SELECTION_DYN, i, 0];

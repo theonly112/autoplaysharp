@@ -16,8 +16,11 @@ namespace autoplaysharp.Game.Tasks.Missions
         {
         }
 
+        public bool SingleRun { get; set; } = false;
+
         protected override async Task RunCore(CancellationToken token)
         {
+            
             while (true)
             {
                 if (await StartContentBoardMission("DANGER ROOM") == null)
@@ -114,6 +117,15 @@ namespace autoplaysharp.Game.Tasks.Missions
                 Game.Click(UIds.DANGER_ROOM_ENDSCREEN_HOME);
 
                 await Task.Delay(5000, token);
+
+                await HandleHeroicQuestNotice(1);
+
+                if(SingleRun)
+                {
+                    Logger.LogInformation("Exiting because of SingleRun settings");
+                    return;
+                }
+
             }
         }
 

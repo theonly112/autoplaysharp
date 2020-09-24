@@ -84,6 +84,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 await TabToContinue(token);
             }
 
+            await Task.Delay(1000);
             var questInfo = Game.GetText(UIds.HEROIC_QUEST_QUEST_INFO);
             var completionStatusText = Game.GetText(UIds.HEROIC_QUEST_QUEST_INFO_STATUS);
             var completionStatus = completionStatusText.TryParseStatus();
@@ -114,7 +115,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 case var s when questInfo.StartsWith("[ISO-8]"):
                     await HandleIso8Quest(questInfo, completionStatus, token);
                     break;
-                case var s when questInfo.StartsWith("[DANGER ROOM]"):
+                case var s when questInfo.StartsWith("[DANGER ROOM"):
                     await HandleDangerRoomQuest(questInfo, completionStatus, token);
                     break;
                 case var s when new Regex(@"Use .* Energy").IsMatch(questInfo):
@@ -126,12 +127,39 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 case var s when questInfo.StartsWith("[TIMELINE BATTLE"):
                     await HandleTimelineBattle(questInfo, completionStatus, token);
                     break;
+                case var s when questInfo.StartsWith("[WORLD BOSS INVASION]"):
+                    await HandleWorldBossInvasionQuest(questInfo, completionStatus, token);
+                    break;
+                case var s when questInfo.StartsWith("[CARD]"):
+                    await HandleComicCardQuest(questInfo, completionStatus, token);
+                    break;
                 default:
                     Logger.LogError($"Unhandled heroic quest: {questInfo}");
                     break;
             }
 
             // TODO: right here we could loop.
+        }
+
+        private async Task HandleComicCardQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        {
+            if(questInfo.Contains("Upgrade"))
+            {
+                var upgrade = new UpgradeCards(Game, Repository, Settings);
+                await upgrade.Run(token);
+            }
+        }
+
+        private async Task HandleWorldBossInvasionQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        {
+            Logger.LogError($"This quest type is not handled yet: {questInfo}");
+
+            if (questInfo.Contains("Complete"))
+            {
+                // TODO: handle WBI COOP missions...
+                var wbi = new WorldBossInvasion(Game, Repository, Settings);
+                await wbi.Run(token);
+            }
         }
 
         private async Task HandleTimelineBattle(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
@@ -161,7 +189,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             {
                 // Text like: "[DANGER ROOM] Participate 1 time
                 var dangerRoom = new DangerRoom(Game, Repository, Settings);
-                // TODO: set options like how often to run.
+                dangerRoom.SingleRun = true;
                 await dangerRoom.Run(token);
             }
         }
@@ -204,13 +232,19 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         {
             if (questInfo.Similarity("[CUSTOM GEAR] Upgrade x2") > 0.80)
             {
-                // TODO: implement custom gear upgrade.
+                var upgradeCustomGear = new UpgradeCustomGear(Game, Repository, Settings);
+                await upgradeCustomGear.Run(token);
             }
         }
 
         private async Task HandleAllianceBattleQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
         {
             if(questInfo.Similarity("[ALLIANCE BATTLE] Participate in Normal Mode") > 0.80)
+            {
+                var allianceBattle = new AllianceBattle(Game, Repository, Settings);
+                await allianceBattle.RunNormalMode(token);
+            }
+            else if(questInfo.Contains("Points in Normal Mode"))
             {
                 var allianceBattle = new AllianceBattle(Game, Repository, Settings);
                 await allianceBattle.RunNormalMode(token);
@@ -233,6 +267,13 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
                 var dimensionMission = new DimensionMission(Game, Repository, Settings);
                 dimensionMission.CollectRewardCount = 1;
+                await dimensionMission.Run(token);
+            }
+            else if(questInfo.Similarity("[DIMENSION MISSION] Clear 10 times") > 0.8)
+            {
+                var dimensionMission = new DimensionMission(Game, Repository, Settings);
+                // TODO: Add option to run specific amount of missions.
+                dimensionMission.CollectRewardCount = 2;
                 await dimensionMission.Run(token);
             }
         }

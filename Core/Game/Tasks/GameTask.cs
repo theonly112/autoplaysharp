@@ -161,7 +161,7 @@ namespace autoplaysharp.Game.Tasks
             }
         }
 
-        protected async Task HandleHeroicQuestNotice(int timeout = 5)
+        protected async Task<bool> HandleHeroicQuestNotice(int timeout = 5)
         {
             Logger.LogDebug("Waiting for heroic quest notice to appear.");
             if (await WaitUntilVisible(UIds.HEROIC_QUEST_FINISHED_NOTICE, timeout))
@@ -169,12 +169,15 @@ namespace autoplaysharp.Game.Tasks
                 Logger.LogDebug("Heroic quest notice appeared. Closing it.");
                 Game.Click(UIds.HEROIC_QUEST_FINISHED_NOTICE);
                 await ClickWhenVisible(UIds.HEROIC_QUEST_QUEST_INFO_ACQUIRE);
+                await Task.Delay(500);
                 await ClickWhenVisible(UIds.HEROIC_QUEST_TAB_THE_SCREEN_TO_CONTINUE);
                 await Task.Delay(1000);
+                return true;
             }
             else
             {
                 Logger.LogDebug("Heroic quest notice did not appeared.");
+                return false;
             }
         }
 
