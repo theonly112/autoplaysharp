@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Contracts.Errors;
 using autoplaysharp.Core.Helper;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 {
     public class DangerRoom : ContentStatusBoardDependenTask
     {
-        public DangerRoom(IGame game, IUiRepository repository) : base(game, repository)
+        public DangerRoom(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 
@@ -118,7 +119,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
         private async Task<bool> RunAutoFight(CancellationToken token)
         {
-            var autoFight = new AutoFight(Game, Repository, () => Game.IsVisible(UIds.DANGER_ROOM_HIGHEST_EXCLUSIV_SKILL_COUNT));
+            var autoFight = new AutoFight(Game, Repository, Settings, () => Game.IsVisible(UIds.DANGER_ROOM_HIGHEST_EXCLUSIV_SKILL_COUNT));
             var autoFightTask = autoFight.Run(token);
 
             if (await Task.WhenAny(autoFightTask, Task.Delay(300 * 1000, token)) == autoFightTask)

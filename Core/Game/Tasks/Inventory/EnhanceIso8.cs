@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Game.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Threading;
@@ -8,7 +9,7 @@ namespace autoplaysharp.Core.Game.Tasks.Inventory
 {
     internal class EnhanceIso8 : GameTask
     {
-        public EnhanceIso8(IGame game, IUiRepository repository) : base(game, repository)
+        public EnhanceIso8(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 

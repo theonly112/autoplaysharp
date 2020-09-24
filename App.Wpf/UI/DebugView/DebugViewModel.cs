@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using Prism.Commands;
 using System;
 using System.Linq;
@@ -12,15 +13,17 @@ namespace autoplaysharp.App.UI.DebugView
     {
         private readonly IUiRepository _repo;
         private readonly IGame _game;
+        private readonly ISettings _settings;
 
-        public DebugViewModel(IGame game, IUiRepository repo)
+        public DebugViewModel(IGame game, IUiRepository repo, ISettings settings)
         {
             Run = new DelegateCommand(RunCommand);
             _repo = repo;
             _game = game;
+            _settings = settings;
         }
 
-        private void RunCommand()
+        private async void RunCommand()
         {
             try
             {
@@ -28,8 +31,8 @@ namespace autoplaysharp.App.UI.DebugView
                     .Where(a => !a.IsDynamic)
                     .SelectMany(a => a.GetTypes())
                     .FirstOrDefault(t => t.FullName.Equals(TaskName));
-                var task = (IGameTask)Activator.CreateInstance(type, _game, _repo);
-                task.Run(CancellationToken.None);
+                var task = (IGameTask)Activator.CreateInstance(type, _game, _repo, _settings);
+                await task.Run(CancellationToken.None);
             }
             catch (Exception e)
             {

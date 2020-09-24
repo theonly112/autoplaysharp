@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Contracts.Errors;
 using autoplaysharp.Game.Tasks;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 {
     public abstract class GenericEpicQuest : ContentStatusBoardDependenTask
     {
-        protected GenericEpicQuest(IGame game, IUiRepository repository) : base(game, repository)
+        protected GenericEpicQuest(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 
@@ -29,7 +30,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Game.Click(UIds.GENERIC_MISSION_ITEM_LIMIT_REACHED_NOTICE_OK_BUTTON);
             }
 
-            var autoFight = new AutoFight(Game, Repository, () => Game.IsVisible(UIds.EPIC_QUEST_ENDSCREEN_HOME_BUTTON_IMAGE));
+            var autoFight = new AutoFight(Game, Repository, Settings, () => Game.IsVisible(UIds.EPIC_QUEST_ENDSCREEN_HOME_BUTTON_IMAGE));
             await autoFight.Run(token);
 
             if(!await WaitUntilVisible(UIds.EPIC_QUEST_ENDSCREEN_HOME_BUTTON_IMAGE, token, 20, 0.5f))

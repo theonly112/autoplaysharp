@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using F23.StringSimilarity;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
@@ -56,7 +57,7 @@ namespace autoplaysharp.Game.Tasks
             }
         }
 
-        protected ContentStatusBoardDependenTask(IGame game, IUiRepository repository) : base(game, repository)
+        protected ContentStatusBoardDependenTask(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 

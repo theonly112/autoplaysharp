@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -21,12 +22,12 @@ namespace autoplaysharp.Game.Tasks
         private readonly int _maxWaitTime;
         private bool _dangerRoomSpecialSkillAvailable;
 
-        public AutoFight(IGame game, IUiRepository repository, params Func<bool>[] conditions) : this(game, repository, 30, conditions)
+        public AutoFight(IGame game, IUiRepository repository, ISettings settings, params Func<bool>[] conditions) : this(game, repository, settings, 30, conditions)
         {
             
         }
 
-        public AutoFight(IGame game, IUiRepository repository, int maxWaitTime, params Func<bool>[] conditions) : base(game, repository)
+        public AutoFight(IGame game, IUiRepository repository, ISettings settings, int maxWaitTime, params Func<bool>[] conditions) : base(game, repository, settings)
         {
             _conditions = conditions.ToList();
             _conditions.Add(() => game.IsVisible(UIds.GENERIC_MISSION_MISSION_SUCCESS));

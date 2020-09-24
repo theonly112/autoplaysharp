@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Contracts.Errors;
 using autoplaysharp.Game.UI;
 using Microsoft.Extensions.Logging;
@@ -14,13 +15,14 @@ namespace autoplaysharp.Game.Tasks
         public event Action TaskEnded;
         protected readonly IGame Game;
         protected readonly IUiRepository Repository;
-
+        protected readonly ISettings Settings;
         protected ILogger Logger;
 
-        public GameTask(IGame game, IUiRepository repository)
+        public GameTask(IGame game, IUiRepository repository, ISettings settings)
         {
             Game = game;
             Repository = repository;
+            Settings = settings;
             Logger = Game.CreateLogger(GetType());
         }
 

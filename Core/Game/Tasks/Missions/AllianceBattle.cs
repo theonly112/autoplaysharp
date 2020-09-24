@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
@@ -10,7 +11,7 @@ namespace autoplaysharp.Game.Tasks.Missions
     {
         private const string MissionName = "ALLIANCE BATTLE";
 
-        public AllianceBattle(IGame game, IUiRepository repository) : base(game, repository)
+        public AllianceBattle(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 
@@ -130,7 +131,7 @@ namespace autoplaysharp.Game.Tasks.Missions
                 return;
             }
 
-            var autoFight = new AutoFight(Game, Repository);
+            var autoFight = new AutoFight(Game, Repository, Settings);
             await autoFight.Run(token);
 
             await Task.Delay(1000);
@@ -161,7 +162,7 @@ namespace autoplaysharp.Game.Tasks.Missions
             Func<bool> battleEnded = () => Game.IsVisible(UIds.ALLIANCE_BATTLE_ENDED_MESSAGE);
             Func<bool> cleared = () => Game.IsVisible(UIds.ALLIANCE_BATTLE_CLEAR_MESSAGE);
 
-            var autoFight = new AutoFight(Game, Repository, died, battleEnded, cleared);
+            var autoFight = new AutoFight(Game, Repository, Settings, died, battleEnded, cleared);
             var autoFightTask = autoFight.Run(token);
 
             // TODO: is timeout fallback even necessary?

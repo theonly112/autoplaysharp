@@ -11,7 +11,7 @@ namespace autoplaysharp.App.UI.Tasks.AllianceBattle
         public AllianceBattleSettingsViewModel(IGame game,
             IUiRepository repo,
             ITaskExecutioner executioner,
-            ISettings settings) : base(game, repo, executioner)
+            ISettings settings) : base(game, repo, executioner, settings)
         {
             _settings = settings;
         }

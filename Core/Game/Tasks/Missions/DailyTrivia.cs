@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Game.Tasks;
 using autoplaysharp.Game.UI;
 using F23.StringSimilarity;
@@ -17,7 +18,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         private record QuestionAnswerPair(string Question, string Answer);
         private readonly List<QuestionAnswerPair> _questionsAndAnswers;
 
-        public DailyTrivia(IGame game, IUiRepository repository) : base(game, repository)
+        public DailyTrivia(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
             var resourceName = GetType().Namespace + ".DailyTriviaAnswers.json";
             using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);

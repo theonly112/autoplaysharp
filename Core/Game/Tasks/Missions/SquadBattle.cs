@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Contracts.Errors;
 using autoplaysharp.Game.Tasks;
 using Microsoft.Extensions.Logging;
@@ -12,7 +13,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
     // TODO: press tab on end screen?
     public class SquadBattle : ContentStatusBoardDependenTask
     {
-        public SquadBattle(IGame game, IUiRepository repository) : base(game, repository)
+        public SquadBattle(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 
@@ -81,7 +82,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             Func<bool> endCondition = () => Game.IsVisible(UIds.SQUAD_BATTLE_END_BATTLE_MESSAGE);
             Func<bool> summaryBattlePoints = () => Game.IsVisible(UIds.SQUAD_BATTLE_SUMMARY_OVERALL_BATTLEPOINTS);
-            var fightBot = new AutoFight(Game, Repository, endCondition, summaryBattlePoints);
+            var fightBot = new AutoFight(Game, Repository, Settings, endCondition, summaryBattlePoints);
             await fightBot.Run(token);
 
             await Task.Delay(2000);

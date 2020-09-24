@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace autoplaysharp.Game.Tasks.Missions
     public class TimelineBattle : ContentStatusBoardDependenTask
     {
         private const string _missionName = "TIMELINE BATTLE";
-        public TimelineBattle(IGame game, IUiRepository repository) : base(game, repository)
+        public TimelineBattle(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 

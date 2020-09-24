@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Core.Helper;
 using autoplaysharp.Game.Tasks;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 {
     public class DimensionMission : ContentStatusBoardDependenTask
     {
-        public DimensionMission(IGame game, IUiRepository repository) : base(game, repository)
+        public DimensionMission(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 

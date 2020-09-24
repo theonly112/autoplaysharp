@@ -1,10 +1,11 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 
 namespace autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests
 {
     public class StupidXMen : GenericDualEpicQuest
     {
-        public StupidXMen(IGame game, IUiRepository repository) : base(game, repository)
+        public StupidXMen(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 

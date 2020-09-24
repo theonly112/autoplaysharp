@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Core.Game.Tasks.Inventory;
 using autoplaysharp.Core.Helper;
 using autoplaysharp.Game.Tasks;
@@ -12,7 +13,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 {
     public class HeroicQuest : GameTask
     {
-        public HeroicQuest(IGame game, IUiRepository repository) : base(game, repository)
+        public HeroicQuest(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 
@@ -135,7 +136,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
         private async Task HandleTimelineBattle(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
         {
-            var timelineBattle = new TimelineBattle(Game, Repository);
+            var timelineBattle = new TimelineBattle(Game, Repository, Settings);
             // TODO: settings?!?!?!
             await timelineBattle.Run(token);
         }
@@ -143,7 +144,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         private async Task HandleLegendaryBattleQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
         {
             Logger.LogDebug("Running legendary battle to complete heroic quest.");
-            var legendaryBattle = new LegendaryBattle(Game, Repository);
+            var legendaryBattle = new LegendaryBattle(Game, Repository, Settings);
             legendaryBattle.ClearCount = completionStatus.Max - completionStatus.Current;
             await legendaryBattle.Run(token);
         }
@@ -159,7 +160,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             if(questInfo.Contains("Participate"))
             {
                 // Text like: "[DANGER ROOM] Participate 1 time
-                var dangerRoom = new DangerRoom(Game, Repository);
+                var dangerRoom = new DangerRoom(Game, Repository, Settings);
                 // TODO: set options like how often to run.
                 await dangerRoom.Run(token);
             }
@@ -169,12 +170,12 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         {
             if(questInfo.Contains("Enhance"))
             {
-                var enhance = new EnhanceIso8(Game, Repository);
+                var enhance = new EnhanceIso8(Game, Repository, Settings);
                 await enhance.Run(token);
             }
             else if(questInfo.Contains("Combine"))
             {
-                var combine = new CombineIso8(Game, Repository);
+                var combine = new CombineIso8(Game, Repository, Settings);
                 await combine.Run(token);
             }
         }
@@ -194,7 +195,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         {
             if(questInfo.Similarity("[ENCHANTED URU] Combine 3 times") > 0.8)
             {
-                var upgradeUru = new CombineUru(Game, Repository);
+                var upgradeUru = new CombineUru(Game, Repository, Settings);
                 await upgradeUru.Run(token);
             }
         }
@@ -211,7 +212,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         {
             if(questInfo.Similarity("[ALLIANCE BATTLE] Participate in Normal Mode") > 0.80)
             {
-                var allianceBattle = new AllianceBattle(Game, Repository);
+                var allianceBattle = new AllianceBattle(Game, Repository, Settings);
                 await allianceBattle.RunNormalMode(token);
             }
         }
@@ -230,7 +231,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Logger.LogDebug("Trying to acquire contribution reward 1 time.");
                 // TODO: Run dimension mission until we can get contribution reward 1 time.
 
-                var dimensionMission = new DimensionMission(Game, Repository);
+                var dimensionMission = new DimensionMission(Game, Repository, Settings);
                 dimensionMission.CollectRewardCount = 1;
                 await dimensionMission.Run(token);
             }

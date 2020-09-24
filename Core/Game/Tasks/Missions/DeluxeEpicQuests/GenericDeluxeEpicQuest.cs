@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DeluxeEpicQuests
 {
     public abstract class GenericDeluxeEpicQuest : GenericEpicQuest
     {
-        protected GenericDeluxeEpicQuest(IGame game, IUiRepository repository) : base(game, repository)
+        protected GenericDeluxeEpicQuest(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 

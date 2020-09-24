@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Game.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Threading;
@@ -8,7 +9,7 @@ namespace autoplaysharp.Core.Game.Tasks.Inventory
 {
     internal class CombineIso8 : GameTask
     {
-        public CombineIso8(IGame game, IUiRepository repository) : base(game, repository)
+        public CombineIso8(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 

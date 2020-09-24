@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using Prism.Commands;
 using System;
 using System.Windows.Input;
@@ -17,12 +18,14 @@ namespace autoplaysharp.App.UI.Tasks
         private readonly IGame _game;
         private readonly IUiRepository _repo;
         private readonly ITaskExecutioner _taskExecutioner;
+        private readonly ISettings _settings;
 
-        public TaskBaseViewModel(IGame game, IUiRepository repo, ITaskExecutioner taskExecutioner)
+        public TaskBaseViewModel(IGame game, IUiRepository repo, ITaskExecutioner taskExecutioner, ISettings settings)
         {
             _game = game;
             _repo = repo;
             _taskExecutioner = taskExecutioner;
+            _settings = settings;
             AddToQueue = new DelegateCommand(Add);
         }
 
@@ -33,7 +36,7 @@ namespace autoplaysharp.App.UI.Tasks
 
         protected override IGameTask CreateTask()
         {
-            return (Task)Activator.CreateInstance(typeof(Task), _game, _repo);
+            return (Task)Activator.CreateInstance(typeof(Task), _game, _repo, _settings);
         }
 
         public override string Name => typeof(Task).Name;

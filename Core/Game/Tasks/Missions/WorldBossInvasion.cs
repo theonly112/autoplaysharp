@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Game.Tasks;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,7 +10,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 {
     public class WorldBossInvasion : GameTask
     {
-        public WorldBossInvasion(IGame game, IUiRepository repository) : base(game, repository)
+        public WorldBossInvasion(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 
@@ -72,7 +73,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         {
             Func<bool> slotChest = () => { return Game.IsVisible(UIds.WBI_SLOT_CHEST_IN_INVENTORY); };
             Func<bool> disconnected = () => { return Game.IsVisible(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED); };
-            var fightBot = new AutoFight(Game, Repository, 90, slotChest, disconnected);
+            var fightBot = new AutoFight(Game, Repository, Settings, 90, slotChest, disconnected);
             await fightBot.Run(token);
 
             if (Game.IsVisible(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED))

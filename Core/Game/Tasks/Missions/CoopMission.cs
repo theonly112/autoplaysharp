@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Core.Helper;
 using Microsoft.Extensions.Logging;
 using System.Threading;
@@ -14,7 +15,7 @@ namespace autoplaysharp.Game.Tasks.Missions
     /// </summary>
     public class CoopMission : ContentStatusBoardDependenTask
     {
-        public CoopMission(IGame game, IUiRepository repository) : base(game, repository)
+        public CoopMission(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
          

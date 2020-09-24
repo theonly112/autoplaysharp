@@ -10,7 +10,7 @@ namespace autoplaysharp.App.UI.Tasks.LegendaryBattle
             IGame game,
             IUiRepository repo,
             ITaskExecutioner taskExecutioner,
-            ISettings settings) : base(game, repo, taskExecutioner)
+            ISettings settings) : base(game, repo, taskExecutioner, settings)
         {
             Settings = settings.LegendaryBattle;
         }

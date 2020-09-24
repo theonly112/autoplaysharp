@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -6,7 +7,7 @@ namespace autoplaysharp.Game.Tasks
 {
     public class ShieldLab : GameTask
     {
-        public ShieldLab(IGame game, IUiRepository repository) : base(game, repository)
+        public ShieldLab(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 

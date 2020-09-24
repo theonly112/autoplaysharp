@@ -1,4 +1,5 @@
 ﻿using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Contracts.Errors;
 using autoplaysharp.Core.Helper;
 using autoplaysharp.Game.Tasks;
@@ -11,7 +12,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 {
     public class LegendaryBattle : ContentStatusBoardDependenTask
     {
-        public LegendaryBattle(IGame game, IUiRepository repository) : base(game, repository)
+        public LegendaryBattle(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
 
@@ -105,7 +106,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Logger.LogDebug("Starting auto fight");
 
                 Func<bool> end = () => Game.IsVisible("LEGENDARY_BATTLE_MISSION_SUCCESS");
-                var fightBot = new AutoFight(Game, Repository, end);
+                var fightBot = new AutoFight(Game, Repository, Settings, end);
                 await fightBot.Run(token);
 
                 await Task.Delay(1000);
