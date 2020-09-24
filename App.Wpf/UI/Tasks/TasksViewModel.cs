@@ -12,7 +12,6 @@ using autoplaysharp.Core.Game.Tasks.Missions;
 using autoplaysharp.Core.Game.Tasks.Missions.DeluxeEpicQuests;
 using autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests;
 using autoplaysharp.Game.Tasks;
-using autoplaysharp.Game.Tasks.Missions;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Mvvm;
 using System;
