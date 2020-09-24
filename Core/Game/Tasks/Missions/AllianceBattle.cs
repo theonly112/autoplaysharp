@@ -13,6 +13,8 @@ namespace autoplaysharp.Game.Tasks.Missions
 
         public AllianceBattle(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
+            ShouldRunExtremeMode = settings.AllianceBattle.RunExtremeMode;
+            ShouldRunNormalMode = settings.AllianceBattle.RunNormalMode;
         }
 
         public bool ShouldRunNormalMode { get; set; } = true;

@@ -18,6 +18,7 @@ namespace autoplaysharp.Game.Tasks.Missions
         private const string _missionName = "TIMELINE BATTLE";
         public TimelineBattle(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
+            Team = settings.TimelineBattle.Team;
         }
 
         public int Team { get; set; } = 1;

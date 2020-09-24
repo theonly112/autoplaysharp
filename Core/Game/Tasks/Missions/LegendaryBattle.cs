@@ -14,6 +14,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
     {
         public LegendaryBattle(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
+            ClearCount = settings.LegendaryBattle.ClearCount;
         }
 
         public string BattleName { get; set; } = "MARVEL'S AVENGERS: ENDGAME";

@@ -21,12 +21,5 @@ namespace autoplaysharp.App.UI.Tasks.TimelineBattle
         {
             get { return _settings.TimelineBattle; }
         }
-
-        protected override IGameTask CreateTask()
-        {
-            var task = (Game.Tasks.Missions.TimelineBattle)base.CreateTask();
-            task.Team = Settings.Team;
-            return task;
-        }
     }
 }

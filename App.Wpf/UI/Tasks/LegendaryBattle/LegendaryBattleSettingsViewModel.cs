@@ -16,12 +16,5 @@ namespace autoplaysharp.App.UI.Tasks.LegendaryBattle
         }
 
         public ILegendaryBattleSettings Settings { get; }
-
-        protected override IGameTask CreateTask()
-        {
-            var task = (Core.Game.Tasks.Missions.LegendaryBattle)base.CreateTask();
-            task.ClearCount = Settings.ClearCount;
-            return task;
-        }
     }
 }

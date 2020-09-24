@@ -20,13 +20,5 @@ namespace autoplaysharp.App.UI.Tasks.AllianceBattle
         {
             get { return _settings.AllianceBattle; }
         }
-
-        protected override IGameTask CreateTask()
-        {
-            var task = (Game.Tasks.Missions.AllianceBattle)base.CreateTask();
-            task.ShouldRunNormalMode = Settings.RunNormalMode;
-            task.ShouldRunExtremeMode = Settings.RunExtremeMode;
-            return task;
-        }
     }
 }

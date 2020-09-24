@@ -12,6 +12,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
     {
         public DimensionMission(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
+            CollectRewardCount = settings.DimensionMission.RewardsToCollect;
         }
 
         /*
