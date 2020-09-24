@@ -35,6 +35,13 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             Game.Click(UIds.HEROIC_QUEST_HEADER);
 
             await Task.Delay(1000, token);
+
+            if(Game.IsVisible(UIds.HEROIC_QUEST_CYSTAL_CHEST_FULL_NOTICE))
+            {
+                Logger.LogDebug("Clsing crytsal chest full notice.");
+                Game.Click(UIds.HEROIC_QUEST_CYSTAL_CHEST_FULL_NOTICE_OK);
+                await Task.Delay(1000, token);
+            }
             
             if(Game.IsVisible(UIds.HEROIC_QUEST_CYSTAL_CHEST_NOTICE))
             {

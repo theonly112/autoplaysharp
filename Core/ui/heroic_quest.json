@@ -99,5 +99,21 @@
     "W": 0.0411458,
     "H": 0.047222197,
     "Text": "OK"
+  },
+  {
+    "Id": "HEROIC_QUEST_CYSTAL_CHEST_FULL_NOTICE",
+    "X": 0.26342282,
+    "Y": 0.43141153,
+    "W": 0.19519016,
+    "H": 0.047713727,
+    "Text": "The Crystal Chest is full."
+  },
+  {
+    "Id": "HEROIC_QUEST_CYSTAL_CHEST_FULL_NOTICE_OK",
+    "X": 0.3870246,
+    "Y": 0.7326044,
+    "W": 0.07102907,
+    "H": 0.045725644,
+    "Text": "CANCEL"
   }
 ]
