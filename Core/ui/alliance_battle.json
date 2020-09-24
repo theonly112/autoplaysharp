@@ -97,5 +97,21 @@
     "W": 0.3848958,
     "H": 0.058333367,
     "Text": "3 characters are required for an Alliance Battle."
+  },
+  {
+    "Id": "ALLIANCE_BATTLE_SELECT_NEW_CHARACTER_AND_CONTINUE",
+    "X": 0.26458332,
+    "Y": 0.039814815,
+    "W": 0.47656253,
+    "H": 0.06481481,
+    "Text": "Select new characters and continue."
+  },
+  {
+    "Id": "ALLIANCE_BATTLE_SELECT_NEW_CHARACTER_AND_CONTINUE_CANCEL",
+    "X": 0.33958334,
+    "Y": 0.8759259,
+    "W": 0.07447916,
+    "H": 0.05092597,
+    "Text": "CANCEL"
   }
 ]

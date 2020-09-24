@@ -1,5 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -156,12 +157,24 @@ namespace autoplaysharp.Game.Tasks.Missions
 
         private async Task<bool> RunAutoFight(CancellationToken token)
         {
-            var autoFight = new AutoFight(Game, Repository, () => Game.IsVisible(UIds.ALLIANCE_BATTLE_ENDED_MESSAGE), () => Game.IsVisible(UIds.ALLIANCE_BATTLE_CLEAR_MESSAGE));
+            Func<bool> died = () => Game.IsVisible(UIds.ALLIANCE_BATTLE_SELECT_NEW_CHARACTER_AND_CONTINUE);
+            Func<bool> battleEnded = () => Game.IsVisible(UIds.ALLIANCE_BATTLE_ENDED_MESSAGE);
+            Func<bool> cleared = () => Game.IsVisible(UIds.ALLIANCE_BATTLE_CLEAR_MESSAGE);
+
+            var autoFight = new AutoFight(Game, Repository, died, battleEnded, cleared);
             var autoFightTask = autoFight.Run(token);
 
+            // TODO: is timeout fallback even necessary?
             if(await Task.WhenAny(autoFightTask, Task.Delay(300*1000)) == autoFightTask)
             {
                 await autoFightTask; // catch exception if thrown...
+
+                if(Game.IsVisible(UIds.ALLIANCE_BATTLE_SELECT_NEW_CHARACTER_AND_CONTINUE))
+                {
+                    Game.Click(UIds.ALLIANCE_BATTLE_SELECT_NEW_CHARACTER_AND_CONTINUE_CANCEL);
+                    await Task.Delay(2000);
+                }
+
                 return true;
             }
 
