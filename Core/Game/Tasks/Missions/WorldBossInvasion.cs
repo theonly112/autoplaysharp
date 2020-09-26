@@ -16,19 +16,19 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
         protected override async Task RunCore(CancellationToken token)
         {
-            if (!await GoToMainScreen())
+            if (!await GoToMainScreen(token))
             {
                 Logger.LogError("Could't go to main screen");
                 return;
             }
             Game.Click(UIds.MAIN_MENU_ENTER);
-            await Task.Delay(2000);
+            await Task.Delay(2000, token);
             Game.Click(UIds.WBI_SELECT_MISSION_COOP);
-            await Task.Delay(2000);
+            await Task.Delay(2000, token);
             Game.Click(UIds.WBI_SELECT_MISSION_WBI);
-            await Task.Delay(2000);
+            await Task.Delay(2000, token);
             Game.Click(UIds.WBI_MANAGE_SUPPLIES);
-            await Task.Delay(2000);
+            await Task.Delay(2000, token);
 
             var emptySlots = await CollectChests();
             Logger.LogInformation($"{emptySlots} chest slots empty.");
@@ -40,13 +40,13 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             SelectActiveOpponent();
             await WaitUntilVisible(UIds.WBI_OPPONENT_ENTER);
-            await Task.Delay(250);
+            await Task.Delay(250, token);
             Game.Click(UIds.WBI_OPPONENT_ENTER);
-            await Task.Delay(2000);
+            await Task.Delay(2000, token);
 
             await CollectNewChests(emptySlots, token);
 
-            await GoToMainScreen();
+            await GoToMainScreen(token);
         }
 
         private async Task CollectNewChests(int emptySlots, CancellationToken token)
@@ -60,7 +60,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 }
 
                 await SelectCharacters();
-                await Task.Delay(2000);
+                await Task.Delay(2000, token);
                 Logger.LogDebug("Starting mission");
                 Game.Click(UIds.WBI_HERO_START_MISSION);
 
@@ -86,7 +86,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             if (Game.IsVisible(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED))
             {
                 Game.Click(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED_OK);
-                await Task.Delay(2000);
+                await Task.Delay(2000, token);
 
                 Logger.LogInformation("Restarting because of disconnect");
 
@@ -97,11 +97,11 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
             else
             {
-                await Task.Delay(2000);
+                await Task.Delay(2000, token);
 
                 Game.Click(UIds.WBI_SLOT_CHEST_IN_INVENTORY);
 
-                await Task.Delay(2000);
+                await Task.Delay(2000, token);
 
                 Game.Click(UIds.WBI_NEXT_RUN);
             }
