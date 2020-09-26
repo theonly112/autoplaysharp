@@ -18,7 +18,9 @@ namespace autoplaysharp.Game.Tasks.Missions
         public CoopMission(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
         }
-         
+
+        public int RewardCount { get; set; }
+
         protected override async Task RunCore(CancellationToken token)
         {
             if (await StartContentBoardMission("CO-OP PLAY") == null)
@@ -57,6 +59,11 @@ namespace autoplaysharp.Game.Tasks.Missions
                     await Task.Delay(5000);
                     Game.Click(UIds.COOP_REWARD_ACQUIRE_REWARD_OK);
                     await Task.Delay(5000);
+                    RewardCount--;
+                    if(RewardCount == 0)
+                    {
+                        break;
+                    }
                 }
 
                 if (Game.IsVisible(UIds.COOP_AUTO_REPEAT_IMAGE))

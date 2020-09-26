@@ -42,7 +42,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Logger.LogError($"Cannot collect {CollectRewardCount}. Only {missionStatus.Available} left.");
             }
 
-            await Task.Delay(1000);
+            await Task.Delay(2000);
 
             if(Game.IsVisible(UIds.DIMENSION_MISSION_REWARD_CLOSE_AD))
             {

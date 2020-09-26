@@ -133,12 +133,25 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 case var s when questInfo.StartsWith("[CARD]"):
                     await HandleComicCardQuest(questInfo, completionStatus, token);
                     break;
+                case var s when questInfo.StartsWith("[CO-OP PLAY]"):
+                    await HandleCoopQuest(questInfo, completionStatus, token);
+                    break;
                 default:
                     Logger.LogError($"Unhandled heroic quest: {questInfo}");
                     break;
             }
 
             // TODO: right here we could loop.
+        }
+
+        private async Task HandleCoopQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        {
+            if(questInfo.Contains("Acquire"))
+            {
+                var coop = new CoopMission(Game, Repository, Settings);
+                coop.RewardCount = 2; //TODO: are there other quests like this.
+                await coop.Run(token);
+            }
         }
 
         private async Task HandleComicCardQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
