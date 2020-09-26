@@ -9,7 +9,7 @@ namespace autoplaysharp.Core.OCR
 
         static TextRecognition()
         {
-            _engine = new TesseractEngine(@"./tessdata", "eng");
+            _engine = new TesseractEngine(@"./tessdata", "eng", EngineMode.LstmOnly);
             _engine.SetVariable("debug_file", "/dev/null");
         }
 
