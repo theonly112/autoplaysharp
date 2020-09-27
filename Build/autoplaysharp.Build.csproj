@@ -5,6 +5,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <OutputPath>Bin</OutputPath>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
    <ItemGroup>
