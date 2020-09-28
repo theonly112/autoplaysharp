@@ -94,5 +94,14 @@
     "W": 0.0390625,
     "H": 0.041666687,
     "Text": "OK"
+  },
+  {
+    "Id": "INVENTORY_TAB_CUSTOM_GEAR_UPGRADED_GEAR_INCLUDED",
+    "X": 0.33333334,
+    "Y": 0.43055555,
+    "W": 0.33333334,
+    "H": 0.05185187,
+    "Threshold": 51,
+    "Text": "An upgraded gear is included as material."
   }
 ]

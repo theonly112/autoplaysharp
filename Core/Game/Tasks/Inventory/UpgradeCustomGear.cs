@@ -33,6 +33,15 @@ namespace autoplaysharp.Core.Game.Tasks.Inventory
                 return;
             }
 
+            await Task.Delay(1000);
+
+            if(Game.IsVisible(UIds.INVENTORY_TAB_CUSTOM_GEAR_UPGRADED_GEAR_INCLUDED))
+            {
+                // TODO: we should add a setting if the user doesnt want this.
+                Logger.LogDebug("Upgraded gear included.");
+                Game.Click(UIds.INVENTORY_TAB_CUSTOM_GEAR_QUICK_UPGRADE_OK);
+            }
+
             // TODO: finde better way to wait until animation has finished.
             await Task.Delay(5000);
 
