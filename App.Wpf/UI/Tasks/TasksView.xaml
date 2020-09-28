@@ -60,7 +60,8 @@
                             </DataTemplate>
                         </ContentControl.Resources>
                     </ContentControl>
-                    <Button Command="{Binding Path=SelectedItem.AddToQueue, ElementName=_tasksComboBox}">Run</Button>
+                    <Button Command="{Binding Path=SelectedItem.AddToQueue, ElementName=_tasksComboBox}">Run Selected</Button>
+                    <Button Command="{Binding Path=AddAllToQueue}">Run ALL</Button>
                 </StackPanel>
             </GroupBox>
         </StackPanel>

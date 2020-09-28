@@ -13,11 +13,13 @@ using autoplaysharp.Core.Game.Tasks.Missions.DeluxeEpicQuests;
 using autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests;
 using autoplaysharp.Game.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace autoplaysharp.App.UI.Tasks
 {
@@ -31,7 +33,18 @@ namespace autoplaysharp.App.UI.Tasks
             _queue.QueueChanged += OnQueueChanged;
             OnQueueChanged();
             BindingOperations.EnableCollectionSynchronization(Queue, _lock);
+            AddAllToQueue = new DelegateCommand(AddAll);
         }
+
+        private void AddAll()
+        {
+            foreach (var t in Tasks)
+            {
+                t.AddToQueue.Execute(null);
+            }
+        }
+
+        public ICommand AddAllToQueue { get; }
 
         private void OnQueueChanged()
         {
