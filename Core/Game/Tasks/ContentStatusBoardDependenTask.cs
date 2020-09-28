@@ -84,22 +84,22 @@ namespace autoplaysharp.Game.Tasks
 
             await Task.Delay(500);
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 3; i++)
             {
-                for (var col = 0; col < 3; col++)
+                for (var row = 0; row < 12; row++)
                 {
-                    for (var row = 0; row < 12; row++)
+                    for (var col = 0; col < 3; col++)
                     {
                         var nameElement = Repository["CONTENT_STATUS_BOARD_ITEM_NAME_DYN", col, row];
-                        var status = Game.GetText(Repository["CONTENT_STATUS_BOARD_ITEM_STATUS_DYN", col, row]);
-                        var isCompleted = Game.IsVisible(Repository["CONTENT_STATUS_BOARD_ITEM_NAME_COMPLETED_DYN", col, row]);
-                        var statusEntry = new ContentStatus(name, isCompleted, status);
                         var mission_name = Game.GetText(nameElement);
-
                         var nl = new NormalizedLevenshtein();
                         var similarity = nl.Similarity(name, mission_name);
                         if (similarity >= 0.8) // 80% should be fine. names are different enough.
                         {
+                            var status = Game.GetText(Repository["CONTENT_STATUS_BOARD_ITEM_STATUS_DYN", col, row]);
+                            var isCompleted = Game.IsVisible(Repository["CONTENT_STATUS_BOARD_ITEM_NAME_COMPLETED_DYN", col, row]);
+                            var statusEntry = new ContentStatus(name, isCompleted, status);
+
                             Logger.LogDebug($"Clicking on element because it matches expected: {name} actual: {mission_name} similarity: {similarity}");
                             Game.Click(nameElement);
 
@@ -110,7 +110,6 @@ namespace autoplaysharp.Game.Tasks
                                 Game.Click(UIds.GENERIC_MISSION_CUSTOM_OFFER_FOR_AGENTS_CLOSE);
                                 await Task.Delay(1000);
                             }
-
                             return statusEntry;
                         }
                         else
