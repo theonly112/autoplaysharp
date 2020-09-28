@@ -195,7 +195,7 @@ namespace autoplaysharp.Game.Tasks
 
             // Even if it is visible. its a good idea to wait briefly before clicking. 
             // Otherwise the click might not register.
-            await Task.Delay(250); 
+            await Task.Delay(250);
             Game.Click(uid);
             return true;
         }

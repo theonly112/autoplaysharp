@@ -103,5 +103,61 @@
     "H": 0.05185187,
     "Threshold": 51,
     "Text": "An upgraded gear is included as material."
+  },
+  {
+    "Id": "INVENTORY_TAB_CARDS",
+    "X": 0.5484375,
+    "Y": 0.14444445,
+    "W": 0.05677086,
+    "H": 0.04074073,
+    "Text": "CARD"
+  },
+  {
+    "Id": "INVENTORY_TAB_CARDS_UPGRADE_ALL",
+    "X": 0.67083335,
+    "Y": 0.9,
+    "W": 0.12187499,
+    "H": 0.0453704,
+    "Text": "UPGRADE ALL"
+  },
+  {
+    "Id": "INVENTORY_TAB_CARDS_UPGRADE_TYPE_DYN",
+    "X": 0.225,
+    "Y": 0.5175926,
+    "W": 0.022916675,
+    "H": 0.037037015,
+    "XOffset": 0.132
+  },
+  {
+    "Id": "INVENTORY_TAB_CARDS_UPGRADE_SELECT",
+    "X": 0.54375,
+    "Y": 0.78425926,
+    "W": 0.07239586,
+    "H": 0.04074073,
+    "Text": "SELECT"
+  },
+  {
+    "Id": "INVENTORY_TAB_CARDS_UPGRADE_BUTTON",
+    "X": 0.59166664,
+    "Y": 0.7777778,
+    "W": 0.09739584,
+    "H": 0.05185181,
+    "Text": "UPGRADE"
+  },
+  {
+    "Id": "INVENTORY_TAB_CARDS_UPGRADE_RESULT_OK",
+    "X": 0.48229167,
+    "Y": 0.8296296,
+    "W": 0.037499994,
+    "H": 0.05092597,
+    "Text": "OK"
+  },
+  {
+    "Id": "INVENTORY_TAB_CARDS_UPGRADE_AMOUNT_DYN",
+    "X": 0.21875,
+    "Y": 0.57685184,
+    "W": 0.035937488,
+    "H": 0.04444444,
+    "XOffset": 0.132
   }
 ]
