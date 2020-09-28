@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace autoplaysharp.Core.Game.Tasks.Inventory
 {
-    internal class CombineUru : GameTask
+    internal class CombineUru : InventoryTask
     {
         public CombineUru(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
@@ -19,22 +19,10 @@ namespace autoplaysharp.Core.Game.Tasks.Inventory
         {
             if (!Game.IsVisible(UIds.INVENTORY_TAB_MATERIAL))
             {
-                Logger.LogDebug("Opening inventory");
-                if (!await GoToMainScreen(token))
+                if(!await OpenInventory(token))
                 {
-                    Logger.LogError("Failed to go to main screen");
                     return;
                 }
-
-                if (!await OpenMenu())
-                {
-                    Logger.LogError("Failed to open main menu.");
-                    return;
-                }
-
-                Game.Click(UIds.MAIN_MENU_INVENTORY_BUTTON);
-
-                await Task.Delay(1000, token);
             }
 
             Logger.LogDebug("Going to material tab.");

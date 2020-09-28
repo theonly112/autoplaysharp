@@ -173,6 +173,12 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 var wbi = new WorldBossInvasion(Game, Repository, Settings);
                 await wbi.Run(token);
             }
+
+            if(questInfo.Contains("Participate"))
+            {
+                var wbi = new WorldBossInvasion(Game, Repository, Settings);
+                await wbi.Run(token);
+            }
         }
 
         private async Task HandleTimelineBattle(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)

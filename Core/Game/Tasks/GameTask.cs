@@ -167,6 +167,7 @@ namespace autoplaysharp.Game.Tasks
             if (await WaitUntilVisible(UIds.HEROIC_QUEST_FINISHED_NOTICE, timeout))
             {
                 Logger.LogDebug("Heroic quest notice appeared. Closing it.");
+                await Task.Delay(500);
                 Game.Click(UIds.HEROIC_QUEST_FINISHED_NOTICE);
                 await ClickWhenVisible(UIds.HEROIC_QUEST_QUEST_INFO_ACQUIRE);
                 await Task.Delay(500);

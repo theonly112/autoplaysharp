@@ -1,13 +1,12 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
-using autoplaysharp.Game.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace autoplaysharp.Core.Game.Tasks.Inventory
 {
-    internal class UpgradeCustomGear : GameTask
+    public class UpgradeCustomGear : InventoryTask
     {
         public UpgradeCustomGear(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
@@ -15,11 +14,33 @@ namespace autoplaysharp.Core.Game.Tasks.Inventory
 
         protected override async Task RunCore(CancellationToken token)
         {
-            await GoToMainScreen();
+            if(!await OpenInventory(token))
+            {
+                return;
+            }
 
-            Logger.LogError("Not implemented yet");
+            Game.Click(UIds.INVENTORY_TAB_CUSTOM_GEAR);
 
-            // TODO: implement.
+            if(!await ClickWhenVisible(UIds.INVENTORY_TAB_CUSTOM_GEAR_QUICK_UPGRADE))
+            {
+                Logger.LogError("Quick Upgrade button not visible.");
+                return;
+            }
+
+            if (!await ClickWhenVisible(UIds.INVENTORY_TAB_CUSTOM_GEAR_QUICK_UPGRADE_OK))
+            {
+                Logger.LogError("Quick Upgrade dialog OK button not visible.");
+                return;
+            }
+
+            // TODO: finde better way to wait until animation has finished.
+            await Task.Delay(5000);
+
+            if (!await ClickWhenVisible(UIds.INVENTORY_TAB_CUSTOM_GEAR_QUICK_UPGRADE_RESULT_OK))
+            {
+                Logger.LogError("Quick Upgrade result OK button not visible.");
+                return;
+            }
 
             // handles heroic quest notices.
             await GoToMainScreen();

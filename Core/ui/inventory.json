@@ -62,5 +62,37 @@
     "W": 0.06770834,
     "H": 0.03888893,
     "Text": "CANCEL"
+  },
+  {
+    "Id": "INVENTORY_TAB_CUSTOM_GEAR",
+    "X": 0.21354167,
+    "Y": 0.14166667,
+    "W": 0.11666666,
+    "H": 0.047222227,
+    "Text": "CUSTOM GEAR"
+  },
+  {
+    "Id": "INVENTORY_TAB_CUSTOM_GEAR_QUICK_UPGRADE",
+    "X": 0.815625,
+    "Y": 0.90185183,
+    "W": 0.123437464,
+    "H": 0.043518543,
+    "Text": "QUICK UPGRADE"
+  },
+  {
+    "Id": "INVENTORY_TAB_CUSTOM_GEAR_QUICK_UPGRADE_OK",
+    "X": 0.5578125,
+    "Y": 0.73055553,
+    "W": 0.042187512,
+    "H": 0.048148155,
+    "Text": "OK"
+  },
+  {
+    "Id": "INVENTORY_TAB_CUSTOM_GEAR_QUICK_UPGRADE_RESULT_OK",
+    "X": 0.40520832,
+    "Y": 0.8787037,
+    "W": 0.0390625,
+    "H": 0.041666687,
+    "Text": "OK"
   }
 ]
