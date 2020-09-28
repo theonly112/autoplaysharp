@@ -60,4 +60,20 @@ partial class UIds
 	/// HEROIC_QUEST_CYSTAL_CHEST_FULL_NOTICE_OK
 	/// </summary>
 	public const string HEROIC_QUEST_CYSTAL_CHEST_FULL_NOTICE_OK="HEROIC_QUEST_CYSTAL_CHEST_FULL_NOTICE_OK";
+	/// <summary>
+	/// HEROIC_QUEST_QUEST_INFO_GOTO
+	/// </summary>
+	public const string HEROIC_QUEST_QUEST_INFO_GOTO="HEROIC_QUEST_QUEST_INFO_GOTO";
+	/// <summary>
+	/// HEROIC_QUEST_END_QUEST_START
+	/// </summary>
+	public const string HEROIC_QUEST_END_QUEST_START="HEROIC_QUEST_END_QUEST_START";
+	/// <summary>
+	/// HEROIC_QUEST_END_QUEST_SKIP
+	/// </summary>
+	public const string HEROIC_QUEST_END_QUEST_SKIP="HEROIC_QUEST_END_QUEST_SKIP";
+	/// <summary>
+	/// HEROIC_QUEST_END_QUEST_HOME
+	/// </summary>
+	public const string HEROIC_QUEST_END_QUEST_HOME="HEROIC_QUEST_END_QUEST_HOME";
 }

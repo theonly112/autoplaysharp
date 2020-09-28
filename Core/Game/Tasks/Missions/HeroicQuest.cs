@@ -5,6 +5,7 @@ using autoplaysharp.Core.Helper;
 using autoplaysharp.Game.Tasks;
 using autoplaysharp.Game.Tasks.Missions;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -136,12 +137,32 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 case var s when questInfo.StartsWith("[CO-OP PLAY]"):
                     await HandleCoopQuest(questInfo, completionStatus, token);
                     break;
+                case var s when questInfo.StartsWith("[HEROIC QUEST]"):
+                    await HandleHeroicQuestEndFight(questInfo, completionStatus, token);
+                    break;
                 default:
                     Logger.LogError($"Unhandled heroic quest: {questInfo}");
                     break;
             }
 
             // TODO: right here we could loop.
+        }
+
+        private async Task HandleHeroicQuestEndFight(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        {
+            await ClickWhenVisible(UIds.HEROIC_QUEST_QUEST_INFO_GOTO);
+            await Task.Delay(2000);
+            await ClickWhenVisible(UIds.HEROIC_QUEST_END_QUEST_START);
+            await ClickWhenVisible(UIds.HEROIC_QUEST_END_QUEST_SKIP);
+
+            Func<bool> homeVisible = () => Game.IsVisible(UIds.HEROIC_QUEST_END_QUEST_HOME);
+            var authFight = new AutoFight(Game, Repository, Settings, homeVisible);
+            await authFight.Run(token);
+            await Task.Delay(1000);
+            await ClickWhenVisible(UIds.HEROIC_QUEST_END_QUEST_HOME);
+            await ClickWhenVisible(UIds.HEROIC_QUEST_END_QUEST_SKIP);
+            await HandleHeroicQuestNotice();
+            await GoToMainScreen();
         }
 
         private async Task HandleCoopQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
@@ -270,11 +291,15 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
         }
 
-        private Task HandleUseGoldMission(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleUseGoldMission(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
         {
-            Logger.LogDebug("Need to spend gold...");
-            // TODO: implement some way to spent gold.
-            return Task.FromResult(0);
+            // TODO: improve this...
+            for (int i = 0; i < 3; i++)
+            {
+                // Set some settings to make sure enough, but not too much gold is spent...
+                var combineUru = new CombineUru(Game, Repository, Settings);
+                await combineUru.Run(token);
+            }
         }
 
         private async Task HandleDimensionMissionQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
