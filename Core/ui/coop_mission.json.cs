@@ -48,4 +48,8 @@ partial class UIds
 	/// COOP_AUTO_REPEAT_IMAGE
 	/// </summary>
 	public const string COOP_AUTO_REPEAT_IMAGE="COOP_AUTO_REPEAT_IMAGE";
+	/// <summary>
+	/// COOP_WAITING_FOR_OTHER_PLAYERS_CANCEL
+	/// </summary>
+	public const string COOP_WAITING_FOR_OTHER_PLAYERS_CANCEL="COOP_WAITING_FOR_OTHER_PLAYERS_CANCEL";
 }

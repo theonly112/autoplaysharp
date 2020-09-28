@@ -89,24 +89,39 @@ namespace autoplaysharp.Game.Tasks.Missions
                     return;
                 }
 
-                if (!await WaitUntilVisible(UIds.COOP_ENDSCREEN_MISSION_SUCCESS, token, 60, 1))
-                {
-                    if (Game.IsVisible(UIds.COOP_REWARD_NOTICE_DAILY_LIMIT))
-                    {
-                        Game.Click(UIds.COOP_REWARD_NOTICE_DAILY_LIMIT_OK);
-                        await Task.Delay(2000);
-                        Logger.LogInformation("Finished CO-OP missions.");
-                        return;
-                    }
-                    Logger.LogError("Wait on success message failed.");
-                    return;
-                }
+                await WaitForMissionEnd(token);
 
                 await Task.Delay(5000);
 
                 Game.Click(UIds.COOP_ENDSCREEN_NEXT_BUTTON);
 
                 await Task.Delay(5000);
+            }
+        }
+
+        protected async Task WaitForMissionEnd(CancellationToken token)
+        {
+            if (!await WaitUntilVisible(UIds.COOP_ENDSCREEN_MISSION_SUCCESS, token, 60, 1))
+            {
+                if (Game.IsVisible(UIds.COOP_REWARD_NOTICE_DAILY_LIMIT))
+                {
+                    Game.Click(UIds.COOP_REWARD_NOTICE_DAILY_LIMIT_OK);
+                    await Task.Delay(2000);
+                    Logger.LogInformation("Finished CO-OP missions.");
+                    return;
+                }
+
+                Logger.LogDebug("Game did not start");
+
+                if(Game.IsVisible(UIds.COOP_WAITING_FOR_OTHER_PLAYERS_CANCEL))
+                {
+                    Game.Click(UIds.COOP_WAITING_FOR_OTHER_PLAYERS_CANCEL);
+                    await Task.Delay(1000);
+                    Game.Click(UIds.COOP_START);
+                    await WaitForMissionEnd(token);
+                }
+
+                return;
             }
         }
     }
