@@ -203,5 +203,28 @@
     "Y": 0.901,
     "W": 0.049,
     "H": 0.053
+  },
+  {
+    "Id": "WBI_COOP_ACTIVE_QUEST",
+    "X": 0.29479167,
+    "Y": 0.64444447,
+    "W": 0.40624997,
+    "H": 0.04444444,
+    "Text": "Clear the stage with less than 3 Male Characters."
+  },
+  {
+    "Id": "WBI_HERO_SELECTION_TYPE_CB",
+    "X": 0.6489583,
+    "Y": 0.21944444,
+    "W": 0.14166665,
+    "H": 0.051851854
+  },
+  {
+    "Id": "WBI_HERO_SELECTION_TYPE_CB_DYN",
+    "X": 0.65,
+    "Y": 0.22037037,
+    "W": 0.14114588,
+    "H": 0.051851854,
+    "YOffset": 0.0625
   }
 ]

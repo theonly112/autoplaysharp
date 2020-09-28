@@ -165,11 +165,8 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
         private async Task HandleWorldBossInvasionQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
         {
-            Logger.LogError($"This quest type is not handled yet: {questInfo}");
-
             if (questInfo.Contains("Complete"))
             {
-                // TODO: handle WBI COOP missions...
                 var wbi = new WorldBossInvasion(Game, Repository, Settings);
                 await wbi.Run(token);
             }

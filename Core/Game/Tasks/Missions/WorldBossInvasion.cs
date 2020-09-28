@@ -1,6 +1,7 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Game.Tasks;
+using autoplaysharp.Game.UI;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
@@ -12,6 +13,16 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
     {
         public WorldBossInvasion(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
+        }
+
+        private enum SelectionMode
+        {
+            Any,
+            SelectFemales,
+            SelectMales,
+            SelectCombat,
+            SelectSpeed,
+            SelectBlast
         }
 
         protected override async Task RunCore(CancellationToken token)
@@ -39,17 +50,42 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
 
             SelectActiveOpponent();
+
+            await Task.Delay(1000);
+
+            // TODO: this info is unsed at the moment.
+            var activeQuest = Game.GetText(UIds.WBI_COOP_ACTIVE_QUEST);
+            Logger.LogDebug(activeQuest);
+
+            SelectionMode selectionMode = SelectionMode.Any;
+            switch (activeQuest)
+            {
+                case "Clear the stage with less than 3 Male Characters.":
+                    selectionMode = SelectionMode.SelectFemales;
+                    break;
+                case "Clear the stage loosing 1 character or less.":
+                case "Clear the stage while using Co-op Skills less than 5 times.":
+                    selectionMode = SelectionMode.Any;
+                    break;
+                case "Clear the stage with more than 4 Combat Type Characters.":
+                    selectionMode = SelectionMode.SelectCombat;
+                    break;
+                case "Clear the stage with less than 3 Combat Type Characters.":
+                    selectionMode = SelectionMode.SelectSpeed; // Any is fine. just no combat.
+                    break;
+            }
+
             await WaitUntilVisible(UIds.WBI_OPPONENT_ENTER);
             await Task.Delay(250, token);
             Game.Click(UIds.WBI_OPPONENT_ENTER);
             await Task.Delay(2000, token);
 
-            await CollectNewChests(emptySlots, token);
+            await CollectNewChests(emptySlots, selectionMode, token);
 
             await GoToMainScreen(token);
         }
 
-        private async Task CollectNewChests(int emptySlots, CancellationToken token)
+        private async Task CollectNewChests(int emptySlots, SelectionMode selectionMode, CancellationToken token)
         {
             for (int i = 0; i < emptySlots; i++)
             {
@@ -59,7 +95,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                     return;
                 }
 
-                await SelectCharacters();
+                await SelectCharacters(selectionMode);
                 await Task.Delay(2000, token);
                 Logger.LogDebug("Starting mission");
                 Game.Click(UIds.WBI_HERO_START_MISSION);
@@ -86,7 +122,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             if (Game.IsVisible(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED))
             {
                 Game.Click(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED_OK);
-                await Task.Delay(2000, token);
+                await Task.Delay(4000, token);
 
                 Logger.LogInformation("Restarting because of disconnect");
 
@@ -107,8 +143,48 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
         }
 
-        private async Task SelectCharacters()
+        private async Task SelectCharacters(SelectionMode selectionMode)
         {
+            UIElement FindTypeRow(string type)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    var item = Repository[UIds.WBI_HERO_SELECTION_TYPE_CB_DYN, 0, i];
+                    var text = Game.GetText(item);
+                    if(text == type)
+                    {
+                        return item;
+                    }
+                }
+                throw new ArgumentException(nameof(type), $"Did not find {type} character type.");
+            }
+
+            Game.Click(UIds.WBI_HERO_SELECTION_TYPE_CB);
+            await Task.Delay(500);
+            switch (selectionMode)
+            {
+                case SelectionMode.Any:
+                    Game.Click(Repository[UIds.WBI_HERO_SELECTION_TYPE_CB_DYN, 0, 0]);
+                    break;
+                case SelectionMode.SelectFemales:
+                    Game.Click(FindTypeRow("FEMALE"));
+                    break;
+                case SelectionMode.SelectMales:
+                    Game.Click(FindTypeRow("MALE"));
+                    break;
+                case SelectionMode.SelectCombat:
+                    Game.Click(FindTypeRow("COMBAT"));
+                    break;
+                case SelectionMode.SelectSpeed:
+                    Game.Click(FindTypeRow("SPEED"));
+                    break;
+                case SelectionMode.SelectBlast:
+                    Game.Click(FindTypeRow("BLAST"));
+                    break;
+            }
+
+            await Task.Delay(500);
+
             Logger.LogDebug("Selecting characters");
             for (int i = 0; i < 3; i++)
             {

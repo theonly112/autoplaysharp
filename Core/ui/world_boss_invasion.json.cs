@@ -108,4 +108,16 @@ partial class UIds
 	/// WBI_NEXT_RUN
 	/// </summary>
 	public const string WBI_NEXT_RUN="WBI_NEXT_RUN";
+	/// <summary>
+	/// WBI_COOP_ACTIVE_QUEST
+	/// </summary>
+	public const string WBI_COOP_ACTIVE_QUEST="WBI_COOP_ACTIVE_QUEST";
+	/// <summary>
+	/// WBI_HERO_SELECTION_TYPE_CB
+	/// </summary>
+	public const string WBI_HERO_SELECTION_TYPE_CB="WBI_HERO_SELECTION_TYPE_CB";
+	/// <summary>
+	/// WBI_HERO_SELECTION_TYPE_CB_DYN
+	/// </summary>
+	public const string WBI_HERO_SELECTION_TYPE_CB_DYN="WBI_HERO_SELECTION_TYPE_CB_DYN";
 }
