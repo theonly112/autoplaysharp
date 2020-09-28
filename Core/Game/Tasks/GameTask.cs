@@ -122,7 +122,10 @@ namespace autoplaysharp.Game.Tasks
             if (Game.IsVisible(UIds.MAIN_MENU_HOME_BUTTON_IMAGE))
             {
                 Game.Click(UIds.MAIN_MENU_HOME_BUTTON_IMAGE);
+                await Task.Delay(1000);
             }
+
+            await HandleEndNotices();
 
             if(!await WaitUntil(IsOnMainScreen, token))
             {
@@ -189,7 +192,10 @@ namespace autoplaysharp.Game.Tasks
                 Game.OnError(new ElementNotFoundError(Repository[uid]));
                 return false;
             }
-            
+
+            // Even if it is visible. its a good idea to wait briefly before clicking. 
+            // Otherwise the click might not register.
+            await Task.Delay(250); 
             Game.Click(uid);
             return true;
         }

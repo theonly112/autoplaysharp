@@ -48,7 +48,12 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 await Task.Delay(1000, token);
             }
 
-            Game.Click(UIds.EPIC_QUEST_ENDSCREEN_HOME_BUTTON_IMAGE);
+            if(!await ClickWhenVisible(UIds.EPIC_QUEST_ENDSCREEN_HOME_BUTTON_IMAGE))
+            {
+                Logger.LogError("Home button did not appear.");
+                return false;
+            }
+
             await Task.Delay(3000, token);
             return true;
         }
