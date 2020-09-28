@@ -146,5 +146,13 @@
     "W": 0.033557057,
     "H": 0.04373759,
     "Text": "OK"
+  },
+  {
+    "Id": "DIMENSION_MISSION_REWARD_ACQUIRED_NOTICE_CLOSE",
+    "X": 0.38385418,
+    "Y": 0.7592593,
+    "W": 0.07499999,
+    "H": 0.05092591,
+    "Text": "CLOSE"
   }
 ]
