@@ -165,8 +165,9 @@ namespace autoplaysharp.Game.Tasks.Missions
             Func<bool> died = () => Game.IsVisible(UIds.ALLIANCE_BATTLE_SELECT_NEW_CHARACTER_AND_CONTINUE);
             Func<bool> battleEnded = () => Game.IsVisible(UIds.ALLIANCE_BATTLE_ENDED_MESSAGE);
             Func<bool> cleared = () => Game.IsVisible(UIds.ALLIANCE_BATTLE_CLEAR_MESSAGE);
+            Func<bool> threeCharsRequired = () => Game.IsVisible(UIds.ALLIANCE_BATTLE_NOTICE_THREE_CHARACTERS_REQUIRED);
 
-            var autoFight = new AutoFight(Game, Repository, Settings, died, battleEnded, cleared);
+            var autoFight = new AutoFight(Game, Repository, Settings, died, battleEnded, cleared, threeCharsRequired);
             var autoFightTask = autoFight.Run(token);
 
             // TODO: is timeout fallback even necessary?
