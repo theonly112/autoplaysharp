@@ -59,7 +59,7 @@ namespace autoplaysharp.App.UI.Repository
                     {
                         Debug.WriteLine("Escape");
                         CleanUp();
-                        _taskCompletionSource.SetResult((true, Vector2.Zero, Vector2.Zero));
+                        _taskCompletionSource?.SetResult((true, Vector2.Zero, Vector2.Zero));
                     }
 
                     if (args.vkCode == User32.VirtualKey.VK_LCONTROL && _posStart == Vector2.Zero)
