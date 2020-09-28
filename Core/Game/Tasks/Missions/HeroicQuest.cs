@@ -193,10 +193,13 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             await legendaryBattle.Run(token);
         }
 
-        private Task HandleUseEnergQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleUseEnergQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
         {
-            // TODO: run some mission to spend energy...
-            return Task.CompletedTask;
+            // TODO: let user select mission type to spend energy?
+            Logger.LogDebug("Running dimension missions to spend energy");
+            var dimensionMission = new DimensionMission(Game, Repository, Settings);
+            dimensionMission.CollectRewardCount = 2; // 1 is not enough when boost points available.
+            await dimensionMission.Run(token);
         }
 
         private async Task HandleDangerRoomQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
