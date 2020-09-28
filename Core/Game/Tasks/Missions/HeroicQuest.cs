@@ -38,6 +38,15 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             await Task.Delay(1000, token);
 
+            if(Game.IsVisible(UIds.HEROIC_QUEST_WORLD_MAP))
+            {
+                Logger.LogError("World map appeared when starting heroic quest. Don't know how to proceed.");
+                Game.Click(UIds.HEROIC_QUEST_WORLD_MAP_OK);
+                await Task.Delay(1000);
+                await GoToMainScreen(token);
+                return;
+            }
+
             if(Game.IsVisible(UIds.HEROIC_QUEST_CYSTAL_CHEST_FULL_NOTICE))
             {
                 Logger.LogDebug("Clsing crytsal chest full notice.");

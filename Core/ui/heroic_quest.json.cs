@@ -76,4 +76,12 @@ partial class UIds
 	/// HEROIC_QUEST_END_QUEST_HOME
 	/// </summary>
 	public const string HEROIC_QUEST_END_QUEST_HOME="HEROIC_QUEST_END_QUEST_HOME";
+	/// <summary>
+	/// HEROIC_QUEST_WORLD_MAP
+	/// </summary>
+	public const string HEROIC_QUEST_WORLD_MAP="HEROIC_QUEST_WORLD_MAP";
+	/// <summary>
+	/// HEROIC_QUEST_WORLD_MAP_OK
+	/// </summary>
+	public const string HEROIC_QUEST_WORLD_MAP_OK="HEROIC_QUEST_WORLD_MAP_OK";
 }
