@@ -103,6 +103,7 @@ namespace autoplaysharp.Game.Tasks.Missions
         {
             if (!await WaitUntilVisible(UIds.COOP_ENDSCREEN_MISSION_SUCCESS, token, 60, 1))
             {
+                await Task.Delay(5000);
                 if (Game.IsVisible(UIds.COOP_REWARD_NOTICE_DAILY_LIMIT))
                 {
                     Game.Click(UIds.COOP_REWARD_NOTICE_DAILY_LIMIT_OK);
@@ -113,11 +114,18 @@ namespace autoplaysharp.Game.Tasks.Missions
 
                 Logger.LogDebug("Game did not start");
 
-                if(Game.IsVisible(UIds.COOP_WAITING_FOR_OTHER_PLAYERS_CANCEL))
+                if (Game.IsVisible(UIds.COOP_WAITING_FOR_OTHER_PLAYERS_CANCEL))
                 {
+
                     Game.Click(UIds.COOP_WAITING_FOR_OTHER_PLAYERS_CANCEL);
                     await Task.Delay(1000);
                     Game.Click(UIds.COOP_START);
+                    await WaitForMissionEnd(token);
+                }
+
+                if(Game.IsVisible(UIds.COOP_DISCONNECTED_FROM_THE_SERVER_FIND_NEW_OPPONENT))
+                {
+                    Game.Click(UIds.COOP_DISCONNECTED_FROM_THE_SERVER_FIND_NEW_OPPONENT);
                     await WaitForMissionEnd(token);
                 }
 

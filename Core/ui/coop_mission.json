@@ -101,5 +101,13 @@
     "W": 0.07447919,
     "H": 0.049074054,
     "Text": "CANCEL"
+  },
+  {
+    "Id": "COOP_DISCONNECTED_FROM_THE_SERVER_FIND_NEW_OPPONENT",
+    "X": 0.5104167,
+    "Y": 0.7074074,
+    "W": 0.15677083,
+    "H": 0.04444444,
+    "Text": "Find new opponent"
   }
 ]
