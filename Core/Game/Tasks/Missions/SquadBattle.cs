@@ -87,9 +87,10 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             await Task.Delay(2000);
 
-            if(!await ClickWhenVisible(UIds.SQUAD_BATTLE_SUMMARY_OVERALL_BATTLEPOINTS))
+            if(!await ClickWhenVisible(UIds.SQUAD_BATTLE_SUMMARY_OVERALL_BATTLEPOINTS, 10))
             {
-                Logger.LogDebug("Rank up/down notification did not appear. Did we already run this mode?");
+                Logger.LogError("Rank up/down notification did not appear. Did we already run this mode?");
+                return;
             }
             
             if (!await ClickWhenVisible(UIds.SQUAD_BATTLE_END_HOME_BUTTON))

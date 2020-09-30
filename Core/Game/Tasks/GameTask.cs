@@ -185,9 +185,9 @@ namespace autoplaysharp.Game.Tasks
             }
         }
 
-        protected async Task<bool> ClickWhenVisible(string uid)
+        protected async Task<bool> ClickWhenVisible(string uid, int timeout = 5)
         {
-            if(!await WaitUntilVisible(uid))
+            if(!await WaitUntilVisible(uid, timeout))
             {
                 Game.OnError(new ElementNotFoundError(Repository[uid]));
                 return false;
