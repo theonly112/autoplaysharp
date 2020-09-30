@@ -222,5 +222,13 @@
     "W": 0.019270837,
     "H": 0.024999976,
     "Scale": 8
+  },
+  {
+    "Id": "DANGER_ROOM_ERROR_OCCURED",
+    "X": 0.37083334,
+    "Y": 0.42962962,
+    "W": 0.25937498,
+    "H": 0.05185187,
+    "Text": "A temporary error has occurred."
   }
 ]

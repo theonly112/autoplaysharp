@@ -84,19 +84,19 @@ namespace autoplaysharp.Game.Tasks.Missions
                 // TODO: for now we can skip character selection. Game does it for us.
                 //await SelectCharacter();
 
-                if (!await WaitUntilVisible(UIds.DANGER_ROOM_WAITING_FOR_HEROES, 60, 0.2f))
+                Task<bool> WaitingForHeroes = WaitUntilVisible(UIds.DANGER_ROOM_WAITING_FOR_HEROES, 60, 0.2f);
+                Task<bool> GameCanceled = WaitUntilVisible(UIds.DANGER_ROOM_GAME_CANCELED_NOTICE, 60, 0.2f);
+                Task<bool> TemporaryError = WaitUntilVisible(UIds.DANGER_ROOM_WAITING_FOR_HEROES, 60, 0.2f);
+
+                var completedTask = await Task.WhenAny(WaitingForHeroes, GameCanceled, TemporaryError);
+
+                if (completedTask == GameCanceled ||
+                    completedTask == TemporaryError) // DANGER_ROOM_GAME_CANCELED_NOTICE_OK works for temporary error as well.
                 {
-                    if (Game.IsVisible(UIds.DANGER_ROOM_GAME_CANCELED_NOTICE))
-                    {
-                        Game.Click(UIds.DANGER_ROOM_GAME_CANCELED_NOTICE_OK);
-                        await Task.Delay(2000, token);
-                        Logger.LogError("Game was cancelled. Restarting");
-                        await RunCore(token);
-                    }
-                    else
-                    {
-                        Logger.LogError("Start screen did not appear. Cancelling...");
-                    }
+                    Game.Click(UIds.DANGER_ROOM_GAME_CANCELED_NOTICE_OK);
+                    await Task.Delay(2000, token);
+                    Logger.LogError("Game was cancelled. Restarting");
+                    await RunCore(token);
                     return;
                 }
 
