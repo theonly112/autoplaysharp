@@ -92,7 +92,17 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Logger.LogError("Rank up/down notification did not appear. Did we already run this mode?");
                 return;
             }
+
+            await Task.Delay(3000);
             
+            if(Game.IsVisible(UIds.SQUAD_BATTLE_SUMMARY_OVERALL_BATTLEPOINTS))
+            {
+                Logger.LogDebug("Clicking one more time... (SQUAD_BATTLE_SUMMARY_OVERALL_BATTLEPOINTS)");
+                Game.Click(UIds.SQUAD_BATTLE_SUMMARY_OVERALL_BATTLEPOINTS);
+            }
+
+            await Task.Delay(3000);
+
             if (!await ClickWhenVisible(UIds.SQUAD_BATTLE_END_HOME_BUTTON))
             {
                 Game.OnError(new ElementNotFoundError(Repository[UIds.SQUAD_BATTLE_END_HOME_BUTTON]));
