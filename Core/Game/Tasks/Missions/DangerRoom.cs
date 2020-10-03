@@ -86,7 +86,7 @@ namespace autoplaysharp.Game.Tasks.Missions
 
                 Task<bool> WaitingForHeroes = WaitUntilVisible(UIds.DANGER_ROOM_WAITING_FOR_HEROES, 60, 0.2f);
                 Task<bool> GameCanceled = WaitUntilVisible(UIds.DANGER_ROOM_GAME_CANCELED_NOTICE, 60, 0.2f);
-                Task<bool> TemporaryError = WaitUntilVisible(UIds.DANGER_ROOM_WAITING_FOR_HEROES, 60, 0.2f);
+                Task<bool> TemporaryError = WaitUntilVisible(UIds.DANGER_ROOM_ERROR_OCCURED, 60, 0.2f);
 
                 var completedTask = await Task.WhenAny(WaitingForHeroes, GameCanceled, TemporaryError);
 
