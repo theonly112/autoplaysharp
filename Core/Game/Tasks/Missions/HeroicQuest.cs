@@ -47,18 +47,18 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 return;
             }
 
-            if(Game.IsVisible(UIds.HEROIC_QUEST_CYSTAL_CHEST_FULL_NOTICE))
-            {
-                Logger.LogDebug("Clsing crytsal chest full notice.");
-                Game.Click(UIds.HEROIC_QUEST_CYSTAL_CHEST_FULL_NOTICE_OK);
-                await Task.Delay(1000, token);
-            }
-            
             if(Game.IsVisible(UIds.HEROIC_QUEST_CYSTAL_CHEST_NOTICE))
             {
                 Logger.LogDebug("Closing crystal chest notice.");
                 Game.Click(UIds.HEROIC_QUEST_CYSTAL_CHEST_NOTICE_CANCEL);
                 await Task.Delay(1000, token);
+
+                if (Game.IsVisible(UIds.HEROIC_QUEST_CYSTAL_CHEST_FULL_NOTICE))
+                {
+                    Logger.LogDebug("Clsing crytsal chest full notice.");
+                    Game.Click(UIds.HEROIC_QUEST_CYSTAL_CHEST_FULL_NOTICE_OK);
+                    await Task.Delay(1000, token);
+                }
             }
 
             var id = UIds.HEROIC_QUEST_JESSICA_NEW_YORK;
@@ -151,10 +151,14 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                     break;
                 default:
                     Logger.LogError($"Unhandled heroic quest: {questInfo}");
-                    break;
+                    return;
             }
 
+            if (token.IsCancellationRequested)
+                return;
+
             // TODO: right here we could loop.
+            await RunCore(token);
         }
 
         private async Task HandleHeroicQuestEndFight(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
