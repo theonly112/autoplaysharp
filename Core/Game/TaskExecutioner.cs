@@ -85,7 +85,7 @@ namespace autoplaysharp.Game
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Task existed with exception.");
+                _logger.LogError(e, $"Task existed with exception. {e}");
             }
         }
 
