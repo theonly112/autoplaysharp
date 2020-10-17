@@ -20,9 +20,11 @@ This is a bot for Marvel Future Fight (MFF)
 
 7. Make sure your graphics settings are on High if possible. Lower settings might cause issues.
 
-8. Download autoplay#.
+8. Install Visual C++ Redistributables  [vc_redist.x64.exe](https://aka.ms/vs/16/release/vc_redist.x64.exe)
 
-9. Run autoplay#.
+9. Download autoplay#.
+
+10. Run autoplay#.
 
 ## Troubleshooting
 
