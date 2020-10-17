@@ -121,6 +121,10 @@ namespace autoplaysharp.Game.Tasks
                         }
                         attempts--;
                     }
+                    // TODO: theres an issue with the bot being stuck in a loop trying to cast this skill.
+                    // issue seems to be with detecting the '%' sign. this is a workaround until its fixed.
+                    Logger.LogInformation("Failed to cast danger room skill 3 times... Disabling");
+                    _dangerRoomSpecialSkillAvailable = false;
                 }
                 return false;
             }
