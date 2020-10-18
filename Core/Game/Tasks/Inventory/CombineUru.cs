@@ -76,7 +76,7 @@ namespace autoplaysharp.Core.Game.Tasks.Inventory
                 for (int y = 0; y < 3; y++)
                 {
                     Game.Click(Repository[UIds.INVENTORY_TAB_MATERIAL_ITEM_GRID, x, y]);
-                    await Task.Delay(100);
+                    await Task.Delay(300);
                     if (Game.IsVisible(UIds.INVENTORY_TAB_MATERIAL_URU_COMBINE_ALL))
                     {
                         Game.Click(UIds.INVENTORY_TAB_MATERIAL_URU_COMBINE_ALL);
