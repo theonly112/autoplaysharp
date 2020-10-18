@@ -73,6 +73,9 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 case "Clear the stage with less than 3 Combat Type Characters.":
                     selectionMode = SelectionMode.SelectSpeed; // Any is fine. just no combat.
                     break;
+                case "Clear the stage with more than 4 Blast Type Characters":
+                    selectionMode = SelectionMode.SelectBlast;
+                    break;
             }
 
             await WaitUntilVisible(UIds.WBI_OPPONENT_ENTER);
