@@ -1,5 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
+using autoplaysharp.Contracts.Errors;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
@@ -81,7 +82,11 @@ namespace autoplaysharp.Game.Tasks.Missions
 
             await Task.Delay(1000);
 
-            Game.Click(UIds.ALLIANCE_BATTLE_END_SCREEN_HOME);
+            if(!await ClickWhenVisible(UIds.ALLIANCE_BATTLE_END_SCREEN_HOME))
+            {
+                Game.OnError(new ElementNotFoundError(Repository[UIds.ALLIANCE_BATTLE_END_SCREEN_HOME]));
+                return;
+            }
 
             await HandleHeroicQuestNotice();
         }
