@@ -42,5 +42,11 @@ namespace autoplaysharp.App.UI.DebugView
 
         public string TaskName { get; set; }
         public ICommand Run { get; }
+
+        public bool EnableOverlay
+        {
+            get => _settings.EnableOverlay;
+            set => _settings.EnableOverlay = value;
+        }
     }
 }

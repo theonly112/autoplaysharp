@@ -5,6 +5,7 @@ namespace autoplaysharp.Contracts.Configuration
 {
     public interface ISettings
     {
+        bool EnableOverlay { get; set; }
         string WindowName { get; set; }
         IList<string> RoutineItems { get; set; }
         EmulatorType EmulatorType { get; set; }

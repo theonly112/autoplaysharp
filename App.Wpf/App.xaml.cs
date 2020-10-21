@@ -11,6 +11,7 @@ using autoplaysharp.Overlay;
 using Config.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PInvoke;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -94,10 +95,15 @@ namespace autoplaysharp.App.Wpf
             var repository = new Repository();
             repository.Load();
             var game = new GameImpl(window, repository, loggerFactory);
-
+           
             var overlay = new ImGuiOverlay(game, window, repository);
-            //circular dependency. find better solution.
-            game.Overlay = overlay;
+
+            if (settings.EnableOverlay)
+            {
+                //circular dependency. find better solution.
+                game.Overlay = overlay;
+                overlay.Setup();
+            }
             serviceCollection.AddSingleton<IEmulatorOverlay>(overlay);
 
             var picker = new AreaPicker(window, overlay);
@@ -112,8 +118,10 @@ namespace autoplaysharp.App.Wpf
             ViewModelLocator.ConfigureServices(serviceCollection);
 
 
-
-            Dispatcher.BeginInvoke(async () => await UpdateOverlay(overlay));
+            if(settings.EnableOverlay)
+            {
+                Dispatcher.BeginInvoke(async () => await UpdateOverlay(overlay));
+            }
 
             async Task UpdateOverlay(ImGuiOverlay overlay)
             {

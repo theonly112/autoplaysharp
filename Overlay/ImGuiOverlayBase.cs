@@ -23,10 +23,9 @@ namespace autoplaysharp.Overlay
         public ImGuiOverlayBase(IEmulatorWindow window)
         {
             NoxWindow = window;
-            Setup();
         }
 
-        private void Setup()
+        public  void Setup()
         {
             _window = VeldridStartup.CreateWindow(new WindowCreateInfo(NoxWindow.X, NoxWindow.Y, NoxWindow.Width, NoxWindow.Height, WindowState.Normal, "autoplay# Overlay"));
 
