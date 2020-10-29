@@ -22,7 +22,8 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             SelectMales,
             SelectCombat,
             SelectSpeed,
-            SelectBlast
+            SelectBlast,
+            SelectVillain
         }
 
         protected override async Task RunCore(CancellationToken token)
@@ -75,6 +76,9 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                     break;
                 case "Clear the stage with more than 4 Blast Type Characters":
                     selectionMode = SelectionMode.SelectBlast;
+                    break;
+                case "Clear the stage with less than 5 Super Heroes.":
+                    selectionMode = SelectionMode.SelectVillain;
                     break;
             }
 
@@ -183,6 +187,9 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                     break;
                 case SelectionMode.SelectBlast:
                     Game.Click(FindTypeRow("BLAST"));
+                    break;
+                case SelectionMode.SelectVillain:
+                    Game.Click(FindTypeRow("SUPER VILLAIN"));
                     break;
             }
 
