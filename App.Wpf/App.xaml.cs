@@ -86,7 +86,6 @@ namespace autoplaysharp.App.Wpf
                     break;
                 case Contracts.Configuration.EmulatorType.BlueStacks:
                     window = new BluestacksWindow();
-                    Debug.Assert(false, "Not supported yet.");
                     break;
                 default:
                     throw new Exception("Invalid emulator type");

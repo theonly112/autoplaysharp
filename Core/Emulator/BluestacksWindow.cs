@@ -15,7 +15,7 @@ namespace autoplaysharp.Core.Emulator
 
             var ptr = new User32.WNDENUMPROC((hwnd, param) =>
             {
-                char[] text = new char[32];
+                char[] text = new char[64];
                 User32.GetWindowText(hwnd, text, text.Length);
                 var name = new string(text).TrimEnd('\0');
                 if (_blueStacksMain == IntPtr.Zero && name == "BlueStacks")
@@ -24,7 +24,7 @@ namespace autoplaysharp.Core.Emulator
                     return false;
                 }
 
-                if (_blueStacksMain != IntPtr.Zero && name == "_ctl.Window")
+                if (_blueStacksMain != IntPtr.Zero && name == "BlueStacks Android PluginAndroid")
                 {
                     _blueStacksGameArea = hwnd;
                     return false;
