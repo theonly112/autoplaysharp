@@ -5,6 +5,7 @@ using autoplaysharp.Game.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
+using autoplaysharp.Contracts.Errors;
 
 namespace autoplaysharp.Core.Game.Tasks.Missions
 {
@@ -115,7 +116,10 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             await Task.Delay(1000);
 
-            Game.Click(UIds.DIMENSION_MISSION_BACK_BUTTON);
+            if (!await ClickWhenVisible(UIds.DIMENSION_MISSION_BACK_BUTTON))
+            {
+                Game.OnError(new ElementNotFoundError(Repository[UIds.DIMENSION_MISSION_BACK_BUTTON]));
+            }
             await Task.Delay(1000);
         }
 
