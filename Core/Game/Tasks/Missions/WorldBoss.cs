@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace autoplaysharp.Core.Game.Tasks.Missions
 {
-    internal class WorldBoss : ContentStatusBoardDependenTask
+    public class WorldBoss : ContentStatusBoardDependenTask
     {
         public WorldBoss(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {

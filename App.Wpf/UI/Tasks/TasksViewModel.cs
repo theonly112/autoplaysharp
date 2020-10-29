@@ -6,6 +6,7 @@ using autoplaysharp.App.UI.Tasks.HeroicQuest;
 using autoplaysharp.App.UI.Tasks.LegendaryBattle;
 using autoplaysharp.App.UI.Tasks.SquadBattle;
 using autoplaysharp.App.UI.Tasks.TimelineBattle;
+using autoplaysharp.App.UI.Tasks.WorldBoss;
 using autoplaysharp.App.UI.Tasks.WorldBossInvasion;
 using autoplaysharp.Contracts;
 using autoplaysharp.Core.Game.Tasks.Missions;
@@ -71,7 +72,8 @@ namespace autoplaysharp.App.UI.Tasks
             typeof(SquadBattleSettingsViewModel),
             typeof(TimelineBattleSettingsViewModel),
             typeof(WorldBossInvasionSettingsViewModel),
-
+            typeof(WorldBossSettingsViewModel),
+            
             // Epic Quest
             typeof(TaskBaseViewModel<StupidXMen>),
             typeof(TaskBaseViewModel<TheBigTwin>),

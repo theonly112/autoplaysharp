@@ -12,6 +12,7 @@
              xmlns:legendary="clr-namespace:autoplaysharp.App.UI.Tasks.LegendaryBattle"
              xmlns:squad="clr-namespace:autoplaysharp.App.UI.Tasks.SquadBattle"
              xmlns:wbi="clr-namespace:autoplaysharp.App.UI.Tasks.WorldBossInvasion"
+             xmlns:worldBoss="clr-namespace:autoplaysharp.App.UI.Tasks.WorldBoss"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Path=TasksViewModel, Source={StaticResource Locator}}">
@@ -56,6 +57,9 @@
                                 <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type wbi:WorldBossInvasionSettingsViewModel}">
+                                <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type worldBoss:WorldBossSettingsViewModel}">
                                 <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
                             </DataTemplate>
                         </ContentControl.Resources>
