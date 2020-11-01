@@ -1,7 +1,7 @@
-﻿using PInvoke;
-using System;
+﻿using System;
+using PInvoke;
 
-namespace autoplaysharp.Core.Emulator
+namespace autoplaysharp.Emulators
 {
     public class NoxWindow : BaseEmulatorWindow
     {
@@ -46,6 +46,11 @@ namespace autoplaysharp.Core.Emulator
         }
 
         protected override IntPtr GameAreaHwnd => _noxGameAreaHwnd;
+
+        public override void RestartGame()
+        {
+            throw new NotImplementedException();
+        }
 
         protected override IntPtr ScreenshotHwnd => _noxMainWindow;
     }

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\autoplaysharp.Core.csproj" />
+    <ProjectReference Include="..\UiAutomation\autoplaysharp.UiAutomation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

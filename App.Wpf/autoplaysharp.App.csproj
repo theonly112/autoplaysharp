@@ -22,7 +22,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\autoplaysharp.Core.csproj" />
+    <ProjectReference Include="..\Emulators\autoplaysharp.Emulators.csproj" />
     <ProjectReference Include="..\Overlay\autoplaysharp.Overlay.csproj" />
+    <ProjectReference Include="..\UiAutomation\autoplaysharp.UiAutomation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,35 +1,35 @@
-﻿using autoplaysharp.Contracts;
+﻿using System;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Numerics;
+using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Errors;
-using autoplaysharp.Core;
-using autoplaysharp.Core.OCR;
 using autoplaysharp.Game.UI;
 using autoplaysharp.Helper;
 using Microsoft.Extensions.Logging;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
-using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Numerics;
 
-namespace autoplaysharp.Game
+namespace autoplaysharp.Core.Game
 {
     public class GameImpl : IGame
     {
         private readonly IEmulatorWindow _window;
         private readonly IUiRepository _repository;
         private readonly ILoggerFactory _loggerFactory;
+        private readonly ITextRecognition _recognition;
         private readonly ILogger _logger;
         private readonly Random _random = new Random();
 
         public IEmulatorOverlay Overlay { get; set; }
 
-        public GameImpl(IEmulatorWindow window, IUiRepository repository, ILoggerFactory loggerFactory)
+        public GameImpl(IEmulatorWindow window, IUiRepository repository, ILoggerFactory loggerFactory, ITextRecognition recognition)
         {
             _window = window;
             _repository = repository;
             _loggerFactory = loggerFactory;
+            _recognition = recognition;
             _logger = _loggerFactory.CreateLogger(GetType());
         }
 
@@ -63,59 +63,17 @@ namespace autoplaysharp.Game
             _window.ClickAt(x, y);
         }
 
+        public string GetText(UIElement element)
+        {
+            using Bitmap section = GrabElement(element);
+            return _recognition.GetText(section, element);
+        }
+
         public void Drag(string idStart, string IdEnd)
         {
             var start = _repository[idStart];
             var end = _repository[IdEnd];
             _window.Drag(new Vector2(start.X.Value, start.Y.Value), new Vector2(end.X.Value, end.Y.Value));
-        }
-
-        public string GetText(UIElement element)
-        {
-            using Bitmap section = GrabElement(element);
-
-            // Preprocessing for OCR.
-            using var section_mat = section.ToMat();
-
-            using var scaled_section_mat = new Mat();
-            if (element.Scale.HasValue)
-            {
-                var scale = element.Scale.Value;
-                Cv2.Resize(section_mat, scaled_section_mat, new OpenCvSharp.Size(section.Width * scale, section.Height * scale));
-            }
-
-            using var grayscale_mat = new Mat();
-            Cv2.CvtColor(element.Scale.HasValue ? scaled_section_mat : section_mat, grayscale_mat, ColorConversionCodes.BGR2GRAY);
-            using var tresholded_mat = new Mat();
-
-            if(element.Threshold.HasValue)
-            {
-                var threshold = element.Threshold.Value;
-                Cv2.Threshold(grayscale_mat, tresholded_mat, threshold, 255, ThresholdTypes.Binary);
-            }
-            else
-            {
-                Cv2.Threshold(grayscale_mat, tresholded_mat, 0, 255, ThresholdTypes.Binary | ThresholdTypes.Otsu);
-            }
-
-            using var inverted_mat = (~tresholded_mat).ToMat();
-            using var inverted_bitmap = inverted_mat.ToBitmap();
-            using var pix = inverted_bitmap.ToPix();
-
-            // for debugging ...
-            if (Settings.SaveImages)
-            {
-                SaveImage(element.Id, pix);
-            }
-
-
-            var result = TextRecognition.GetText(pix, element.PSM.HasValue ? element.PSM.Value : 3);
-            //_logger.LogDebug($"Detected text {result.Text} with confidence: {result.Confidence}");
-
-            Overlay?.ShowGetText(element);
-            //_logger.LogDebug($"{element.Id} Text: {result}");
-            
-            return result.Text.TrimStart().TrimEnd();
         }
 
         private Bitmap GrabElement(UIElement element)
@@ -140,21 +98,21 @@ namespace autoplaysharp.Game
             return GetText(element);
         }
 
-        private static void SaveImage(string id, Tesseract.Pix pix)
-        {
-            try
-            {
-                if(!Directory.Exists("logs"))
-                {
-                    Directory.CreateDirectory("logs");
-                }
-                pix.Save($"logs\\{id}.bmp");
-            }
-            catch
-            {
-                // dont care...
-            }
-        }
+        //private static void SaveImage(string id, Tesseract.Pix pix)
+        //{
+        //    try
+        //    {
+        //        if(!Directory.Exists("logs"))
+        //        {
+        //            Directory.CreateDirectory("logs");
+        //        }
+        //        pix.Save($"logs\\{id}.bmp");
+        //    }
+        //    catch
+        //    {
+        //        // dont care...
+        //    }
+        //}
 
         public bool IsVisible(UIElement element)
         {
@@ -214,9 +172,10 @@ namespace autoplaysharp.Game
         
         public void OnError(TaskError taskError)
         {
+            _window.RestartGame();
             switch (taskError)
             {
-                case ElementNotFoundError elementNotFoundError when taskError is ElementNotFoundError:
+                case ElementNotFoundError elementNotFoundError:
                     {
                         using var screen = _window.GrabScreen(0, 0, _window.Width, _window.Height);
                         using var screenMat = screen.ToMat();
@@ -246,8 +205,7 @@ namespace autoplaysharp.Game
 
                         if (missingElement.Image == null)
                         {
-                            using var pix = cropped.ToPix();
-                            var foundText = TextRecognition.GetText(pix, missingElement.PSM.HasValue ? missingElement.PSM.Value : 3);
+                            var foundText = _recognition.GetText(cropped, missingElement);
                             var text = $"Found Text: {foundText}";
                             var size = GetTextSize(text);
                             DrawText(screenMat, x, y + size.Height, text);

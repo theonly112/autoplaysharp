@@ -1,23 +1,23 @@
-﻿using App.Wpf;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
+using App.Wpf;
 using autoplaysharp.App.Logging;
 using autoplaysharp.App.UI;
 using autoplaysharp.App.UI.Repository;
 using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
-using autoplaysharp.Core.Emulator;
+using autoplaysharp.Core.Game;
+using autoplaysharp.Emulators;
 using autoplaysharp.Game;
 using autoplaysharp.Game.UI;
 using autoplaysharp.Overlay;
+using autoplaysharp.UiAutomation.OCR;
 using Config.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using PInvoke;
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
 
 namespace autoplaysharp.App.Wpf
 {
@@ -77,6 +77,8 @@ namespace autoplaysharp.App.Wpf
 
             serviceCollection.AddSingleton(settings);
 
+            var recognition = new TextRecognition();
+
             var executioner = new TaskExecutioner(loggerFactory.CreateLogger<TaskExecutioner>());
             IEmulatorWindow window = null;
             switch (settings.EmulatorType)
@@ -85,7 +87,7 @@ namespace autoplaysharp.App.Wpf
                     window = new NoxWindow(settings.WindowName);
                     break;
                 case Contracts.Configuration.EmulatorType.BlueStacks:
-                    window = new BluestacksWindow();
+                    window = new BluestacksWindow(loggerFactory.CreateLogger<BluestacksWindow>(), recognition);
                     break;
                 default:
                     throw new Exception("Invalid emulator type");
@@ -93,7 +95,7 @@ namespace autoplaysharp.App.Wpf
 
             var repository = new Repository();
             repository.Load();
-            var game = new GameImpl(window, repository, loggerFactory);
+            var game = new GameImpl(window, repository, loggerFactory, recognition);
            
             var overlay = new ImGuiOverlay(game, window, repository);
 

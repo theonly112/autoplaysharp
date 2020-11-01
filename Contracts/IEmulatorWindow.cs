@@ -16,5 +16,6 @@ namespace autoplaysharp.Contracts
         void Drag(Vector2 from, Vector2 to);
         Bitmap GrabScreen(int x, int y, int w, int h);
         Vector2 Denormalize(Vector2 normalized);
+        void RestartGame();
     }
 }

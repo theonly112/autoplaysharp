@@ -6,6 +6,8 @@ using autoplaysharp.Helper;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using System.Drawing;
+using autoplaysharp.Core.Game;
+using autoplaysharp.UiAutomation.OCR;
 
 namespace autoplaysharp.Tests
 {
@@ -19,8 +21,9 @@ namespace autoplaysharp.Tests
             var repo = new Repository();
             repo.Load();
             _window = Substitute.For<IEmulatorWindow>();
+            var recognition = new TextRecognition();
             var loggerFactory = Substitute.For<ILoggerFactory>();
-            Game = new GameImpl(_window, repo, loggerFactory);
+            Game = new GameImpl(_window, repo, loggerFactory, recognition);
 #if DEBUG
             Settings.SaveImages = true;
             Settings.SaveRawImages = true;
