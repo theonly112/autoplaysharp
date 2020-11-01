@@ -95,7 +95,7 @@ namespace autoplaysharp.App.Wpf
 
             var repository = new Repository();
             repository.Load();
-            var game = new GameImpl(window, repository, loggerFactory, recognition);
+            var game = new GameImpl(window, repository, loggerFactory, recognition, settings);
            
             var overlay = new ImGuiOverlay(game, window, repository);
 

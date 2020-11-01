@@ -48,4 +48,16 @@ partial class UIds
 	/// MAIN_MENU_INVENTORY_BUTTON
 	/// </summary>
 	public const string MAIN_MENU_INVENTORY_BUTTON="MAIN_MENU_INVENTORY_BUTTON";
+	/// <summary>
+	/// MAIN_MENU_STARTUP_UPDATE_NOTICE_X
+	/// </summary>
+	public const string MAIN_MENU_STARTUP_UPDATE_NOTICE_X="MAIN_MENU_STARTUP_UPDATE_NOTICE_X";
+	/// <summary>
+	/// MAIN_MENU_STARTUP_STORE_NOTICE_X
+	/// </summary>
+	public const string MAIN_MENU_STARTUP_STORE_NOTICE_X="MAIN_MENU_STARTUP_STORE_NOTICE_X";
+	/// <summary>
+	/// MAIN_MENU_STARTUP_STORE_NOTICE_OK
+	/// </summary>
+	public const string MAIN_MENU_STARTUP_STORE_NOTICE_OK="MAIN_MENU_STARTUP_STORE_NOTICE_OK";
 }

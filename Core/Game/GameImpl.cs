@@ -3,8 +3,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Numerics;
+using System.Threading;
 using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Contracts.Errors;
+using autoplaysharp.Core.Game.Tasks;
 using autoplaysharp.Game.UI;
 using autoplaysharp.Helper;
 using Microsoft.Extensions.Logging;
@@ -19,17 +22,19 @@ namespace autoplaysharp.Core.Game
         private readonly IUiRepository _repository;
         private readonly ILoggerFactory _loggerFactory;
         private readonly ITextRecognition _recognition;
+        private readonly ISettings _settings;
         private readonly ILogger _logger;
         private readonly Random _random = new Random();
 
         public IEmulatorOverlay Overlay { get; set; }
 
-        public GameImpl(IEmulatorWindow window, IUiRepository repository, ILoggerFactory loggerFactory, ITextRecognition recognition)
+        public GameImpl(IEmulatorWindow window, IUiRepository repository, ILoggerFactory loggerFactory, ITextRecognition recognition, ISettings settings)
         {
             _window = window;
             _repository = repository;
             _loggerFactory = loggerFactory;
             _recognition = recognition;
+            _settings = settings;
             _logger = _loggerFactory.CreateLogger(GetType());
         }
 
@@ -172,7 +177,7 @@ namespace autoplaysharp.Core.Game
         
         public void OnError(TaskError taskError)
         {
-            _window.RestartGame();
+            RestartGame();
             switch (taskError)
             {
                 case ElementNotFoundError elementNotFoundError:
@@ -272,6 +277,13 @@ namespace autoplaysharp.Core.Game
                 }
                 Cv2.PutText(screenMat, text, new OpenCvSharp.Point(textX, y), font, fontScale, new Scalar(0, 0, 255));
             }
+        }
+
+        private void RestartGame()
+        {
+            _window.RestartGame();
+            var restart = new RestartGame(this, _repository, _settings);
+            restart.Run(CancellationToken.None).Wait();
         }
     }
 }
