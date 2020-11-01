@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using autoplaysharp.Contracts;
 using FlaUI.Core.Input;
 using FlaUI.UIA3;
@@ -74,6 +75,8 @@ namespace autoplaysharp.Emulators
                 _logger.LogError("Failed to close game");
                 // TODO: restart emulator?
             }
+
+            Thread.Sleep(500);
 
             var screen = GrabScreen(0, 0, Width, Height);
             var futureFightLocation = _recognition.LocateText(screen, "Future Fight");
