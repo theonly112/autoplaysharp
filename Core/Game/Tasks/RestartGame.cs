@@ -16,17 +16,26 @@ namespace autoplaysharp.Core.Game.Tasks
         protected override async Task RunCore(CancellationToken token)
         {
             var t1 = ClickWhenVisible(UIds.MAIN_MENU_STARTUP_UPDATE_NOTICE_X, 60);
-            var t2 = ClickWhenVisible(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_X, 60)
+            var t2 = WaitUntilVisible(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_X, 60)
                 .ContinueWith(async task =>
                 {
                     if (await task)
                     {
+                        await Task.Delay(300);
+                        Game.Click(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_X);
                         await Task.Delay(300);
                         Game.Click(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_OK);
                     }
                 }, token);
             if (!await WaitUntilVisible(UIds.MAIN_MENU_ENTER, token, 60))
             {
+                if (Game.IsVisible(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_X))
+                {
+                    await Task.Delay(300);
+                    Game.Click(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_X);
+                    await Task.Delay(300);
+                    Game.Click(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_OK);
+                }
                 await t1;
                 await t2;
             }
