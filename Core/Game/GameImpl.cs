@@ -148,13 +148,20 @@ namespace autoplaysharp.Core.Game
             using var template_mat = Cv2.ImDecode(element.Image, ImreadModes.AnyColor);
             using var uielement_mat_gray = new Mat();
             using var tempalte_mat_gray = new Mat();
+
+
+            var size = template_mat.Size();
+            var targetSize = new OpenCvSharp.Size(size.Height * 2, size.Width * 2);
+
             Cv2.CvtColor(uielement_mat, uielement_mat_gray, ColorConversionCodes.BGR2GRAY);
             Cv2.CvtColor(template_mat, tempalte_mat_gray, ColorConversionCodes.BGR2GRAY);
             using var uielement_mat_gray_scaled = new Mat();
-            Cv2.Resize(uielement_mat_gray, uielement_mat_gray_scaled, template_mat.Size());
+            Cv2.Resize(uielement_mat_gray, uielement_mat_gray_scaled, targetSize);
+            using var scaled_template_mat = new Mat();
+            Cv2.Resize(tempalte_mat_gray, scaled_template_mat, targetSize);
 
             using var result = new Mat();
-            Cv2.MatchTemplate(uielement_mat_gray_scaled, tempalte_mat_gray, result, TemplateMatchModes.CCoeffNormed);
+            Cv2.MatchTemplate(uielement_mat_gray_scaled, scaled_template_mat, result, TemplateMatchModes.CCoeffNormed);
             Cv2.MinMaxLoc(result, out var _, out var maxval, out var _, out var maxloc);
 
             Overlay?.ShowIsVisibile(element, maxval > confidence, maxval);
@@ -221,13 +228,16 @@ namespace autoplaysharp.Core.Game
                             cropped.Save(missingElementFileName);
                         }
 #if DEBUG
-                        Cv2.ImShow("Error", screenMat);
-                        Cv2.WaitKey();
+                        //Cv2.ImShow("Error", screenMat);
+                        //Cv2.WaitKey();
 #endif
                         screenMat.SaveImage(screenFileName);
                     }
                     break;
+
             }
+
+            throw new Exception("Cancelling task by throwing exception?");
 
 
             void DrawElementGrid(Mat screenMat, UIElement element)
@@ -281,6 +291,7 @@ namespace autoplaysharp.Core.Game
 
         private void RestartGame()
         {
+            _logger.LogError($"Restarting game:\n{Environment.StackTrace}");
             _window.RestartGame();
             var restart = new RestartGame(this, _repository, _settings);
             restart.Run(CancellationToken.None).Wait();
