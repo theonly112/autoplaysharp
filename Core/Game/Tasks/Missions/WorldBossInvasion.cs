@@ -4,6 +4,7 @@ using autoplaysharp.Game.Tasks;
 using autoplaysharp.Game.UI;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -227,7 +228,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 var id = string.Format(opponentFmtStr, i);
                 var opponent = Repository[id];
                 var time = Game.GetText(opponent);
-                if (time.Contains("h") || time.Contains("m")) // TODO: can we make this more robust?
+                if (time.Any(char.IsNumber) && (time.Contains("h") || time.Contains("m"))) // TODO: can we make this more robust?
                 {
                     Game.Click(opponent);
                 }
