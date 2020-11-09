@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using autoplaysharp.Core.Helper;
 
 namespace autoplaysharp.Game.Tasks
 {
@@ -43,7 +44,8 @@ namespace autoplaysharp.Game.Tasks
 
         private bool BattleHasStarted()
         {
-            if(Game.IsVisible(UIds.BATTLE_TAP_THE_SCREEN))
+            // Flashing text is hard for OCR, so 50/50 match seems sufficent here.
+            if(Game.GetText(UIds.BATTLE_TAP_THE_SCREEN).Similarity(Repository[UIds.BATTLE_TAP_THE_SCREEN].Text) > 0.5)
             {
                 Game.Click(UIds.BATTLE_TAP_THE_SCREEN);
             }
@@ -54,7 +56,7 @@ namespace autoplaysharp.Game.Tasks
         {
             Logger.LogInformation("Running AutoFight");
             Logger.LogDebug("Waiting for skills to come available");
-            if(!await WaitUntil(BattleHasStarted, token, _maxWaitTime, 0.5f))
+            if(!await WaitUntil(BattleHasStarted, token, _maxWaitTime,0.05f))
             {
                 Logger.LogError("No skills appeared in time. Ending");
                 return;
