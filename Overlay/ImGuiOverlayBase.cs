@@ -1,5 +1,4 @@
 ﻿using autoplaysharp.Contracts;
-using autoplaysharp.Game;
 using PInvoke;
 using System;
 using System.Runtime.InteropServices;

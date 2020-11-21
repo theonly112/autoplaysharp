@@ -1,5 +1,4 @@
 ﻿using autoplaysharp.Contracts;
-using autoplaysharp.Game.UI;
 using ImGuiNET;
 using System.Collections.Generic;
 using System.Numerics;

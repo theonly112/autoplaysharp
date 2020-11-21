@@ -1,5 +1,4 @@
 ﻿using autoplaysharp.Contracts.Errors;
-using autoplaysharp.Game.UI;
 using Microsoft.Extensions.Logging;
 using System;
 

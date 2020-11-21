@@ -1,14 +1,13 @@
-﻿using autoplaysharp.Contracts;
-using autoplaysharp.Contracts.Configuration;
-using autoplaysharp.Contracts.Errors;
-using autoplaysharp.Game.UI;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
+using autoplaysharp.Contracts.Errors;
+using Microsoft.Extensions.Logging;
 
-namespace autoplaysharp.Game.Tasks
+namespace autoplaysharp.Core.Game.Tasks
 {
     public abstract class GameTask : IGameTask
     {

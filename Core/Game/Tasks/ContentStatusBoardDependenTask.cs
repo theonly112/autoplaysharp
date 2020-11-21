@@ -1,11 +1,11 @@
-﻿using autoplaysharp.Contracts;
+﻿using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
 using F23.StringSimilarity;
 using Microsoft.Extensions.Logging;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-namespace autoplaysharp.Game.Tasks
+namespace autoplaysharp.Core.Game.Tasks
 {
     public abstract class ContentStatusBoardDependenTask : GameTask
     {

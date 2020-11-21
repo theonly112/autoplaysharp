@@ -1,6 +1,4 @@
 ﻿using autoplaysharp.Contracts;
-using autoplaysharp.Game.UI;
-using autoplaysharp.Helper;
 using Prism.Commands;
 using Prism.Mvvm;
 using System.IO;
@@ -8,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using autoplaysharp.Core.Helper;
 
 namespace autoplaysharp.App.UI.Repository
 {

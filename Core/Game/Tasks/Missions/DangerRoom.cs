@@ -1,14 +1,14 @@
-﻿using autoplaysharp.Contracts;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Contracts.Errors;
 using autoplaysharp.Core.Helper;
 using Microsoft.Extensions.Logging;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace autoplaysharp.Game.Tasks.Missions
+namespace autoplaysharp.Core.Game.Tasks.Missions
 {
     public class DangerRoom : ContentStatusBoardDependenTask
     {

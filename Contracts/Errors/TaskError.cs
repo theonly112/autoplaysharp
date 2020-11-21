@@ -1,6 +1,4 @@
-﻿using autoplaysharp.Game.UI;
-
-namespace autoplaysharp.Contracts.Errors
+﻿namespace autoplaysharp.Contracts.Errors
 {
     public record TaskError;
 

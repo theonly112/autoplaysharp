@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.IO;
 
-namespace autoplaysharp.Helper
+namespace autoplaysharp.Core.Helper
 {
     public static class BitmapExtensions
     {

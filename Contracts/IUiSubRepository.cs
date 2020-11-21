@@ -1,5 +1,4 @@
-﻿using autoplaysharp.Game.UI;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace autoplaysharp.Contracts
 {

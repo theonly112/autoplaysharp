@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using autoplaysharp.Game.UI;
 
 namespace autoplaysharp.Contracts
 {

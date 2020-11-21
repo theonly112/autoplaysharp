@@ -1,9 +1,9 @@
-﻿using autoplaysharp.Contracts;
-using autoplaysharp.Contracts.Configuration;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 
-namespace autoplaysharp.Game.Tasks
+namespace autoplaysharp.Core.Game.Tasks
 {
     public class ShieldLab : GameTask
     {

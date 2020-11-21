@@ -4,7 +4,7 @@ using autoplaysharp.Contracts.Configuration.Tasks;
 
 namespace autoplaysharp.App.UI.Tasks.TimelineBattle
 {
-    internal class TimelineBattleSettingsViewModel : TaskBaseViewModel<Game.Tasks.Missions.TimelineBattle>
+    internal class TimelineBattleSettingsViewModel : TaskBaseViewModel<Core.Game.Tasks.Missions.TimelineBattle>
     {
         private readonly ISettings _settings;
 

@@ -1,4 +1,4 @@
-﻿namespace autoplaysharp.Game.UI
+﻿namespace autoplaysharp.Contracts
 {
     public class UIElement
     {

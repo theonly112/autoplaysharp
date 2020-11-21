@@ -1,11 +1,10 @@
-﻿using autoplaysharp.Contracts;
-using autoplaysharp.Core.Game.UI;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using autoplaysharp.Contracts;
+using Newtonsoft.Json;
 
-namespace autoplaysharp.Game.UI
+namespace autoplaysharp.Core.Game.UI
 {
     public class Repository : IUiRepository
     {

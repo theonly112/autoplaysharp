@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
-using autoplaysharp.Game.Tasks;
 
 namespace autoplaysharp.Core.Game.Tasks
 {

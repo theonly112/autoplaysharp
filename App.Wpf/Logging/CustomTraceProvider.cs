@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
-namespace autoplaysharp
+namespace autoplaysharp.App.Logging
 {
     internal class CustomTraceProvider : ILoggerProvider
     {

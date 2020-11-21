@@ -3,23 +3,21 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using App.Wpf;
 using autoplaysharp.App.Logging;
 using autoplaysharp.App.UI;
 using autoplaysharp.App.UI.Repository;
 using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Core.Game;
+using autoplaysharp.Core.Game.UI;
 using autoplaysharp.Emulators;
-using autoplaysharp.Game;
-using autoplaysharp.Game.UI;
 using autoplaysharp.Overlay;
 using autoplaysharp.UiAutomation.OCR;
 using Config.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace autoplaysharp.App.Wpf
+namespace autoplaysharp.App
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1,14 +1,14 @@
-﻿using autoplaysharp.Contracts;
-using autoplaysharp.Contracts.Configuration;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using autoplaysharp.Contracts;
+using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Core.Helper;
+using Microsoft.Extensions.Logging;
 
-namespace autoplaysharp.Game.Tasks
+namespace autoplaysharp.Core.Game.Tasks
 {
     /// <summary>
     /// TODO: there is a problem, where it initially think it casted the t3 awaken skill sucessfully and then waits x seconds. event though it didnt work.

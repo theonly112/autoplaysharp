@@ -4,7 +4,7 @@ using autoplaysharp.Contracts.Configuration.Tasks;
 
 namespace autoplaysharp.App.UI.Tasks.AllianceBattle
 {
-    internal class AllianceBattleSettingsViewModel : TaskBaseViewModel<Game.Tasks.Missions.AllianceBattle>
+    internal class AllianceBattleSettingsViewModel : TaskBaseViewModel<Core.Game.Tasks.Missions.AllianceBattle>
     {
         private readonly ISettings _settings;
 

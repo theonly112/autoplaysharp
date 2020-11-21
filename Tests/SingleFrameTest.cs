@@ -1,13 +1,12 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Core;
-using autoplaysharp.Game;
-using autoplaysharp.Game.UI;
-using autoplaysharp.Helper;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using System.Drawing;
 using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Core.Game;
+using autoplaysharp.Core.Game.UI;
+using autoplaysharp.Core.Helper;
 using autoplaysharp.UiAutomation.OCR;
 
 namespace autoplaysharp.Tests

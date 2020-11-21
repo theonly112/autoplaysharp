@@ -1,8 +1,6 @@
 using System.Drawing;
 using System.IO;
 using autoplaysharp.Contracts;
-using autoplaysharp.Core.OCR;
-using autoplaysharp.Game.UI;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using Tesseract;

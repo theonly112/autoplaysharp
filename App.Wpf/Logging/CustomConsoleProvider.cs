@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 
-namespace autoplaysharp
+namespace autoplaysharp.App.Logging
 {
     class CustomConsoleProvider : ILoggerProvider
     {

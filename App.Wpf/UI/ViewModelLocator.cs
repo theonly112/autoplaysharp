@@ -8,11 +8,11 @@ namespace autoplaysharp.App.UI
 {
     internal class ViewModelLocator
     {
-        public MainViewModel MainViewModel => Wpf.App.ServiceProvider.GetService<MainViewModel>();
-        public RepositoryBrowserViewModel RepositoryBrowserViewModel => Wpf.App.ServiceProvider.GetService<RepositoryBrowserViewModel>();
-        public LogViewModel LogViewModel => Wpf.App.ServiceProvider.GetService<LogViewModel>();
-        public TasksViewModel TasksViewModel => Wpf.App.ServiceProvider.GetService<TasksViewModel>();
-        public DebugViewModel DebugViewModel => Wpf.App.ServiceProvider.GetService<DebugViewModel>();
+        public MainViewModel MainViewModel => App.ServiceProvider.GetService<MainViewModel>();
+        public RepositoryBrowserViewModel RepositoryBrowserViewModel => App.ServiceProvider.GetService<RepositoryBrowserViewModel>();
+        public LogViewModel LogViewModel => App.ServiceProvider.GetService<LogViewModel>();
+        public TasksViewModel TasksViewModel => App.ServiceProvider.GetService<TasksViewModel>();
+        public DebugViewModel DebugViewModel => App.ServiceProvider.GetService<DebugViewModel>();
 
         internal static void ConfigureServices(ServiceCollection serviceCollection)
         {

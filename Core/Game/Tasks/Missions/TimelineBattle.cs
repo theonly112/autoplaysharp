@@ -1,10 +1,10 @@
-﻿using autoplaysharp.Contracts;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace autoplaysharp.Game.Tasks.Missions
+namespace autoplaysharp.Core.Game.Tasks.Missions
 {
     /// <summary>
     /// TODOs:

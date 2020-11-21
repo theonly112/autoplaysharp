@@ -1,7 +1,6 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Contracts.Errors;
-using autoplaysharp.Game.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading;

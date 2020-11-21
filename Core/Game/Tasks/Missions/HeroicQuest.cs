@@ -2,8 +2,6 @@
 using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Core.Game.Tasks.Inventory;
 using autoplaysharp.Core.Helper;
-using autoplaysharp.Game.Tasks;
-using autoplaysharp.Game.Tasks.Missions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Text.RegularExpressions;

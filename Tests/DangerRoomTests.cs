@@ -1,8 +1,6 @@
-using autoplaysharp.Tests;
 using NUnit.Framework;
-using System;
 
-namespace Tests
+namespace autoplaysharp.Tests
 {
     public class DangerRoomTests : SingleFrameTest
     {

@@ -12,7 +12,6 @@ using autoplaysharp.Contracts;
 using autoplaysharp.Core.Game.Tasks.Missions;
 using autoplaysharp.Core.Game.Tasks.Missions.DeluxeEpicQuests;
 using autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests;
-using autoplaysharp.Game.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -21,6 +20,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Windows.Input;
+using autoplaysharp.Core.Game.Tasks;
 
 namespace autoplaysharp.App.UI.Tasks
 {
@@ -109,7 +109,7 @@ namespace autoplaysharp.App.UI.Tasks
         {
             foreach (var item in _viewModelTypes)
             {
-                yield return (TaskBaseViewModel)Wpf.App.ServiceProvider.GetService(item);
+                yield return (TaskBaseViewModel)App.ServiceProvider.GetService(item);
             }
         }
     }
