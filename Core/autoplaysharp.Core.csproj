@@ -2,29 +2,15 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
-  <PropertyGroup>
-    <BuildDependsOn> $(BuildDependsOn); JsonCodeGeneratorTarget </BuildDependsOn>
-  </PropertyGroup>
-  <UsingTask TaskName="autoplaysharp.Build.JsonGeneratorTask" AssemblyFile="..\Build\Bin\autoplaysharp.Build.dll" />
-  <Target Name="JsonCodeGeneratorTarget" BeforeTargets="Build">
-    <ItemGroup>
-      <_JsonFiles Include="ui\*.json" />
-    </ItemGroup>
-    <JsonGeneratorTask InputFiles="@(_JsonFiles)" />
-  </Target>
   <ItemGroup>
     <None Remove="Game\Tasks\Missions\DailyTriviaAnswers.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Game\Tasks\Missions\DailyTriviaAnswers.json" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0-preview.7.20364.11" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <AdditionalFiles Include="ui\*.json"/>
   </ItemGroup>
   <ItemGroup>
     <None Update="ui\alliance_battle.json">
@@ -94,8 +80,13 @@
     <PackageReference Include="PInvoke.Gdi32" Version="0.6.49" />
     <PackageReference Include="PInvoke.User32" Version="0.6.49" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0-preview.7.20364.11" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contracts\autoplaysharp.Contracts.csproj" />
+    <ProjectReference Include="..\Build\autoplaysharp.Build.csproj" 
+                      OutputItemType="Analyzer" 
+                      ReferenceOutputAssembly="false" />
   </ItemGroup>
 </Project>

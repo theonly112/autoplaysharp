@@ -1,0 +1,46 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Text.Json;
+using Microsoft.CodeAnalysis;
+
+namespace autoplaysharp.Build
+{
+    [Generator]
+    // ReSharper disable once UnusedMember.Global
+    // This is a source generator used by the compiler...
+    public class JsonIdGenerator : ISourceGenerator
+    {
+        private class Element
+        {
+            public string Id { get; set; }
+        }
+
+        public void Initialize(GeneratorInitializationContext context)
+        {
+        }
+
+        public void Execute(GeneratorExecutionContext context)
+        {
+            foreach (var f in context.AdditionalFiles)
+            { 
+                var json = JsonSerializer.Deserialize<List<Element>>(File.ReadAllText(f.Path));
+
+                var sb = new StringBuilder();
+                sb.AppendLine("public partial class UIds");
+                sb.AppendLine("{");
+                foreach (var j in json)
+                {
+                    sb.AppendLine("\t/// <summary>");
+                    sb.AppendLine($"\t/// {j.Id}");
+                    sb.AppendLine("\t/// </summary>");
+                    sb.AppendLine($"\tpublic const string {j.Id}=\"{j.Id}\";");
+                }
+                sb.AppendLine("}");
+
+                context.AddSource(Path.GetFileName(f.Path), sb.ToString());
+            }
+        }
+    }
+}
