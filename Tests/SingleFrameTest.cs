@@ -15,16 +15,16 @@ namespace autoplaysharp.Tests
     {
         protected GameImpl Game;
         private IEmulatorWindow _window;
-
+        protected Repository Repository;
         public void Setup(string fileName)
         {
-            var repo = new Repository();
-            repo.Load();
+            Repository = new Repository();
+            Repository.Load();
             _window = Substitute.For<IEmulatorWindow>();
             var settings = Substitute.For<ISettings>();
             var recognition = new TextRecognition();
             var loggerFactory = Substitute.For<ILoggerFactory>();
-            Game = new GameImpl(_window, repo, loggerFactory, recognition, settings);
+            Game = new GameImpl(_window, Repository, loggerFactory, recognition, settings);
 #if DEBUG
             Settings.SaveImages = true;
             Settings.SaveRawImages = true;

@@ -212,8 +212,8 @@
     "Y": 0.8037037,
     "W": 0.020833373,
     "H": 0.024074078,
-    "Threshold": 71,
-    "Scale": 8
+    "Scale": 8,
+    "TryHard": true 
   },
   {
     "Id": "DANGER_ROOM_DAILY_VICTORY_REWARD_COUNT",
@@ -221,7 +221,8 @@
     "Y": 0.8037037,
     "W": 0.019270837,
     "H": 0.024999976,
-    "Scale": 8
+    "Scale": 8,
+    "TryHard": true
   },
   {
     "Id": "DANGER_ROOM_ERROR_OCCURED",

@@ -67,5 +67,12 @@
         /// Raw image data.
         /// </summary>
         public byte[] Image { get; set; }
+
+        /// <summary>
+        /// Temporary workaround for thresholding issue with certain UIElements,
+        /// where neither hardcoded or dynamic thresholding works.
+        /// This attempts multiple threshold values to try and get better results. 
+        /// </summary>
+        public bool TryHard { get; set; }
     }
 }

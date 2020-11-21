@@ -62,7 +62,7 @@ namespace autoplaysharp.App.UI.Repository
         {
             _repository.Save();
             var files = Directory.GetFiles("ui", "*.json");
-            var relativPath = @"..\..\..\..\Core\";
+            var relativPath = @"..\..\..\Core\";
             Debug.Assert(Directory.Exists(relativPath));
 
             foreach (var f in files)

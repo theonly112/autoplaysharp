@@ -1,5 +1,8 @@
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using autoplaysharp.Contracts;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
@@ -52,12 +55,36 @@ namespace autoplaysharp.UiAutomation.OCR
             //}
 
 
-            var result = TextRecognition.GetText(pix, element.PSM.HasValue ? element.PSM.Value : 3);
+            var result = GetText(pix, element.PSM.HasValue ? element.PSM.Value : 3);
+
+            Debug.WriteLine($"{element.Id} - {result.Confidence}");
+
+            // TryHard strategy?....
+            if (string.IsNullOrEmpty(result.Text) && element.TryHard)
+            {
+                var results = new List<string>();
+                for (var threshold = 50; threshold < 200; threshold += 3)
+                {
+                    Cv2.Threshold(grayscale_mat, tresholded_mat, threshold, 255, ThresholdTypes.Binary);
+                    using var invertedMat2 = (~tresholded_mat).ToMat();
+                    using var invertedBitmap2 = invertedMat2.ToBitmap();
+                    using var pix2 = ToPix(invertedBitmap2);
+                    var result2 = GetText(pix2, element.PSM.HasValue ? element.PSM.Value : 3);
+                    if (result.Text != null) results.Add(result2.Text.Trim());
+                }
+
+                return results
+                    .Where(x => !string.IsNullOrWhiteSpace(x))
+                    .GroupBy(x => x)
+                    .OrderByDescending(x => x.Count())
+                    .First()
+                    .Key;
+            }
 
             // TODO: overlay...
             //Overlay?.ShowGetText(element);
 
-            return result.Text.TrimStart().TrimEnd();
+            return result.Text.Trim();
         }
 
         public Point LocateText(Bitmap image, string text)
