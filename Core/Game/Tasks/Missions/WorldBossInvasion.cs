@@ -81,6 +81,9 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 case "Clear the stage with less than 5 Super Heroes.":
                     selectionMode = SelectionMode.SelectVillain;
                     break;
+                case "Clear the stage while using Co-op Skills more than 1 times.":
+                    Logger.LogError("cannot use co-op skill at the moment... unhandled quest");
+                    break;
             }
 
             await WaitUntilVisible(UIds.WBI_OPPONENT_ENTER);
@@ -95,9 +98,9 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
         private async Task CollectNewChests(int emptySlots, SelectionMode selectionMode, CancellationToken token)
         {
-            for (int i = 0; i < emptySlots; i++)
+            for (var i = 0; i < emptySlots; i++)
             {
-                if (!await WaitUntilVisible(UIds.WBI_HERO_START_MISSION))
+                if (!await WaitUntilVisible(UIds.WBI_HERO_START_MISSION, token))
                 {
                     Logger.LogError("Start button did not appear in time.");
                     return;

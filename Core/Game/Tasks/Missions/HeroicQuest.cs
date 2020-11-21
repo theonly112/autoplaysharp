@@ -9,6 +9,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using autoplaysharp.Contracts.Errors;
 
 namespace autoplaysharp.Core.Game.Tasks.Missions
 {
@@ -31,6 +32,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             if(!await WaitUntilVisible(UIds.HEROIC_QUEST_HEADER))
             {
                 Logger.LogError("Could not find heroic quest");
+                Game.OnError(new ElementNotFoundError(Repository[UIds.HEROIC_QUEST_HEADER]));
                 return;
             }
 

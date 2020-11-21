@@ -95,24 +95,33 @@ namespace autoplaysharp.Overlay
 
             if (PreviewElementText)
             {
-                var fontSize = 18;
-                var text = _game.GetText(uiElement);
-
-                string textToRender;
-                if (!string.IsNullOrWhiteSpace(uiElement.Text))
+                if (uiElement.Image != null)
                 {
-                    textToRender = $"Found Text: {text} \nMatches expected text: {text == uiElement.Text}";
+                    _game.IsVisible(uiElement);
                 }
                 else
                 {
-                    textToRender = $"Found Text: {text}";
+                    var fontSize = 18;
+                    var text = _game.GetText(uiElement);
+
+                    string textToRender;
+                    if (!string.IsNullOrWhiteSpace(uiElement.Text))
+                    {
+                        textToRender = $"Found Text: {text} \nMatches expected text: {text == uiElement.Text}";
+                    }
+                    else
+                    {
+                        textToRender = $"Found Text: {text}";
+                    }
+
+                    var textSize = ImGui.CalcTextSize(textToRender);
+                    var scale = fontSize / (float)ImGui.GetFontSize();
+                    textSize = textSize * scale;
+                    var textLoc = Vector2.Max(new Vector2(loc.X, 0), (loc - textSize));
+                    drawList.AddText(ImGui.GetFont(), fontSize, textLoc, 0xFF0000FF, textToRender);
+
                 }
 
-                var textSize = ImGui.CalcTextSize(textToRender);
-                var scale = fontSize / (float)ImGui.GetFontSize();
-                textSize = textSize * scale;
-                var textLoc = Vector2.Max(new Vector2(loc.X, 0), (loc - textSize));
-                drawList.AddText(ImGui.GetFont(), fontSize, textLoc, 0xFF0000FF, textToRender);
             }
         }
 
