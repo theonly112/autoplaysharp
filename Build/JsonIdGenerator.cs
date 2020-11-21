@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Text.Json;
 using Microsoft.CodeAnalysis;
+using Newtonsoft.Json;
 
 namespace autoplaysharp.Build
 {
@@ -25,7 +24,7 @@ namespace autoplaysharp.Build
         {
             foreach (var f in context.AdditionalFiles)
             { 
-                var json = JsonSerializer.Deserialize<List<Element>>(File.ReadAllText(f.Path));
+                var json = JsonConvert.DeserializeObject<List<Element>>(File.ReadAllText(f.Path));
 
                 var sb = new StringBuilder();
                 sb.AppendLine("public partial class UIds");
