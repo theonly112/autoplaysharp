@@ -10,7 +10,7 @@
     <EmbeddedResource Include="Game\Tasks\Missions\DailyTriviaAnswers.json" />
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="ui\*.json"/>
+    <AdditionalFiles Include="ui\*.json" />
   </ItemGroup>
   <ItemGroup>
     <None Update="ui\alliance_battle.json">
@@ -85,8 +85,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contracts\autoplaysharp.Contracts.csproj" />
-    <ProjectReference Include="..\Build\autoplaysharp.Build.csproj" 
-                      OutputItemType="Analyzer" 
-                      ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\Build\autoplaysharp.Build.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 </Project>

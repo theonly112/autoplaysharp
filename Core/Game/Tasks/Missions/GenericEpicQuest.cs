@@ -29,6 +29,13 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Game.Click(UIds.GENERIC_MISSION_ITEM_LIMIT_REACHED_NOTICE_OK_BUTTON);
             }
 
+
+            if (!await OnGameStart())
+            {
+                await RunCore(token);
+                return true;
+            }
+
             var autoFight = new AutoFight(Game, Repository, Settings, () => Game.IsVisible(UIds.EPIC_QUEST_ENDSCREEN_HOME_BUTTON_IMAGE));
             await autoFight.Run(token);
 
@@ -55,6 +62,11 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             await Task.Delay(3000, token);
             return true;
+        }
+
+        protected virtual Task<bool> OnGameStart()
+        {
+            return Task.FromResult(true);
         }
     }
 }

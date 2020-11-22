@@ -52,5 +52,14 @@
     "W": 0.049,
     "H": 0.049,
     "Text": "OK"
+  },
+  {
+    "Id": "EPIC_QUEST_SHIFTER_APPEARED",
+    "X": 0.30282485,
+    "Y": 0.29849246,
+    "W": 0.39887005,
+    "H": 0.0753769,
+    "Text": "An Ally Shifter Appeared!",
+    "TryHard": false
   }
 ]

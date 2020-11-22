@@ -13,5 +13,6 @@ namespace autoplaysharp.Contracts.Configuration
         IAllianceBattleSettings AllianceBattle { get; }
         IDimensionMissionSettings DimensionMission { get; }
         ILegendaryBattleSettings LegendaryBattle { get; }
+        IEpicQuestSettings EpicQuest { get; }
     }
 }

@@ -60,7 +60,7 @@ namespace autoplaysharp.UiAutomation.OCR
             Debug.WriteLine($"{element.Id} - {result.Confidence}");
 
             // TryHard strategy?....
-            if (string.IsNullOrEmpty(result.Text) && element.TryHard)
+            if (string.IsNullOrEmpty(result.Text) && element.TryHard.GetValueOrDefault())
             {
                 var results = new List<string>();
                 for (var threshold = 50; threshold < 200; threshold += 3)

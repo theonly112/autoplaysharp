@@ -1,6 +1,5 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
-using System.Collections.Generic;
 
 namespace autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests
 {

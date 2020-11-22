@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Windows.Input;
+using autoplaysharp.App.UI.Tasks.EpicQuest;
 using autoplaysharp.Core.Game.Tasks;
 
 namespace autoplaysharp.App.UI.Tasks
@@ -75,10 +76,10 @@ namespace autoplaysharp.App.UI.Tasks
             typeof(WorldBossSettingsViewModel),
             
             // Epic Quest
-            typeof(TaskBaseViewModel<StupidXMen>),
+            typeof(StupidXMenViewModel),
+            typeof(TheFaultViewModel),
+            typeof(TwistedWorldViewModel),
             typeof(TaskBaseViewModel<TheBigTwin>),
-            typeof(TaskBaseViewModel<TheFault>),
-            typeof(TaskBaseViewModel<TwistedWorld>),
             typeof(TaskBaseViewModel<VeiledSecret>),
 
             // Deluxe 

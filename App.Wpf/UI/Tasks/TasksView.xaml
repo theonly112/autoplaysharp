@@ -13,6 +13,7 @@
              xmlns:squad="clr-namespace:autoplaysharp.App.UI.Tasks.SquadBattle"
              xmlns:wbi="clr-namespace:autoplaysharp.App.UI.Tasks.WorldBossInvasion"
              xmlns:worldBoss="clr-namespace:autoplaysharp.App.UI.Tasks.WorldBoss"
+             xmlns:epicQuest="clr-namespace:autoplaysharp.App.UI.Tasks.EpicQuest"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Path=TasksViewModel, Source={StaticResource Locator}}">
@@ -61,6 +62,12 @@
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type worldBoss:WorldBossSettingsViewModel}">
                                 <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type epicQuest:StupidXMenViewModel}">
+                                <epicQuest:EpicQuestSettings />
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type epicQuest:TheFaultViewModel}">
+                                <epicQuest:EpicQuestSettings />
                             </DataTemplate>
                         </ContentControl.Resources>
                     </ContentControl>

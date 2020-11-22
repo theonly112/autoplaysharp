@@ -35,7 +35,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests
             Logger.LogInformation($"Done running {MissionName}");
         }
 
-        private async Task<bool> RunMission(CancellationToken token)
+        protected virtual async Task<bool> RunMission(CancellationToken token)
         {
             if (await StartContentBoardMission(MissionName) == null)
             {

@@ -73,6 +73,6 @@
         /// where neither hardcoded or dynamic thresholding works.
         /// This attempts multiple threshold values to try and get better results. 
         /// </summary>
-        public bool TryHard { get; set; }
+        public bool? TryHard { get; set; }
     }
 }
