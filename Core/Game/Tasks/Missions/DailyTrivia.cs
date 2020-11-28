@@ -8,6 +8,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using autoplaysharp.Contracts.Errors;
 
 namespace autoplaysharp.Core.Game.Tasks.Missions
 {
@@ -41,9 +42,12 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             Game.Click(UIds.MAIN_MENU_CHALLENGES_BUTTON);
 
-            await Task.Delay(2000, token);
+            await Task.Delay(1000, token);
 
-            Game.Click(UIds.CHALLENGES_DAILY_TRIVIA_TAB);
+            if (!await ClickWhenVisible(UIds.CHALLENGES_DAILY_TRIVIA_TAB))
+            {
+                Game.OnError(new ElementNotFoundError(Repository[UIds.CHALLENGES_DAILY_TRIVIA_TAB]));
+            }
 
             await Task.Delay(1000, token);
 

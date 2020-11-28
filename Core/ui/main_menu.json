@@ -109,5 +109,37 @@
     "W": 0.039903283,
     "H": 0.047311783,
     "Text": "OK"
+  },
+  {
+    "Id": "MAIN_MENU_DOWNLOAD_UPDATE",
+    "X": 0.8408578,
+    "Y": 0.89257026,
+    "W": 0.10722345,
+    "H": 0.059236944,
+    "Text": "DOWNLOAD"
+  },
+  {
+    "Id": "MAIN_MENU_ALLIANCE_CONQUEST_HAS_BEGUN",
+    "X": 0.2979684,
+    "Y": 0.57730925,
+    "W": 0.41252822,
+    "H": 0.07530117,
+    "Text": "The Alliance Conquest has begun!"
+  },
+  {
+    "Id": "MAIN_MENU_ALLIANCE_CONQUEST_HAS_BEGUN_CLOSE",
+    "X": 0.37189615,
+    "Y": 0.8373494,
+    "W": 0.06489843,
+    "H": 0.055220842,
+    "Text": "CLOSE"
+  },
+  {
+    "Id": "MAIN_MENU_SELECT_MISSION",
+    "X": 0.053611737,
+    "Y": 0.024096385,
+    "W": 0.13713318,
+    "H": 0.04718876,
+    "Text": "SELECT MISSION"
   }
 ]

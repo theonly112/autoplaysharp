@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace autoplaysharp.Core.Game.Tasks
 {
@@ -14,38 +15,63 @@ namespace autoplaysharp.Core.Game.Tasks
 
         protected override async Task RunCore(CancellationToken token)
         {
-            var t1 = WaitUntilVisible(UIds.MAIN_MENU_STARTUP_UPDATE_NOTICE_X, token, 60).ContinueWith(
-                async task =>
-                {
-                    if (await task)
-                    {
-                        Game.Click(UIds.MAIN_MENU_STARTUP_UPDATE_NOTICE_X);
-                        await Task.Delay(300, token);
-                    }
-                }, token);
-            var t2 = WaitUntilVisible(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_X, token, 60)
-                .ContinueWith(async task =>
-                {
-                    if (await task)
-                    {
-                        await Task.Delay(300, token);
-                        Game.Click(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_X);
-                        await Task.Delay(300, token);
-                        Game.Click(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_OK);
-                    }
-                }, token);
-            if (!await WaitUntilVisible(UIds.MAIN_MENU_ENTER, token, 60))
+            await WaitUntil(WaitForGameEntered, token, 120);
+        }
+
+        private async Task<bool> WaitForGameEntered(CancellationToken token)
+        {
+            if (Game.IsVisible(UIds.MAIN_MENU_ENTER) &&
+                !Game.IsVisible(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_X) &&
+                !Game.IsVisible(UIds.MAIN_MENU_ALLIANCE_CONQUEST_HAS_BEGUN))
             {
-                if (Game.IsVisible(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_X))
+                Game.Click(UIds.MAIN_MENU_ENTER);
+                if (!await WaitUntilVisible(UIds.MAIN_MENU_SELECT_MISSION, token, 2))
                 {
-                    await Task.Delay(300, token);
-                    Game.Click(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_X);
-                    await Task.Delay(300, token);
-                    Game.Click(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_OK);
+                    return false;
                 }
-                await t1;
-                await t2;
+
+                Game.Click(UIds.MAIN_MENU_HOME_BUTTON_IMAGE);
+
+                if(!await WaitUntilVisible(UIds.MAIN_MENU_ENTER, token))
+                {
+                    return false;
+                }
+
+                Logger.LogInformation("Seem to have gotten back into main menu...");
+                return true;
             }
+
+            if(Game.IsVisible(UIds.MAIN_MENU_STARTUP_UPDATE_NOTICE_X))
+            {
+                Game.Click(UIds.MAIN_MENU_STARTUP_UPDATE_NOTICE_X);
+                await Task.Delay(300, token);
+                Logger.LogInformation("Closing update notice.");
+            }
+
+            if (Game.IsVisible(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_X))
+            {
+                await Task.Delay(500, token);
+                Game.Click(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_X);
+                await Task.Delay(500, token);
+                await ClickWhenVisible(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_OK);
+                Logger.LogInformation("Closing store notice.");
+            }
+
+            if (Game.IsVisible(UIds.MAIN_MENU_DOWNLOAD_UPDATE))
+            {
+                Game.Click(UIds.MAIN_MENU_DOWNLOAD_UPDATE);
+                await Task.Delay(300, token);
+                Logger.LogInformation("Game update available. Updating...");
+            }
+
+            if (Game.IsVisible(UIds.MAIN_MENU_ALLIANCE_CONQUEST_HAS_BEGUN))
+            {
+                Game.Click(UIds.MAIN_MENU_ALLIANCE_CONQUEST_HAS_BEGUN_CLOSE);
+                await Task.Delay(300, token);
+                Logger.LogInformation("Closing alliance conquest notification...");
+            }
+
+            return false;
         }
     }
 }

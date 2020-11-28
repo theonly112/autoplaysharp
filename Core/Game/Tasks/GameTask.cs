@@ -89,19 +89,36 @@ namespace autoplaysharp.Core.Game.Tasks
             var sw = Stopwatch.StartNew();
             while (!condition())
             {
-                await Task.Delay((int)(interval * 1000)).ConfigureAwait(false);
-                if (sw.ElapsedMilliseconds > (timeout * 1000))
-                {
-                    return false;
-                }
-
-                if(token.IsCancellationRequested)
-                {
-                    return false;
-                }
+                if (!await WaitInterval(token, timeout, interval, sw)) return false;
             }
             return true;
         }
+
+        protected async Task<bool> WaitUntil(Func<CancellationToken, Task<bool>> condition, CancellationToken token, float timeout = 5, float interval = 0.1f)
+        {
+            var sw = Stopwatch.StartNew();
+            while (!await condition(token))
+            {
+                if (!await WaitInterval(token, timeout, interval, sw)) return false;
+            }
+            return true;
+        }
+        private static async Task<bool> WaitInterval(CancellationToken token, float timeout, float interval, Stopwatch sw)
+        {
+            await Task.Delay((int)(interval * 1000), token).ConfigureAwait(false);
+            if (sw.ElapsedMilliseconds > (timeout * 1000))
+            {
+                return false;
+            }
+
+            if (token.IsCancellationRequested)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
 
         protected Task<bool> WaitUntil(Func<bool> condition, float timeout = 5, float interval = 0.1f)
         {
