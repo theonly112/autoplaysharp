@@ -6,15 +6,15 @@ This is a bot for Marvel Future Fight (MFF)
 
 ## Setup
 
-1. Install  [NoxPlayer](https://www.bignox.com/)
+1. Install  [BlueStacks](https://www.bluestacks.com) (Recommended!) or [NoxPlayer](https://www.bignox.com/)
 
-2. Run NoxPlayer.
+2. Run Emulator.
 
-3. Go to NoxPlayer system settings.
+3. Go to Emulator system settings.
 
 4. Set resolution to 1920x1080 if possible. Other resolutions might work but are untested.
 
-5. Install & Run MFF in NoxPlayer
+5. Install & Run MFF
 
 6. Go to MFF settings.
 
@@ -26,8 +26,10 @@ This is a bot for Marvel Future Fight (MFF)
 
 10. Run autoplay#.
 
+11. Go through setup steps to select Emulator type or Emulator window.
+
 ## Troubleshooting
 
-- The bot expects the NoxPlayer window to be called "NoxPlayer".
-  - If this is not the case on your system you can change the expected window name "WindowName" in the settings file. ("settings/config.json")
+- The bot saves the emulator type and window name.
+  - If you want to switch to another emulator delete the config file (or just modify the window name) and redo the setup. ("settings/config.json")
 
