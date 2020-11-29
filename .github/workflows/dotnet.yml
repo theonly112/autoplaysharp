@@ -33,5 +33,4 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: true
           title: "Development Build"
-          files: |
-            ${{ github.workspace }}/result.zip
+          files: autoplaysharp.zip
