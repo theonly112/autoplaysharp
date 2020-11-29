@@ -119,7 +119,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 await Task.Delay(2000);
                 await HandleStartNotices();
                 
-                await ClickWhenVisible(UIds.DIMENSION_MISSION_CLEAR_TICKET_ENDSCREEN_CLOSE);
+                await ClickWhenVisible(UIds.DIMENSION_MISSION_CLEAR_TICKET_ENDSCREEN_CLOSE, 15);
                 
                 await Task.Delay(2000);
 
