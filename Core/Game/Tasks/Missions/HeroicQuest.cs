@@ -320,17 +320,18 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             if (questInfo.Similarity("[DIMENSION MISSION] Acquire Contribution Reward 1 time") > 0.8)
             {
                 Logger.LogDebug("Trying to acquire contribution reward 1 time.");
-                // TODO: Run dimension mission until we can get contribution reward 1 time.
-
                 var dimensionMission = new DimensionMission(Game, Repository, Settings);
                 dimensionMission.CollectRewardCount = 1;
                 await dimensionMission.Run(token);
             }
             else if(questInfo.Similarity("[DIMENSION MISSION] Clear 10 times") > 0.8)
             {
-                var dimensionMission = new DimensionMission(Game, Repository, Settings);
-                // TODO: Add option to run specific amount of missions.
-                dimensionMission.CollectRewardCount = 2;
+                Logger.LogDebug("Running 10 dimension missions");
+                var dimensionMission = new DimensionMission(Game, Repository, Settings)
+                {
+                    Mode = DimensionMission.DimensionMissionRunMode.RunXMissions,
+                    MissionCount = 10
+                };
                 await dimensionMission.Run(token);
             }
         }

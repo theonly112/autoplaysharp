@@ -13,6 +13,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         public DimensionMission(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
             CollectRewardCount = settings.DimensionMission.RewardsToCollect;
+            Mode = DimensionMissionRunMode.CollectRewards;
         }
 
         /*
@@ -20,7 +21,14 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
          * Use clear tickets?
          */
 
-        public int CollectRewardCount { get; set; } = 5;
+        public int CollectRewardCount { get; set; }
+        public DimensionMissionRunMode Mode { get; set; }
+        public int MissionCount { get; set; }
+        public enum DimensionMissionRunMode
+        {
+            CollectRewards,
+            RunXMissions
+        }
 
         protected override async Task RunCore(CancellationToken token)
         {
@@ -51,27 +59,83 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Game.Click(UIds.DIMENSION_MISSION_REWARD_CLOSE_AD_NOTICE_OK);
             }
 
-            if(!await CollectRewards(token))
+            if (Mode == DimensionMissionRunMode.CollectRewards)
             {
-                Logger.LogError("Collection rewards failed");
-                return;
+                if (!await CollectRewards(token))
+                {
+                    Logger.LogError("Collection rewards failed");
+                    return;
+                }
+
+                if (CollectRewardCount == 0)
+                {
+                    Logger.LogInformation("Collected required rewards. Stopping");
+                    return;
+                }
+
+                while (CollectRewardCount > 0)
+                {
+                    await RunDimensionMissionsWithSingleClearTicket();
+
+                    await CollectRewards(token);
+                }
+            }
+            else if(Mode == DimensionMissionRunMode.RunXMissions)
+            {
+                await RunXMission();
+            }
+   
+
+        }
+
+        private async Task RunXMission()
+        {
+            Game.Click(UIds.DIMENSION_MISSION_READY_BUTTON);
+
+            await ClickWhenVisible(UIds.DIMENSION_MISSION_CLEAR_BUTTON);
+
+            await Task.Delay(1000);
+
+            if (Game.IsVisible(UIds.DIMENSION_MISSION_NOTICE_USE_HIDDEN_TICKET))
+            {
+                Game.Click(UIds.DIMENSION_MISSION_NOTICE_USE_HIDDEN_TICKET_DONT_USE);
             }
 
-            if (CollectRewardCount == 0)
-            {
-                Logger.LogInformation("Collected required rewards. Stopping");
-                return;
-            }
+            await Task.Delay(1000);
 
-            while (CollectRewardCount > 0)
+            while (MissionCount > 0)
             {
-                await RunDimensionMissions();
+                if (MissionCount >= 10)
+                {
+                    Game.Click(UIds.DIMENSION_MISSION_USE_10_CLEAR_TICKET_BUTTON);
+                    MissionCount -= 10;
+                }
+                else
+                {
+                    Game.Click(UIds.DIMENSION_MISSION_USE_1_CLEAR_TICKET_BUTTON);
+                    MissionCount -= 1;
+                }
 
-                await CollectRewards(token);
+                await Task.Delay(2000);
+                await HandleStartNotices();
+                
+                await ClickWhenVisible(UIds.DIMENSION_MISSION_CLEAR_TICKET_ENDSCREEN_CLOSE);
+                
+                await Task.Delay(2000);
+
+                await HandleHeroicQuestNotice(1);
+
+                await Task.Delay(1000);
+
+                if (!await ClickWhenVisible(UIds.DIMENSION_MISSION_BACK_BUTTON))
+                {
+                    Game.OnError(new ElementNotFoundError(Repository[UIds.DIMENSION_MISSION_BACK_BUTTON]));
+                }
+                await Task.Delay(1000);
             }
         }
 
-        private async Task RunDimensionMissions()
+        private async Task RunDimensionMissionsWithSingleClearTicket()
         {
             Game.Click(UIds.DIMENSION_MISSION_READY_BUTTON);
 
