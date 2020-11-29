@@ -133,7 +133,7 @@ namespace autoplaysharp.Core.Game
             return isVisible;
         }
 
-        private bool IsImageVisible(UIElement element, float confidence = 0.90f)
+        private bool IsImageVisible(UIElement element, float confidence = 0.80f)
         {
             using var uielement = GrabElement(element);
 
