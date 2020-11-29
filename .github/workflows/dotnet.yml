@@ -23,3 +23,15 @@ jobs:
       run: dotnet build --configuration Release --no-restore --verbosity detailed
     - name: Test
       run: dotnet test --no-restore --verbosity normal
+    - uses: papeloto/action-zip@v1
+      with:
+        files: App.Wpf/bin/
+        dest: autoplaysharp.zip
+    - uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            ${{ github.workspace }}/result.zip
