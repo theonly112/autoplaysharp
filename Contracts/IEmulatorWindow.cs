@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Numerics;
 
@@ -17,5 +17,7 @@ namespace autoplaysharp.Contracts
         Bitmap GrabScreen(int x, int y, int w, int h);
         Vector2 Denormalize(Vector2 normalized);
         void RestartGame();
+        void Initialize();
+        IEnumerable<string> FindPossibleWindows();
     }
 }

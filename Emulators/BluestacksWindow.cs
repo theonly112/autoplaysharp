@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using autoplaysharp.Contracts;
 using FlaUI.Core.Input;
@@ -13,48 +15,59 @@ namespace autoplaysharp.Emulators
     {
         private readonly ILogger _logger;
         private readonly ITextRecognition _recognition;
+        private readonly string _settingsWindowName;
         private IntPtr _blueStacksMain;
         private IntPtr _blueStacksGameArea;
 
-        public BluestacksWindow(ILogger logger, ITextRecognition recognition)
+        public BluestacksWindow(ILogger logger, ITextRecognition recognition, string settingsWindowName)
         {
             _logger = logger;
             _recognition = recognition;
+            _settingsWindowName = settingsWindowName;
             _blueStacksMain = IntPtr.Zero;
             _blueStacksGameArea = IntPtr.Zero;
 
-            var ptr = new User32.WNDENUMPROC((hwnd, param) =>
+        }
+
+        private (IntPtr MainHwnd, IntPtr GameArea) FindWindow(string settingsWindowName)
+        {
+            var possible = FindPossibleHwnds();
+            foreach (var valueTuple in possible)
             {
-                char[] text = new char[64];
-                User32.GetWindowText(hwnd, text, text.Length);
-                var name = new string(text).TrimEnd('\0');
-                if (_blueStacksMain == IntPtr.Zero && name == "BlueStacks")
+                if(User32.GetWindowText(valueTuple.MainHwnd) == settingsWindowName)
                 {
-                    _blueStacksMain = hwnd;
+                    return valueTuple;
+                }
+            }
+
+            throw new FailedToFindWindowException($"Failed to find BlueStacks Window: {settingsWindowName}");
+        }
+
+        private static IEnumerable<(IntPtr MainHwnd, IntPtr GameArea)> FindPossibleHwnds()
+        {
+            var windowList = new List<(IntPtr, IntPtr)>();
+            var ptr = new User32.WNDENUMPROC((hwnd, _) =>
+            {
+                var className = User32.GetClassName(hwnd);
+                if (!className.Contains("Bluestacks"))
+                {
+                    return true;
+                }
+                
+                var childHwnd = User32.FindWindowEx(hwnd, IntPtr.Zero, null, "BlueStacks Android PluginAndroid");
+                if(childHwnd != IntPtr.Zero)
+                {
+                    windowList.Add((hwnd, childHwnd));
                     return false;
                 }
 
-                if (_blueStacksMain != IntPtr.Zero && name == "BlueStacks Android PluginAndroid")
-                {
-                    _blueStacksGameArea = hwnd;
-                    return false;
-                }
                 return true;
             });
-
-            while (User32.EnumWindows(ptr, IntPtr.Zero))
-            {
-
-            }
-
-            while (EnumChildWindows(_blueStacksMain, ptr, IntPtr.Zero))
-            {
-
-            }
-
-            User32.SetForegroundWindow(_blueStacksMain);
-
+           
+            User32.EnumWindows(ptr, IntPtr.Zero);
+            return windowList;
         }
+
 
         protected override IntPtr GameAreaHwnd => _blueStacksGameArea;
 
@@ -83,6 +96,20 @@ namespace autoplaysharp.Emulators
 
             Mouse.Position = futureFightLocation + new Size(X, Y);
             Mouse.Click();
+        }
+
+        public override void Initialize()
+        {
+            var tuple = FindWindow(_settingsWindowName);
+            _blueStacksMain = tuple.MainHwnd;
+            _blueStacksGameArea = tuple.GameArea;
+            User32.SetForegroundWindow(_blueStacksMain);
+        }
+
+        public override IEnumerable<string> FindPossibleWindows()
+        {
+            var hwnds = FindPossibleHwnds();
+            return hwnds.Select(x => $"{User32.GetWindowText(x.MainHwnd)}");
         }
 
         protected override IntPtr ScreenshotHwnd => _blueStacksMain;

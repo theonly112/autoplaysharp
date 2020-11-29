@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using PInvoke;
 
 namespace autoplaysharp.Emulators
@@ -48,6 +49,16 @@ namespace autoplaysharp.Emulators
         protected override IntPtr GameAreaHwnd => _noxGameAreaHwnd;
 
         public override void RestartGame()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Initialize()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<string> FindPossibleWindows()
         {
             throw new NotImplementedException();
         }

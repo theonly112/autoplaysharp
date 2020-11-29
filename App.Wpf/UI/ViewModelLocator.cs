@@ -1,6 +1,7 @@
 ﻿using autoplaysharp.App.UI.DebugView;
 using autoplaysharp.App.UI.Log;
 using autoplaysharp.App.UI.Repository;
+using autoplaysharp.App.UI.Setup;
 using autoplaysharp.App.UI.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +14,7 @@ namespace autoplaysharp.App.UI
         public LogViewModel LogViewModel => App.ServiceProvider.GetService<LogViewModel>();
         public TasksViewModel TasksViewModel => App.ServiceProvider.GetService<TasksViewModel>();
         public DebugViewModel DebugViewModel => App.ServiceProvider.GetService<DebugViewModel>();
+        public SetupViewModel SetupViewModel => App.ServiceProvider.GetService<SetupViewModel>();
 
         internal static void ConfigureServices(ServiceCollection serviceCollection)
         {
@@ -21,6 +23,7 @@ namespace autoplaysharp.App.UI
             serviceCollection.AddSingleton<LogViewModel>();
             serviceCollection.AddSingleton<TasksViewModel>();
             serviceCollection.AddSingleton<DebugViewModel>();
+            serviceCollection.AddSingleton<SetupViewModel>();
 
             // Tasks
             TasksViewModel.ConfigureServices(serviceCollection);

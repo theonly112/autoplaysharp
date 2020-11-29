@@ -6,6 +6,7 @@ using System.Windows.Threading;
 using autoplaysharp.App.Logging;
 using autoplaysharp.App.UI;
 using autoplaysharp.App.UI.Repository;
+using autoplaysharp.App.UI.Setup;
 using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Core.Game;
@@ -28,12 +29,15 @@ namespace autoplaysharp.App
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            // Otherwise application will close after setup window is closed...
+            Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             var serviceCollection = new ServiceCollection();
             ConfigureSerivces(serviceCollection);
             serviceCollection.AddSingleton<MainWindow>();
             ServiceProvider = serviceCollection.BuildServiceProvider();
             var window = ServiceProvider.GetService<MainWindow>();
             window.Show();
+            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
 
         private enum EmulatorType {
@@ -79,17 +83,7 @@ namespace autoplaysharp.App
 
             var executioner = new TaskExecutioner(loggerFactory.CreateLogger<TaskExecutioner>());
             IEmulatorWindow window = null;
-            switch (settings.EmulatorType)
-            {
-                case Contracts.Configuration.EmulatorType.NoxPlayer:
-                    window = new NoxWindow(settings.WindowName);
-                    break;
-                case Contracts.Configuration.EmulatorType.BlueStacks:
-                    window = new BluestacksWindow(loggerFactory.CreateLogger<BluestacksWindow>(), recognition);
-                    break;
-                default:
-                    throw new Exception("Invalid emulator type");
-            }
+            window = SetupWindow(settings, loggerFactory, recognition);
 
             var repository = new Repository();
             repository.Load();
@@ -130,6 +124,49 @@ namespace autoplaysharp.App
                 Dispatcher.BeginInvoke(async () => await UpdateOverlay(overlay));
 #pragma warning restore CS4014 
             }
+        }
+
+        private static IEmulatorWindow SetupWindow(ISettings settings, ILoggerFactory loggerFactory,
+            TextRecognition recognition)
+        {
+            IEmulatorWindow window;
+            switch (settings.EmulatorType)
+            {
+                case Contracts.Configuration.EmulatorType.NoxPlayer:
+                    window = new NoxWindow(settings.WindowName);
+                    break;
+                case Contracts.Configuration.EmulatorType.BlueStacks:
+                    window = new BluestacksWindow(loggerFactory.CreateLogger<BluestacksWindow>(), recognition,
+                        settings.WindowName);
+                    break;
+                default:
+                    throw new Exception("Invalid emulator type");
+            }
+
+            try
+            {
+                window.Initialize();
+            }
+            catch (FailedToFindWindowException e)
+            {
+                var setup = new SetupWindow();
+                var vm = new SetupViewModel(loggerFactory.CreateLogger<SetupViewModel>(), recognition, settings);
+                setup.DataContext = vm;
+                vm.Saved += () =>
+                {
+                    setup.DialogResult = true;
+                    //setup.Hide();
+                };
+
+                if(setup.ShowDialog() != true)
+                {
+                    Current.Shutdown();
+                }
+
+                window = SetupWindow(settings, loggerFactory, recognition);
+            }
+
+            return window;
         }
 
         private static void SetupDefaultConfiguration(ISettings settings)

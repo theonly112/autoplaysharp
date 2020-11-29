@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -78,6 +79,8 @@ namespace autoplaysharp.Emulators
         }
 
         public abstract void RestartGame();
+        public abstract void Initialize();
+        public abstract IEnumerable<string> FindPossibleWindows();
 
         public void Drag(Vector2 vectorStart, Vector2 vectorEnd)
         {
@@ -141,5 +144,9 @@ namespace autoplaysharp.Emulators
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool EnumChildWindows(IntPtr hwndParent, User32.WNDENUMPROC lpEnumFunc, IntPtr lParam);
+
+        [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
+        public static extern IntPtr GetParent(IntPtr hWnd);
+
     }
 }

@@ -1,0 +1,19 @@
+﻿<Window x:Class="autoplaysharp.App.UI.Setup.SetupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:setup="clr-namespace:autoplaysharp.App.UI.Setup"
+        mc:Ignorable="d"
+        Title="Setup" Height="234" Width="314" ResizeMode="NoResize" d:DataContext="{d:DesignInstance setup:SetupViewModel}">
+    <Grid>
+        <Label Content="1. Select an Emulator Type. (BlueStacks recommended)" HorizontalAlignment="Left" Margin="7,0,0,0" VerticalAlignment="Top"/>
+        <ComboBox ItemsSource="{Binding EmulatorTypes}" SelectedItem="{Binding SelectedEmulator}" HorizontalAlignment="Left" Margin="81,33,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Emulator" HorizontalAlignment="Left" Margin="8,31,0,0" VerticalAlignment="Top"/>
+        <Button Command="{Binding TryFindEmulator}" Content="2. Try to find emulator windows" HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top" RenderTransformOrigin="0,0.503" Height="25" Width="184" />
+        <Label Content="Windows" HorizontalAlignment="Left" Margin="7,122,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding Windows}" SelectedItem="{Binding SelectedWindow}" Margin="80,124,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button Command="{Binding SaveSettings}" Content="Save and Close" HorizontalAlignment="Left" Margin="16,159,0,0" VerticalAlignment="Top" RenderTransformOrigin="0,0.503" Height="25" Width="184"/>
+        <Label Content="3. Select emulator window from list." HorizontalAlignment="Left" Margin="7,93,0,0" VerticalAlignment="Top"/>
+    </Grid>
+</Window>
