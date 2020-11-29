@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -80,7 +81,14 @@ namespace autoplaysharp.Emulators
 
         public abstract void RestartGame();
         public abstract void Initialize();
-        public abstract IEnumerable<string> FindPossibleWindows();
+
+        protected abstract IEnumerable<(IntPtr MainHwnd, IntPtr GameArea)> FindPossibleHwnds();
+        
+        public IEnumerable<string> FindPossibleWindows()
+        {
+            var hwnds = FindPossibleHwnds();
+            return hwnds.Select(x => $"{User32.GetWindowText(x.MainHwnd)}");
+        }
 
         public void Drag(Vector2 vectorStart, Vector2 vectorEnd)
         {

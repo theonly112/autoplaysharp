@@ -43,7 +43,7 @@ namespace autoplaysharp.Emulators
             throw new FailedToFindWindowException($"Failed to find BlueStacks Window: {settingsWindowName}");
         }
 
-        private static IEnumerable<(IntPtr MainHwnd, IntPtr GameArea)> FindPossibleHwnds()
+        protected override IEnumerable<(IntPtr MainHwnd, IntPtr GameArea)> FindPossibleHwnds()
         {
             var windowList = new List<(IntPtr, IntPtr)>();
             var ptr = new User32.WNDENUMPROC((hwnd, _) =>
@@ -104,12 +104,6 @@ namespace autoplaysharp.Emulators
             _blueStacksMain = tuple.MainHwnd;
             _blueStacksGameArea = tuple.GameArea;
             User32.SetForegroundWindow(_blueStacksMain);
-        }
-
-        public override IEnumerable<string> FindPossibleWindows()
-        {
-            var hwnds = FindPossibleHwnds();
-            return hwnds.Select(x => $"{User32.GetWindowText(x.MainHwnd)}");
         }
 
         protected override IntPtr ScreenshotHwnd => _blueStacksMain;
