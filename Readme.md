@@ -22,7 +22,7 @@ This is a bot for Marvel Future Fight (MFF)
 
 8. Install Visual C++ Redistributables  [vc_redist.x64.exe](https://aka.ms/vs/16/release/vc_redist.x64.exe)
 
-9. Download autoplay#.
+9. Download latest autoplay# version from [Releases](https://github.com/theonly112/autoplaysharp/releases/download/latest/autoplaysharp.zip).
 
 10. Run autoplay#.
 
