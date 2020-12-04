@@ -49,7 +49,7 @@ namespace autoplaysharp.Emulators
             var ptr = new User32.WNDENUMPROC((hwnd, _) =>
             {
                 var className = User32.GetClassName(hwnd);
-                if (!className.Contains("Bluestacks"))
+                if (!className.Contains("Bluestacks", StringComparison.CurrentCultureIgnoreCase))
                 {
                     return true;
                 }
