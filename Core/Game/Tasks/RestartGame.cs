@@ -48,6 +48,13 @@ namespace autoplaysharp.Core.Game.Tasks
                 Logger.LogInformation("Closing update notice.");
             }
 
+            if (Game.IsVisible(UIds.MAIN_MENU_STARTUP_UPDATE_NOTICE_X_2))
+            {
+                Game.Click(UIds.MAIN_MENU_STARTUP_UPDATE_NOTICE_X_2);
+                await Task.Delay(300, token);
+                Logger.LogInformation("Closing update notice.");
+            }
+
             if (Game.IsVisible(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_X))
             {
                 await Task.Delay(500, token);
