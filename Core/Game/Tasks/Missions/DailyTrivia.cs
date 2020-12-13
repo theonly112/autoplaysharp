@@ -51,12 +51,14 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             await Task.Delay(1000, token);
 
-            if(!Game.IsVisible(UIds.CHALLENGES_DAILY_START_BUTTON) && !Game.IsVisible(UIds.CHALLENGES_DAILY_TRIVIA_BASIC_REWARD))
+            if (!await WaitUntil(() =>
+                Game.IsVisible(UIds.CHALLENGES_DAILY_START_BUTTON) ||
+                Game.IsVisible(UIds.CHALLENGES_DAILY_TRIVIA_BASIC_REWARD), token))
             {
                 Logger.LogInformation("Daily trivia already completed");
                 return;
             }
-
+             
             if(Game.IsVisible(UIds.CHALLENGES_DAILY_START_BUTTON))
             {
                 Game.Click(UIds.CHALLENGES_DAILY_START_BUTTON);
