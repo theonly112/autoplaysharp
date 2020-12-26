@@ -23,7 +23,7 @@ namespace autoplaysharp.App
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
         internal static IServiceProvider ServiceProvider { get; private set; }
 
@@ -36,18 +36,9 @@ namespace autoplaysharp.App
             serviceCollection.AddSingleton<MainWindow>();
             ServiceProvider = serviceCollection.BuildServiceProvider();
             var window = ServiceProvider.GetService<MainWindow>();
-            window.Show();
-            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
-        }
+            window?.Show();
 
-        private enum EmulatorType {
-            NoxPlayer,
-            BlueStacks
-        }
-        private class WindowSettings
-        {
-            public EmulatorType Emulator { get; set; }
-            public string WindowName { get; set; }
+            Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
 
         private void ConfigureSerivces(ServiceCollection serviceCollection)
@@ -63,7 +54,7 @@ namespace autoplaysharp.App
                                                 .SetMinimumLevel(LogLevel.Debug);
                                 });
 
-            var config = Directory.CreateDirectory("Settings");
+            Directory.CreateDirectory("Settings");
             var path = Path.Combine("Settings", "config.json");
 
             var setupDefaultConfig = !File.Exists(path);
@@ -82,8 +73,7 @@ namespace autoplaysharp.App
             var recognition = new TextRecognition();
 
             var executioner = new TaskExecutioner(loggerFactory.CreateLogger<TaskExecutioner>());
-            IEmulatorWindow window = null;
-            window = SetupWindow(settings, loggerFactory, recognition);
+            var window = SetupWindow(settings, loggerFactory, recognition);
 
             var repository = new Repository();
             repository.Load();
@@ -106,48 +96,40 @@ namespace autoplaysharp.App
             serviceCollection.AddSingleton<IGame>(game);
             serviceCollection.AddSingleton<IAreaPicker>(picker);
             serviceCollection.AddSingleton<IUiRepository>(repository);
-            serviceCollection.AddSingleton<IEmulatorWindow>(window);
+            serviceCollection.AddSingleton(window);
             serviceCollection.AddSingleton<IUiLogger>(uiLogger);
             ViewModelLocator.ConfigureServices(serviceCollection);
-
 
             if(settings.EnableOverlay)
             {
                 Dispatcher.BeginInvoke(async () => await UpdateOverlay(overlay));
             }
+        }
 
-            async Task UpdateOverlay(ImGuiOverlay overlay)
-            {
-                overlay.Update();
-                await Task.Delay((int)(1000f / 60f));
+        private async Task UpdateOverlay(ImGuiOverlayBase overlay)
+        {
+            overlay.Update();
+            await Task.Delay((int)(1000f / 60f));
 #pragma warning disable CS4014 // We specifically to not want to await this call. We want this to run in the background.
-                Dispatcher.BeginInvoke(async () => await UpdateOverlay(overlay));
-#pragma warning restore CS4014 
-            }
+            Dispatcher.BeginInvoke(async () => await UpdateOverlay(overlay));
+#pragma warning restore CS4014
         }
 
         private static IEmulatorWindow SetupWindow(ISettings settings, ILoggerFactory loggerFactory,
-            TextRecognition recognition)
+            ITextRecognition recognition)
         {
-            IEmulatorWindow window;
-            switch (settings.EmulatorType)
+            IEmulatorWindow window = settings.EmulatorType switch
             {
-                case Contracts.Configuration.EmulatorType.NoxPlayer:
-                    window = new NoxWindow(settings.WindowName);
-                    break;
-                case Contracts.Configuration.EmulatorType.BlueStacks:
-                    window = new BluestacksWindow(loggerFactory.CreateLogger<BluestacksWindow>(), recognition,
-                        settings.WindowName);
-                    break;
-                default:
-                    throw new Exception("Invalid emulator type");
-            }
+                    EmulatorType.NoxPlayer => new NoxWindow(settings.WindowName),
+                    EmulatorType.BlueStacks => new BluestacksWindow(loggerFactory.CreateLogger<BluestacksWindow>(), recognition, settings.WindowName),
+                    _ => throw new Exception("Invalid emulator type")
+            };
 
             try
             {
                 window.Initialize();
             }
-            catch (FailedToFindWindowException e)
+            catch (FailedToFindWindowException)
             {
                 var setup = new SetupWindow();
                 var vm = new SetupViewModel(loggerFactory.CreateLogger<SetupViewModel>(), recognition, settings);
@@ -172,7 +154,7 @@ namespace autoplaysharp.App
         private static void SetupDefaultConfiguration(ISettings settings)
         {
             settings.WindowName = "NoxPlayer";
-            settings.EmulatorType = Contracts.Configuration.EmulatorType.NoxPlayer;
+            settings.EmulatorType = EmulatorType.NoxPlayer;
 
             settings.TimelineBattle.Team = 1;
 
