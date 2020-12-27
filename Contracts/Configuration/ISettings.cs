@@ -1,4 +1,5 @@
-﻿using autoplaysharp.Contracts.Configuration.Tasks;
+﻿using System;
+using autoplaysharp.Contracts.Configuration.Tasks;
 using System.Collections.Generic;
 
 namespace autoplaysharp.Contracts.Configuration
@@ -7,7 +8,7 @@ namespace autoplaysharp.Contracts.Configuration
     {
         bool EnableOverlay { get; set; }
         string WindowName { get; set; }
-        IList<string> RoutineItems { get; set; }
+        string[] RoutineItems { get; set; }
         EmulatorType EmulatorType { get; set; }
         ITimelineBattleSettings TimelineBattle { get; }
         IAllianceBattleSettings AllianceBattle { get; }

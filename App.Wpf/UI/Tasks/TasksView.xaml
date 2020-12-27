@@ -3,35 +3,121 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:a="clr-namespace:autoplaysharp.App.UI.Tasks.AllianceBattle"
-             xmlns:t="clr-namespace:autoplaysharp.App.UI.Tasks.TimelineBattle"
-             xmlns:dimension="clr-namespace:autoplaysharp.App.UI.Tasks.DimensionMissions"
-             xmlns:coop="clr-namespace:autoplaysharp.App.UI.Tasks.CoopMission"
-             xmlns:danger="clr-namespace:autoplaysharp.App.UI.Tasks.DangerRoom"
-             xmlns:heroic="clr-namespace:autoplaysharp.App.UI.Tasks.HeroicQuest"
-             xmlns:legendary="clr-namespace:autoplaysharp.App.UI.Tasks.LegendaryBattle"
-             xmlns:squad="clr-namespace:autoplaysharp.App.UI.Tasks.SquadBattle"
-             xmlns:wbi="clr-namespace:autoplaysharp.App.UI.Tasks.WorldBossInvasion"
-             xmlns:worldBoss="clr-namespace:autoplaysharp.App.UI.Tasks.WorldBoss"
-             xmlns:epicQuest="clr-namespace:autoplaysharp.App.UI.Tasks.EpicQuest"
+             xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:Tasks="clr-namespace:autoplaysharp.Core.Game.Tasks;assembly=autoplaysharp.Core"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             DataContext="{Binding Path=TasksViewModel, Source={StaticResource Locator}}">
+             d:DesignHeight="250" d:DesignWidth="800"
+             DataContext="{Binding Path=TasksViewModel, Source={StaticResource Locator}}"
+             IsEnabled="{Binding IsEnabled}">
     <Grid>
-        <Grid.Resources>
-            <DataTemplate x:Key="PlaceHolder">
-                <TextBlock>Work in progress.</TextBlock>
-            </DataTemplate>
-        </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
-            <GroupBox Header="Tasks">
-                <StackPanel>
-                    <ComboBox ItemsSource="{Binding Tasks}" DisplayMemberPath="Name" x:Name="_tasksComboBox"/>
-                    <ContentControl Content="{Binding Path=SelectedItem, ElementName=_tasksComboBox}">
+        <GroupBox Grid.Column="0" Header="Routine">
+            <Grid Margin="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Button Margin="3" Command="{Binding Path=AddAllToQueue}">
+                        <TextBlock Margin="3">Run Routine</TextBlock>
+                    </Button>
+                    <Button Margin="3" Command="{Binding Path=CancelCommand}">
+                        <TextBlock Margin="3">Cancel</TextBlock>
+                    </Button>
+                    <Button Margin="3" Width="15" x:Name="_addButton">
+                        +
+                        <Button.ContextMenu>
+                            <ContextMenu ItemsSource="{Binding Tasks}">
+                                <ContextMenu.ItemContainerStyle>
+                                    <Style TargetType="MenuItem">
+                                        <Setter Property="Command" 
+                                                Value="{Binding Path=DataContext.Add, RelativeSource={RelativeSource AncestorType=Button}}" />
+                                        <Setter Property="CommandParameter" Value="{Binding}"/>
+                                    </Style>
+                                </ContextMenu.ItemContainerStyle>
+                                <ContextMenu.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ContextMenu.ItemTemplate>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="Click">
+                                <b:ChangePropertyAction TargetObject="{Binding ContextMenu, ElementName=_addButton}" PropertyName="PlacementTarget" Value="{Binding ElementName=_addButton, Mode=OneWay}"/>
+                                <b:ChangePropertyAction TargetObject="{Binding ContextMenu, ElementName=_addButton}" PropertyName="IsOpen" Value="True"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                    </Button>
+               
+                    <Button Margin="3" Width="15" Command="{Binding Path=Remove}"
+                            CommandParameter="{Binding Path=SelectedItem, ElementName=_routineListView}">-</Button>
+                </StackPanel>
+                <ListBox Grid.Row="1" x:Name="_routineListView"
+                              ItemsSource="{Binding RoutineItems}"
+                              dd:DragDrop.UseDefaultDragAdorner="True"
+                              dd:DragDrop.UseDefaultEffectDataTemplate="True">
+                    <ListBox.Style>
+                        <Style TargetType="ListBox">
+                            <Setter Property="dd:DragDrop.IsDragSource" Value="False"/>
+                            <Setter Property="dd:DragDrop.IsDropTarget" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ActiveTask}" Value="{x:Null}">
+                                    <Setter Property="dd:DragDrop.IsDragSource" Value="True"/>
+                                    <Setter Property="dd:DragDrop.IsDropTarget" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.Style>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                    <DataTrigger.Setters>
+                                        <Setter Property="Background" Value="LightGreen"/>
+                                    </DataTrigger.Setters>
+                                </DataTrigger>
+                            </Style.Triggers>
+                            <Setter Property="Tag" Value="{Binding Path=DataContext, ElementName=_routineListView}"/>
+                            <Setter Property="ContextMenu">
+                                <Setter.Value>
+                                    <ContextMenu>
+                                        <MenuItem Header="Remove" 
+                                                      Command="{Binding Path=PlacementTarget.Tag.Remove,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
+                                                      CommandParameter="{Binding}"/>
+                                    </ContextMenu>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Margin="3">
+                                <TextBlock DockPanel.Dock="Left">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=DataContext.ActiveTask, ElementName=_routineListView}"
+                                                                 Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                        &#9776;
+                                </TextBlock>
+                                <TextBlock DockPanel.Dock="Left" Margin="5,0,0,0" Text="{Binding Name}"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <!--<ContentControl Content="{Binding Path=SelectedItem, ElementName=_tasksComboBox}">
                         <ContentControl.Resources>
                             <DataTemplate DataType="{x:Type a:AllianceBattleSettingsViewModel}">
                                 <a:AllianceBattleSettings/>
@@ -70,36 +156,17 @@
                                 <epicQuest:EpicQuestSettings />
                             </DataTemplate>
                         </ContentControl.Resources>
-                    </ContentControl>
-                    <Button Command="{Binding Path=SelectedItem.AddToQueue, ElementName=_tasksComboBox}">Run Selected</Button>
-                    <Button Command="{Binding Path=AddAllToQueue}">Run ALL</Button>
-                </StackPanel>
-            </GroupBox>
-        </StackPanel>
-        <StackPanel Grid.Column="1">
-            
-            <GroupBox Header="Queue">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center">Active:</TextBlock>
-                        <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" Text="{Binding Active.Name}"/>
-                        <Button VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding Active.Cancel}">Cancel</Button>
-                    </StackPanel>
-                    <ListView ItemsSource="{Binding Queue}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name}">
-                                    <TextBlock.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem HorizontalContentAlignment="Stretch" Header="Cancel" Command="{Binding Cancel}"/>
-                                        </ContextMenu>
-                                    </TextBlock.ContextMenu>
-                                </TextBlock>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </StackPanel>
-            </GroupBox>
-        </StackPanel>
+                    </ContentControl>-->
+            </Grid>
+        </GroupBox>
+        <!--<GroupBox Grid.Column="1" Header="Single Tasks">
+            <StackPanel>
+                <ToggleButton Margin="3"
+                        Command="{Binding ExecuteSingleTaskCommand}"
+                        CommandParameter="{x:Type Tasks:AutoFight}">
+                    AutoFight
+                </ToggleButton>
+            </StackPanel>
+        </GroupBox>-->
     </Grid>
 </UserControl>

@@ -8,15 +8,15 @@
         xmlns:tasks="clr-namespace:autoplaysharp.App.UI.Tasks"
         xmlns:debug="clr-namespace:autoplaysharp.App.UI.DebugView"
         mc:Ignorable="d"
-        Title="autoplay#" Height="450" Width="800"
+        Title="autoplay#" Height="450" Width="450"
         DataContext="{Binding Path=MainViewModel, Source={StaticResource Locator}}" Icon="/Icon/autoplay.png">
     <Grid>
         <TabControl>
-            <TabItem Header="Tasks">
-                <DockPanel>
-                    <tasks:TaskView DockPanel.Dock="Top" />
-                    <log:LogView DockPanel.Dock="Bottom" />
-                </DockPanel>
+            <TabItem Header="&#9881; Routine">
+                <tasks:TaskView />
+            </TabItem>
+            <TabItem Header="Log">
+                <log:LogView DockPanel.Dock="Bottom" />
             </TabItem>
             <TabItem Header="Repository">
                 <repository:RepositoryBrowser />

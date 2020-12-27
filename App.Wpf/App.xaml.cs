@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -160,6 +161,30 @@ namespace autoplaysharp.App
 
             settings.AllianceBattle.RunNormalMode = true;
             settings.AllianceBattle.RunExtremeMode = true;
+
+            settings.RoutineItems = new[]
+                {
+                    typeof(Core.Game.Tasks.Missions.AllianceBattle),
+                    typeof(Core.Game.Tasks.Missions.CoopMission),
+                    typeof(Core.Game.Tasks.Missions.DailyTrivia),
+                    typeof(Core.Game.Tasks.Missions.DangerRoom),
+                    typeof(Core.Game.Tasks.Missions.DimensionMission),
+                    typeof(Core.Game.Tasks.Missions.LegendaryBattle),
+                    typeof(Core.Game.Tasks.Missions.SquadBattle),
+                    typeof(Core.Game.Tasks.Missions.TimelineBattle),
+                    typeof(Core.Game.Tasks.Missions.WorldBossInvasion),
+                    typeof(Core.Game.Tasks.Missions.WorldBoss),
+                    typeof(Core.Game.Tasks.Missions.DeluxeEpicQuests.BeginningOfTheChaos),
+                    typeof(Core.Game.Tasks.Missions.DeluxeEpicQuests.DoomsDay),
+                    typeof(Core.Game.Tasks.Missions.DeluxeEpicQuests.FateOfTheUniverse),
+                    typeof(Core.Game.Tasks.Missions.DeluxeEpicQuests.MutualEnemy),
+                    typeof(Core.Game.Tasks.Missions.DualEpicQuests.Shifter.StupidXMen),
+                    typeof(Core.Game.Tasks.Missions.DualEpicQuests.Shifter.TheFault),
+                    typeof(Core.Game.Tasks.Missions.DualEpicQuests.Shifter.TwistedWorld),
+                    typeof(Core.Game.Tasks.Missions.DualEpicQuests.TheBigTwin),
+                    typeof(Core.Game.Tasks.Missions.DualEpicQuests.VeiledSecret),
+                }
+                .Select(x => x.Namespace).ToArray();
         }
     }
 }

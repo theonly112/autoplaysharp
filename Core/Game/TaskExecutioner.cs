@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using autoplaysharp.Contracts;
@@ -8,26 +11,18 @@ using Microsoft.Extensions.Logging;
 
 namespace autoplaysharp.Core.Game
 {
+    /// <summary>
+    /// TODO: Threading / Locking ...
+    /// </summary>
     public class TaskExecutioner : ITaskExecutioner, ITaskQueue
     {
-        private Queue<IGameTask> _queue = new Queue<IGameTask>();
-        private bool _taskRunning = false;
-        private CancellationTokenSource _source = new CancellationTokenSource();
-        private ILogger<TaskExecutioner> _logger;
-        private readonly object _lock = new object();
+        private readonly Queue<IGameTask> _queue = new();
+        private bool _taskRunning;
+        private CancellationTokenSource _source = new();
+        private readonly ILogger<TaskExecutioner> _logger;
+        private Task _activeTask;
 
-        public event Action QueueChanged;
-
-        public IEnumerable<IGameTask> Items
-        {
-            get
-            {
-                lock (_lock)
-                {
-                    return _queue.ToList();
-                }
-            }
-        }
+        public IEnumerable<IGameTask> Items => _queue.ToImmutableList();
 
         public IGameTask ActiveItem { get; private set; }
 
@@ -44,37 +39,34 @@ namespace autoplaysharp.Core.Game
 
         private void RunNext()
         {
-            lock (_lock)
+            if (!_taskRunning)
             {
-                if (!_taskRunning)
+                if (_queue.TryDequeue(out var task))
                 {
-                    if (_queue.TryDequeue(out var task))
-                    {
-                        _taskRunning = true;
-                        ActiveItem = task;
-                        Task.Run(() =>
-                        {
-                            _logger.LogDebug("Running task");
-                            return task.Run(_source.Token).ContinueWith(TaskFinished);
-                        });
-                    }
-                    else
-                    {
-                        ActiveItem = null;
-                    }
+                    _taskRunning = true;
+                    ActiveItem = task;
+                    _activeTask = Task.Run(() =>
+                                           {
+                                               _logger.LogDebug("Running task");
+                                               return task.Run(_source.Token).ContinueWith(TaskFinished);
+                                           });
+                }
+                else
+                {
+                    ActiveItem = null;
+                    _activeTask = null;
                 }
             }
-            QueueChanged?.Invoke();
+
+            OnPropertyChanged(nameof(ActiveItem));
+            OnPropertyChanged(nameof(Items));
         }
 
-        private async void TaskFinished(Task t)
+        private async Task TaskFinished(Task t)
         {
-            lock(_lock)
-            {
-                _taskRunning = false;
-                _logger.LogDebug("Task finished");
-                RunNext();
-            }
+            _taskRunning = false;
+            _logger.LogDebug("Task finished");
+
             try
             {
                 await t; // unwarp any exception.
@@ -87,34 +79,59 @@ namespace autoplaysharp.Core.Game
             {
                 _logger.LogError(e, $"Task existed with exception. {e}");
             }
+            RunNext();
         }
 
-        public void CancelActiveTask()
+        public async Task CancelActiveTask()
         {
+            var active = _activeTask;
             _source.Cancel();
             _source = new CancellationTokenSource();
+
+            try
+            {
+                await active;
+            }
+            catch (TaskCanceledException)
+            {
+                // this is expected.
+            }
         }
 
-        public void Cancel(IGameTask task)
+        public async Task Cancel(IGameTask task)
         {
-            lock (_lock)
+            if (ActiveItem == task)
             {
-                if (ActiveItem == task)
+                await CancelActiveTask();
+            }
+            else
+            {
+                // TODO: is there a better way?
+                var items = _queue.Where(x => x != task).ToList();
+                _queue.Clear();
+                foreach (var item in items)
                 {
-                    CancelActiveTask();
-                }
-                else
-                {
-                    // TODO: is there a better way?
-                    var items = _queue.Where(x => x != task).ToList();
-                    _queue.Clear();
-                    foreach(var item in items)
-                    {
-                        _queue.Enqueue(item);
-                    }
+                    _queue.Enqueue(item);
                 }
             }
-            QueueChanged?.Invoke();
+
+            OnPropertyChanged(nameof(ActiveItem));
+            OnPropertyChanged(nameof(Items));
+        }
+
+        public async Task CancelAll()
+        {
+            await Cancel(ActiveItem);
+            _queue.Clear();
+            OnPropertyChanged(nameof(ActiveItem));
+            OnPropertyChanged(nameof(Items));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

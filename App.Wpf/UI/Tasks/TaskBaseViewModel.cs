@@ -8,12 +8,12 @@ namespace autoplaysharp.App.UI.Tasks
 {
     internal abstract class TaskBaseViewModel
     {
-        protected abstract IGameTask CreateTask();
         public abstract string Name { get; }
         public abstract ICommand AddToQueue { get; }
+        public abstract Type TaskType { get; }
     }
 
-    internal class TaskBaseViewModel<Task> : TaskBaseViewModel where Task : IGameTask
+    internal class TaskBaseViewModel<TTask> : TaskBaseViewModel where TTask : IGameTask
     {
         private readonly IGame _game;
         private readonly IUiRepository _repo;
@@ -34,13 +34,14 @@ namespace autoplaysharp.App.UI.Tasks
             _taskExecutioner.QueueTask(CreateTask());
         }
 
-        protected override IGameTask CreateTask()
+        protected virtual IGameTask CreateTask()
         {
-            return (Task)Activator.CreateInstance(typeof(Task), _game, _repo, _settings);
+            return (TTask)Activator.CreateInstance(typeof(TTask), _game, _repo, _settings);
         }
 
-        public override string Name => typeof(Task).Name;
+        public override string Name => typeof(TTask).Name;
 
         public override ICommand AddToQueue { get; }
+        public override Type TaskType => typeof(TTask);
     }
 }
