@@ -61,6 +61,7 @@ namespace autoplaysharp.App.UI.Repository
         private void Save()
         {
             _repository.Save();
+#if DEBUG
             var files = Directory.GetFiles("ui", "*.json");
             var relativPath = @"..\..\..\Core\";
             Debug.Assert(Directory.Exists(relativPath));
@@ -69,6 +70,7 @@ namespace autoplaysharp.App.UI.Repository
             {
                 File.Copy(f, Path.Combine(relativPath, f), true);
             }
+#endif
         }
 
         public ObservableCollection<UiElementViewModel> UIElements { get; } = new ObservableCollection<UiElementViewModel>();
