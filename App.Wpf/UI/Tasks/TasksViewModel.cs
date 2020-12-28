@@ -87,7 +87,7 @@ namespace autoplaysharp.App.UI.Tasks
             }
         }
 
-        private void RoutineItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        private void RoutineItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             _settings.RoutineItems = RoutineItems.Select(x => x.Name).ToArray();
         }
