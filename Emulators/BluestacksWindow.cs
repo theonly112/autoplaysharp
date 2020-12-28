@@ -7,6 +7,7 @@ using autoplaysharp.Contracts;
 using FlaUI.Core.Input;
 using FlaUI.UIA3;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic.ApplicationServices;
 using PInvoke;
 
 namespace autoplaysharp.Emulators
@@ -73,29 +74,43 @@ namespace autoplaysharp.Emulators
 
         public override void RestartGame()
         {
+            var originalForeground = User32.GetForegroundWindow();
+            var originalPos = Mouse.Position;
             User32.GetWindowThreadProcessId(_blueStacksMain, out var procId);
             using var app = FlaUI.Core.Application.Attach(procId);
             using var automation = new UIA3Automation();
             var mainWindow = app.GetMainWindow(automation);
             var mffTab = mainWindow.FindFirstDescendant(cf => cf.ByText("Future Fight"));
             var close = mffTab?.Parent?.FindFirstDescendant(cf => cf.ByAutomationId("CloseTabButtonLandScape"));
-            if (close != null)
+            User32.SetForegroundWindow(_blueStacksMain);
+
+            Point futureFightLocation;
+            do
             {
-                close.Click();
-            }
-            else
-            {
-                _logger.LogError("Failed to close game");
-                // TODO: restart emulator?
-            }
+                if (close != null)
+                {
+                    close.Click();
+                    Mouse.Position = originalPos;
+                }
+                else
+                {
+                    _logger.LogError("Failed to close game");
+                    // TODO: restart emulator?
+                }
 
-            Thread.Sleep(500);
+                Thread.Sleep(100);
 
-            var screen = GrabScreen(0, 0, Width, Height);
-            var futureFightLocation = _recognition.LocateText(screen, "Future Fight");
+                var screen = GrabScreen(0, 0, Width, Height);
+                futureFightLocation = _recognition.LocateText(screen, "Future Fight");
+                
+            } while (futureFightLocation == Point.Empty);
 
+            
             Mouse.Position = futureFightLocation + new Size(X, Y);
             Mouse.Click();
+            Thread.Sleep(100);
+            Mouse.Position = originalPos;
+            User32.SetForegroundWindow(originalForeground);
         }
 
         public override void Initialize()
