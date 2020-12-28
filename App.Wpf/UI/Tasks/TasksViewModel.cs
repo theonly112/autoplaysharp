@@ -57,16 +57,34 @@ namespace autoplaysharp.App.UI.Tasks
             var types = new List<Type>();
             foreach (var referencedAssembly in Assembly.GetEntryAssembly()?.GetReferencedAssemblies()?.Select(Assembly.Load))
             {
-                types.AddRange(referencedAssembly.GetTypes().Where(x => x.IsAssignableTo(typeof(IGameTask))));
-            }
-            
-            foreach (var routineViewModel in settings.RoutineItems.Where(x => types.Any(t => t.Name == x))
-                                                     .Select(x => new RoutineViewModel(types.FirstOrDefault(t => t.Name == x), game, repo, executioner, settings, queue)))
-            {
-                RoutineItems.Add(routineViewModel);
+                types.AddRange(referencedAssembly.GetTypes()
+                    .Where(x =>
+                    {
+                        return x.IsAssignableTo(typeof(IGameTask)) &&
+                               !x.IsAbstract &&
+                               x.IsPublic;
+                    }));
             }
 
+            if (settings.RoutineItems != null)
+            {
+                foreach (var routineViewModel in settings.RoutineItems.Where(x => types.Any(t => t.Name == x))
+                    .Select(x => new RoutineViewModel(types.FirstOrDefault(t => t.Name == x), game, repo, executioner, settings, queue)))
+                {
+                    RoutineItems.Add(routineViewModel);
+                }
+            }
+            
             RoutineItems.CollectionChanged += RoutineItems_CollectionChanged;
+
+            if (!RoutineItems.Any())
+            {
+                foreach (var routineViewModel in types.Where(x => x != typeof(AutoFight))
+                    .Select(t => new RoutineViewModel(t, game, repo, executioner, settings, queue)))
+                {
+                    RoutineItems.Add(routineViewModel);
+                }
+            }
         }
 
         private void RoutineItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
