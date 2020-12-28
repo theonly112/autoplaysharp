@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Threading;
 using autoplaysharp.Contracts;
 using FlaUI.Core.Input;
 using FlaUI.UIA3;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic.ApplicationServices;
 using PInvoke;
 
 namespace autoplaysharp.Emulators
@@ -84,11 +82,14 @@ namespace autoplaysharp.Emulators
             var close = mffTab?.Parent?.FindFirstDescendant(cf => cf.ByAutomationId("CloseTabButtonLandScape"));
             User32.SetForegroundWindow(_blueStacksMain);
 
+            int attempts = 0;
             Point futureFightLocation;
             do
             {
                 if (close != null)
                 {
+
+                    Mouse.Position = close.GetClickablePoint();
                     close.Click();
                     Mouse.Position = originalPos;
                 }
@@ -102,8 +103,8 @@ namespace autoplaysharp.Emulators
 
                 var screen = GrabScreen(0, 0, Width, Height);
                 futureFightLocation = _recognition.LocateText(screen, "Future Fight");
-                
-            } while (futureFightLocation == Point.Empty);
+                attempts++;
+            } while (futureFightLocation == Point.Empty && attempts < 10);
 
             
             Mouse.Position = futureFightLocation + new Size(X, Y);
