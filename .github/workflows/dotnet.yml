@@ -20,9 +20,11 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release --no-restore --verbosity detailed
+      run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --no-restore
+    - name: Cleanup PDBs
+      run: DEL /Q /F /S "*.pdb"
     - uses: papeloto/action-zip@v1
       with:
         files: App.Wpf/bin/
