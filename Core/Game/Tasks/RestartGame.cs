@@ -41,19 +41,9 @@ namespace autoplaysharp.Core.Game.Tasks
                 return true;
             }
 
-            if(Game.IsVisible(UIds.MAIN_MENU_STARTUP_UPDATE_NOTICE_X))
-            {
-                Game.Click(UIds.MAIN_MENU_STARTUP_UPDATE_NOTICE_X);
-                await Task.Delay(300, token);
-                Logger.LogInformation("Closing update notice.");
-            }
-
-            if (Game.IsVisible(UIds.MAIN_MENU_STARTUP_UPDATE_NOTICE_X_2))
-            {
-                Game.Click(UIds.MAIN_MENU_STARTUP_UPDATE_NOTICE_X_2);
-                await Task.Delay(300, token);
-                Logger.LogInformation("Closing update notice.");
-            }
+            await CloseUpdateNotice(UIds.MAIN_MENU_STARTUP_UPDATE_NOTICE_X ,token);
+            await CloseUpdateNotice(UIds.MAIN_MENU_STARTUP_UPDATE_NOTICE_X_2, token);
+            await CloseUpdateNotice(UIds.MAIN_MENU_STARTUP_UPDATE_NOTICE_X_3, token);
 
             if (Game.IsVisible(UIds.MAIN_MENU_STARTUP_STORE_NOTICE_X))
             {
@@ -79,6 +69,16 @@ namespace autoplaysharp.Core.Game.Tasks
             }
 
             return false;
+        }
+
+        private async Task CloseUpdateNotice(string id, CancellationToken token)
+        {
+            if (Game.IsVisible(id))
+            {
+                Game.Click(id);
+                await Task.Delay(300, token);
+                Logger.LogInformation("Closing update notice.");
+            }
         }
     }
 }
