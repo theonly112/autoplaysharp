@@ -104,50 +104,50 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             switch (questInfo)
             {
-                case var s when questInfo.StartsWith("[DIMENSION MISSION]"):
-                    await HandleDimensionMissionQuest(questInfo, completionStatus, token);
+                case var _ when questInfo.StartsWith("[DIMENSION MISSION]"):
+                    await HandleDimensionMissionQuest(questInfo, token);
                     break;
-                case var s when new Regex(@"Use .* Gold").IsMatch(questInfo):
-                    await HandleUseGoldMission(questInfo, completionStatus, token);
+                case var _ when new Regex(@"Use .* Gold").IsMatch(questInfo):
+                    await HandleUseGoldMission(token);
                     break;
-                case var s when questInfo.StartsWith("[ALLIANCE BATTLE]"):
-                    await HandleAllianceBattleQuest(questInfo, completionStatus, token);
+                case var _ when questInfo.StartsWith("[ALLIANCE BATTLE]"):
+                    await HandleAllianceBattleQuest(questInfo, token);
                     break;
-                case var s when questInfo.StartsWith("[CUSTOM GEAR]"):
-                    await HandleCustomGearQuest(questInfo, completionStatus, token);
+                case var _ when questInfo.StartsWith("[CUSTOM GEAR]"):
+                    await HandleCustomGearQuest(questInfo, token);
                     break;
-                case var s when questInfo.StartsWith("[ENCHANTED URU]"):
-                    await HandleUruQuest(questInfo, completionStatus, token);
+                case var _ when questInfo.StartsWith("[ENCHANTED URU]"):
+                    await HandleUruQuest(questInfo, token);
                     break;
-                case var s when questInfo.StartsWith("Beat World Boss"):
-                    await HandleWorldBossQuest(questInfo, completionStatus, token);
+                case var _ when questInfo.StartsWith("Beat World Boss"):
+                    await HandleWorldBossQuest(questInfo);
                     break;
-                case var s when questInfo.StartsWith("[ISO-8]"):
-                    await HandleIso8Quest(questInfo, completionStatus, token);
+                case var _ when questInfo.StartsWith("[ISO-8]"):
+                    await HandleIso8Quest(questInfo, token);
                     break;
-                case var s when questInfo.StartsWith("[DANGER ROOM"):
-                    await HandleDangerRoomQuest(questInfo, completionStatus, token);
+                case var _ when questInfo.StartsWith("[DANGER ROOM"):
+                    await HandleDangerRoomQuest(questInfo, token);
                     break;
-                case var s when new Regex(@"Use .* Energy").IsMatch(questInfo):
-                    await HandleUseEnergQuest(questInfo, completionStatus, token);
+                case var _ when new Regex(@"Use .* Energy").IsMatch(questInfo):
+                    await HandleUseEnergQuest(token);
                     break;
-                case var s when questInfo.StartsWith("[LEGENDARY BATTLE]"):
-                    await HandleLegendaryBattleQuest(questInfo, completionStatus, token);
+                case var _ when questInfo.StartsWith("[LEGENDARY BATTLE]"):
+                    await HandleLegendaryBattleQuest(completionStatus, token);
                     break;
-                case var s when questInfo.StartsWith("[TIMELINE BATTLE"):
-                    await HandleTimelineBattle(questInfo, completionStatus, token);
+                case var _ when questInfo.StartsWith("[TIMELINE BATTLE"):
+                    await HandleTimelineBattle(token);
                     break;
-                case var s when questInfo.StartsWith("[WORLD BOSS INVASION]"):
-                    await HandleWorldBossInvasionQuest(questInfo, completionStatus, token);
+                case var _ when questInfo.StartsWith("[WORLD BOSS INVASION]"):
+                    await HandleWorldBossInvasionQuest(questInfo, token);
                     break;
-                case var s when questInfo.StartsWith("[CARD]"):
-                    await HandleComicCardQuest(questInfo, completionStatus, token);
+                case var _ when questInfo.StartsWith("[CARD]"):
+                    await HandleComicCardQuest(questInfo, token);
                     break;
-                case var s when questInfo.StartsWith("[CO-OP PLAY]"):
-                    await HandleCoopQuest(questInfo, completionStatus, token);
+                case var _ when questInfo.StartsWith("[CO-OP PLAY]"):
+                    await HandleCoopQuest(questInfo, token);
                     break;
-                case var s when questInfo.StartsWith("[HEROIC QUEST]"):
-                    await HandleHeroicQuestEndFight(questInfo, completionStatus, token);
+                case var _ when questInfo.StartsWith("[HEROIC QUEST]"):
+                    await HandleHeroicQuestEndFight(token);
                     break;
                 default:
                     Logger.LogError($"Unhandled heroic quest: {questInfo}");
@@ -161,7 +161,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             await RunCore(token);
         }
 
-        private async Task HandleHeroicQuestEndFight(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleHeroicQuestEndFight(CancellationToken token)
         {
             await ClickWhenVisible(UIds.HEROIC_QUEST_QUEST_INFO_GOTO);
             await Task.Delay(2000);
@@ -178,7 +178,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             await GoToMainScreen();
         }
 
-        private async Task HandleCoopQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleCoopQuest(string questInfo, CancellationToken token)
         {
             if(questInfo.Contains("Acquire"))
             {
@@ -188,7 +188,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
         }
 
-        private async Task HandleComicCardQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleComicCardQuest(string questInfo, CancellationToken token)
         {
             if(questInfo.Contains("Upgrade"))
             {
@@ -197,7 +197,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
         }
 
-        private async Task HandleWorldBossInvasionQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleWorldBossInvasionQuest(string questInfo, CancellationToken token)
         {
             if (questInfo.Contains("Complete"))
             {
@@ -212,14 +212,14 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
         }
 
-        private async Task HandleTimelineBattle(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleTimelineBattle(CancellationToken token)
         {
             var timelineBattle = new TimelineBattle(Game, Repository, Settings);
             // TODO: settings?!?!?!
             await timelineBattle.Run(token);
         }
 
-        private async Task HandleLegendaryBattleQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleLegendaryBattleQuest((bool Success, int Current, int Max) completionStatus, CancellationToken token)
         {
             Logger.LogDebug("Running legendary battle to complete heroic quest.");
             var legendaryBattle = new LegendaryBattle(Game, Repository, Settings);
@@ -227,7 +227,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             await legendaryBattle.Run(token);
         }
 
-        private async Task HandleUseEnergQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleUseEnergQuest(CancellationToken token)
         {
             // TODO: let user select mission type to spend energy?
             Logger.LogDebug("Running dimension missions to spend energy");
@@ -236,7 +236,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             await dimensionMission.Run(token);
         }
 
-        private async Task HandleDangerRoomQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleDangerRoomQuest(string questInfo, CancellationToken token)
         {
             if(questInfo.Contains("Participate"))
             {
@@ -247,7 +247,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
         }
 
-        private async Task HandleIso8Quest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleIso8Quest(string questInfo, CancellationToken token)
         {
             if(questInfo.Contains("Enhance"))
             {
@@ -261,7 +261,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
         }
 
-        private Task HandleWorldBossQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private Task HandleWorldBossQuest(string questInfo)
         {
             if(questInfo.Contains("Participate"))
             {
@@ -272,7 +272,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             return Task.CompletedTask;
         }
 
-        private async Task HandleUruQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleUruQuest(string questInfo, CancellationToken token)
         {
             if(questInfo.Similarity("[ENCHANTED URU] Combine 3 times") > 0.8)
             {
@@ -281,7 +281,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
         }
 
-        private async Task HandleCustomGearQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleCustomGearQuest(string questInfo, CancellationToken token)
         {
             if (questInfo.Similarity("[CUSTOM GEAR] Upgrade x2") > 0.80)
             {
@@ -290,7 +290,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
         }
 
-        private async Task HandleAllianceBattleQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleAllianceBattleQuest(string questInfo, CancellationToken token)
         {
             if(questInfo.Similarity("[ALLIANCE BATTLE] Participate in Normal Mode") > 0.80)
             {
@@ -304,7 +304,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
         }
 
-        private async Task HandleUseGoldMission(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleUseGoldMission(CancellationToken token)
         {
             // TODO: improve this...
             for (int i = 0; i < 3; i++)
@@ -315,7 +315,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
         }
 
-        private async Task HandleDimensionMissionQuest(string questInfo, (bool Success, int Current, int Max) completionStatus, CancellationToken token)
+        private async Task HandleDimensionMissionQuest(string questInfo, CancellationToken token)
         {
             if (questInfo.Similarity("[DIMENSION MISSION] Acquire Contribution Reward 1 time") > 0.8)
             {

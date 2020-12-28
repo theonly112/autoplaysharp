@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace autoplaysharp.App.UI.Tasks.AllianceBattle
+﻿namespace autoplaysharp.App.UI.Tasks.AllianceBattle
 {
     /// <summary>
     /// Interaction logic for AllianceBattleSettings.xaml
     /// </summary>
-    public partial class AllianceBattleSettings : UserControl
+    public partial class AllianceBattleSettings
     {
         public AllianceBattleSettings()
         {

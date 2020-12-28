@@ -1,6 +1,4 @@
-﻿using System;
-using autoplaysharp.Contracts.Configuration.Tasks;
-using System.Collections.Generic;
+﻿using autoplaysharp.Contracts.Configuration.Tasks;
 
 namespace autoplaysharp.Contracts.Configuration
 {

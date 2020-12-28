@@ -49,10 +49,10 @@ namespace autoplaysharp.Core.Game
             return min + ((max - min) * scale);
         }
 
-        public void Click(UIElement element)
+        public void Click(UiElement element)
         {
-            var x = element.X.Value;
-            var y = element.Y.Value;
+            var x = element.X.GetValueOrDefault();
+            var y = element.Y.GetValueOrDefault();
 
             if (element.W.HasValue)
             {
@@ -67,25 +67,25 @@ namespace autoplaysharp.Core.Game
             _window.ClickAt(x, y);
         }
 
-        public string GetText(UIElement element)
+        public string GetText(UiElement element)
         {
             using Bitmap section = GrabElement(element);
             return _recognition.GetText(section, element);
         }
 
-        public void Drag(string idStart, string IdEnd)
+        public void Drag(string idStart, string idEnd)
         {
             var start = _repository[idStart];
-            var end = _repository[IdEnd];
-            _window.Drag(new Vector2(start.X.Value, start.Y.Value), new Vector2(end.X.Value, end.Y.Value));
+            var end = _repository[idEnd];
+            _window.Drag(new Vector2(start.X.GetValueOrDefault(), start.Y.GetValueOrDefault()), new Vector2(end.X.GetValueOrDefault(), end.Y.GetValueOrDefault()));
         }
 
-        private Bitmap GrabElement(UIElement element)
+        private Bitmap GrabElement(UiElement element)
         {
-            var x = element.X.Value * _window.Width;
-            var y = element.Y.Value * _window.Height;
-            var w = element.W.Value * _window.Width;
-            var h = element.H.Value * _window.Height;
+            var x = element.X.GetValueOrDefault() * _window.Width;
+            var y = element.Y.GetValueOrDefault() * _window.Height;
+            var w = element.W.GetValueOrDefault() * _window.Width;
+            var h = element.H.GetValueOrDefault() * _window.Height;
             var section = _window.GrabScreen((int)x, (int)y, (int)w, (int)h);
             if (Settings.SaveRawImages)
             {
@@ -118,7 +118,7 @@ namespace autoplaysharp.Core.Game
         //    }
         //}
 
-        public bool IsVisible(UIElement element)
+        public bool IsVisible(UiElement element)
         {
             if(element.Image != null)
             {
@@ -133,7 +133,7 @@ namespace autoplaysharp.Core.Game
             return isVisible;
         }
 
-        private bool IsImageVisible(UIElement element, float confidence = 0.80f)
+        private bool IsImageVisible(UiElement element, float confidence = 0.80f)
         {
             using var uielement = GrabElement(element);
 
@@ -143,31 +143,29 @@ namespace autoplaysharp.Core.Game
                 uielement.Save($"logs\\{element.Id}.bmp");
             }
 
-            using var uielement_mat = uielement.ToMat();
-            using var template_mat = Cv2.ImDecode(element.Image, ImreadModes.AnyColor);
-            using var uielement_mat_gray = new Mat();
-            using var tempalte_mat_gray = new Mat();
+            using var uiElementMat = uielement.ToMat();
+            using var templateMat = Cv2.ImDecode(element.Image, ImreadModes.AnyColor);
+            using var uiElementMatGray = new Mat();
+            using var templateMatGray = new Mat();
 
 
-            var size = template_mat.Size();
+            var size = templateMat.Size();
             var targetSize = new OpenCvSharp.Size(size.Height * 2, size.Width * 2);
 
-            Cv2.CvtColor(uielement_mat, uielement_mat_gray, ColorConversionCodes.BGR2GRAY);
-            Cv2.CvtColor(template_mat, tempalte_mat_gray, ColorConversionCodes.BGR2GRAY);
-            using var uielement_mat_gray_scaled = new Mat();
-            Cv2.Resize(uielement_mat_gray, uielement_mat_gray_scaled, targetSize);
-            using var scaled_template_mat = new Mat();
-            Cv2.Resize(tempalte_mat_gray, scaled_template_mat, targetSize);
+            Cv2.CvtColor(uiElementMat, uiElementMatGray, ColorConversionCodes.BGR2GRAY);
+            Cv2.CvtColor(templateMat, templateMatGray, ColorConversionCodes.BGR2GRAY);
+            using var uiElementMatGrayScaled = new Mat();
+            Cv2.Resize(uiElementMatGray, uiElementMatGrayScaled, targetSize);
+            using var scaledTemplateMat = new Mat();
+            Cv2.Resize(templateMatGray, scaledTemplateMat, targetSize);
 
             using var result = new Mat();
-            Cv2.MatchTemplate(uielement_mat_gray_scaled, scaled_template_mat, result, TemplateMatchModes.CCoeffNormed);
-            Cv2.MinMaxLoc(result, out var _, out var maxval, out var _, out var maxloc);
+            Cv2.MatchTemplate(uiElementMatGrayScaled, scaledTemplateMat, result, TemplateMatchModes.CCoeffNormed);
+            Cv2.MinMaxLoc(result, out var _, out var maxVal, out var _, out _);
 
-            Overlay?.ShowIsVisibile(element, maxval > confidence, maxval);
+            Overlay?.ShowIsVisibile(element, maxVal > confidence, maxVal);
 
-            if (maxval >= confidence)
-                return true;
-            return false;
+            return maxVal >= confidence;
         }
 
         public bool IsVisible(string id)
@@ -192,10 +190,10 @@ namespace autoplaysharp.Core.Game
                         using var screenMat = screen.ToMat();
 
                         var missingElement = elementNotFoundError.MissingElement;
-                        var x = (int)(missingElement.X * _window.Width);
-                        var y = (int)(missingElement.Y * _window.Height);
-                        var w = (int)(missingElement.W * _window.Width);
-                        var h = (int)(missingElement.H * _window.Height);
+                        var x = (int)(missingElement.X.GetValueOrDefault() * _window.Width);
+                        var y = (int)(missingElement.Y.GetValueOrDefault() * _window.Height);
+                        var w = (int)(missingElement.W.GetValueOrDefault() * _window.Width);
+                        var h = (int)(missingElement.H.GetValueOrDefault() * _window.Height);
 
 
                         var timeStamp = $"{DateTime.Now:yyyyMMddTHHmmss}";
@@ -239,14 +237,15 @@ namespace autoplaysharp.Core.Game
             throw new Exception("Cancelling task by throwing exception?");
 
 
-            void DrawElementGrid(Mat screenMat, UIElement element)
+            void DrawElementGrid(Mat screenMat, UiElement element)
             {
-                var x_count = element.XOffset.HasValue ? Math.Ceiling((1f - element.X.Value) / element.XOffset.Value) : 1;
-                var y_count = element.YOffset.HasValue ? Math.Ceiling((1f - element.Y.Value) / element.YOffset.Value) : 1;
-                int y = 0, x = 0;
-                for (y = 0; y < y_count; y++)
+                var xCount = element.XOffset.HasValue ? Math.Ceiling((1f - element.X.GetValueOrDefault()) / element.XOffset.Value) : 1;
+                var yCount = element.YOffset.HasValue ? Math.Ceiling((1f - element.Y.GetValueOrDefault()) / element.YOffset.Value) : 1;
+                int y;
+                for (y = 0; y < yCount; y++)
                 {
-                    for (x = 0; x < x_count; x++)
+                    int x;
+                    for (x = 0; x < xCount; x++)
                     {
                         var dynUiElement = _repository[element.Id, x, y];
                         DrawElement(screenMat, dynUiElement);
@@ -262,12 +261,12 @@ namespace autoplaysharp.Core.Game
                 return size;
             }
 
-            void DrawElement(Mat screenMat, UIElement uiElement)
+            void DrawElement(Mat screenMat, UiElement uiElement)
             {
-                var x = (int)(uiElement.X * _window.Width);
-                var y = (int)(uiElement.Y * _window.Height);
-                var w = (int)(uiElement.W * _window.Width);
-                var h = (int)(uiElement.H * _window.Height);
+                var x = (int)(uiElement.X.GetValueOrDefault() * _window.Width);
+                var y = (int)(uiElement.Y.GetValueOrDefault() * _window.Height);
+                var w = (int)(uiElement.W.GetValueOrDefault() * _window.Width);
+                var h = (int)(uiElement.H.GetValueOrDefault() * _window.Height);
 
                 Cv2.Rectangle(screenMat, new Rect(x, y, w, h), new Scalar(0, 0, 255));
             }

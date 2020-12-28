@@ -128,8 +128,6 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                     Game.Click(UIds.COOP_DISCONNECTED_FROM_THE_SERVER_FIND_NEW_OPPONENT);
                     await WaitForMissionEnd(token);
                 }
-
-                return;
             }
         }
     }

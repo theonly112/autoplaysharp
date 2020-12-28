@@ -2,5 +2,5 @@
 {
     public record TaskError;
 
-    public record ElementNotFoundError(UIElement MissingElement) : TaskError;
+    public record ElementNotFoundError(UiElement MissingElement) : TaskError;
 }

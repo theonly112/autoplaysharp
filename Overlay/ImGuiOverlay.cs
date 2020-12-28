@@ -23,34 +23,34 @@ namespace autoplaysharp.Overlay
             _repository = repository;
         }
 
-        public UIElement SelectedUiElement { get; set; }
+        public UiElement SelectedUiElement { get; set; }
         public (Vector2 Position, Vector2 Size) SelectionBox { get; set; }
         public bool PreviewElementText { get; set; }
 
-        public void ShowGetText(UIElement uIElement)
+        public void ShowGetText(UiElement uIElement)
         {
             lock (_lock)
             {
-                var toRemove = _elementsToRenders.OfType<UiElementOverlayElement>().Where(x => x.UIElement == uIElement);
+                var toRemove = _elementsToRenders.OfType<UiElementOverlayElement>().Where(x => x.UiElement == uIElement);
                 _elementsToRenders.RemoveAll(x => toRemove.Contains(x));
                 _elementsToRenders.Add(new UiElementOverlayElement(uIElement, NoxWindow));
             }
         }
 
-        public void ShowIsVisibile(UIElement uIElement, bool isVisible)
+        public void ShowIsVisibile(UiElement uIElement, bool isVisible)
         {
             lock (_lock)
             {
-                var toRemove = _elementsToRenders.OfType<UiElementOverlayElement>().Where(x => x.UIElement == uIElement);
+                var toRemove = _elementsToRenders.OfType<UiElementOverlayElement>().Where(x => x.UiElement == uIElement);
                 _elementsToRenders.RemoveAll(x => toRemove.Contains(x));
                 _elementsToRenders.Add(new IsVisibleUiElement(uIElement, NoxWindow, isVisible));
             }
         }
 
-        protected override void SubmitUI(InputSnapshot snapshot)
+        protected override void SubmitUi(InputSnapshot snapshot)
         {
             var drawList = ImGui.GetForegroundDrawList();
-            var absPos = _window.VirtualMousePosition * new System.Numerics.Vector2(_window.Width, _window.Height);
+            var absPos = _window.VirtualMousePosition * new Vector2(_window.Width, _window.Height);
             drawList.AddCircleFilled(absPos, 25, 0xff0000ff);
             
             lock (_lock)
@@ -75,17 +75,17 @@ namespace autoplaysharp.Overlay
             }
         }
 
-        private Vector2 GetAbsoluteSize(UIElement dynUiElement)
+        private Vector2 GetAbsoluteSize(UiElement dynUiElement)
         {
-            return new Vector2(dynUiElement.W.Value, dynUiElement.H.Value) * new Vector2(_window.Width, _window.Height);
+            return new Vector2(dynUiElement.W.GetValueOrDefault(), dynUiElement.H.GetValueOrDefault()) * new Vector2(_window.Width, _window.Height);
         }
 
-        private Vector2 GetAbsoluteLocation(UIElement dynUiElement)
+        private Vector2 GetAbsoluteLocation(UiElement dynUiElement)
         {
-            return new Vector2(dynUiElement.X.Value, dynUiElement.Y.Value) * new Vector2(_window.Width, _window.Height);
+            return new Vector2(dynUiElement.X.GetValueOrDefault(), dynUiElement.Y.GetValueOrDefault()) * new Vector2(_window.Width, _window.Height);
         }
 
-        private void DrawElement(ImDrawListPtr drawList, UIElement uiElement)
+        private void DrawElement(ImDrawListPtr drawList, UiElement uiElement)
         {
             Vector2 size = GetAbsoluteSize(uiElement);
             Vector2 loc = GetAbsoluteLocation(uiElement);
@@ -114,7 +114,7 @@ namespace autoplaysharp.Overlay
                     }
 
                     var textSize = ImGui.CalcTextSize(textToRender);
-                    var scale = fontSize / (float)ImGui.GetFontSize();
+                    var scale = fontSize / ImGui.GetFontSize();
                     textSize = textSize * scale;
                     var textLoc = Vector2.Max(new Vector2(loc.X, 0), (loc - textSize));
                     drawList.AddText(ImGui.GetFont(), fontSize, textLoc, 0xFF0000FF, textToRender);
@@ -124,7 +124,7 @@ namespace autoplaysharp.Overlay
             }
         }
 
-        private void DrawSelectedElement(UIElement element)
+        private void DrawSelectedElement(UiElement element)
         {
             var drawList = ImGui.GetBackgroundDrawList();
             if(!element.X.HasValue || !element.Y.HasValue)
@@ -150,14 +150,15 @@ namespace autoplaysharp.Overlay
             }
         }
 
-        private void DrawElementGrid(ImDrawListPtr drawList, UIElement element)
+        private void DrawElementGrid(ImDrawListPtr drawList, UiElement element)
         {
-            var x_count = element.XOffset.HasValue ? Math.Ceiling((1f - element.X.Value) / element.XOffset.Value) : 1;
-            var y_count = element.YOffset.HasValue ? Math.Ceiling((1f - element.Y.Value) / element.YOffset.Value) : 1;
-            int y = 0, x = 0;
-            for (y = 0; y < y_count; y++)
+            var xCount = element.XOffset.HasValue ? Math.Ceiling((1f - element.X.GetValueOrDefault()) / element.XOffset.Value) : 1;
+            var yCount = element.YOffset.HasValue ? Math.Ceiling((1f - element.Y.GetValueOrDefault()) / element.YOffset.Value) : 1;
+            int y;
+            for (y = 0; y < yCount; y++)
             {
-                for (x = 0; x < x_count; x++)
+                int x;
+                for (x = 0; x < xCount; x++)
                 {
                     var dynUiElement = _repository[element.Id, x, y];
                     DrawElement(drawList, dynUiElement);
@@ -165,11 +166,11 @@ namespace autoplaysharp.Overlay
             }
         }
 
-        public void ShowIsVisibile(UIElement uIElement, bool isVisible, double certainty)
+        public void ShowIsVisibile(UiElement uIElement, bool isVisible, double certainty)
         {
             lock (_lock)
             {
-                var toRemove = _elementsToRenders.OfType<UiElementOverlayElement>().Where(x => x.UIElement == uIElement);
+                var toRemove = _elementsToRenders.OfType<UiElementOverlayElement>().Where(x => x.UiElement == uIElement);
                 _elementsToRenders.RemoveAll(x => toRemove.Contains(x));
                 _elementsToRenders.Add(new IsVisibleUiElement(uIElement, NoxWindow, isVisible, certainty));
             }

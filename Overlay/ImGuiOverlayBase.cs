@@ -67,11 +67,10 @@ namespace autoplaysharp.Overlay
 
             _controller.Update(1f / 60f, snapshot);
 
-            SubmitUI(snapshot);
+            SubmitUi(snapshot);
 
             _cl.Begin();
             _cl.SetFramebuffer(_gd.MainSwapchain.Framebuffer);
-            var transparent = System.Drawing.Color.Transparent;
             _cl.ClearColorTarget(0, new RgbaFloat(0, 0, 0, 255));
             _controller.Render(_gd, _cl);
             _cl.End();
@@ -102,7 +101,7 @@ namespace autoplaysharp.Overlay
             User32.SetWindowLong(_window.Handle, User32.WindowLongIndexFlags.GWL_STYLE, (User32.SetWindowLongFlags)classes);
         }
 
-        protected abstract void SubmitUI(InputSnapshot snapshot);
+        protected abstract void SubmitUi(InputSnapshot snapshot);
 
         public void Dispose()
         {

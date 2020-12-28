@@ -73,7 +73,7 @@ namespace autoplaysharp.App.UI.Repository
 #endif
         }
 
-        public ObservableCollection<UiElementViewModel> UIElements { get; } = new ObservableCollection<UiElementViewModel>();
+        public ObservableCollection<UiElementViewModel> UiElements { get; } = new ObservableCollection<UiElementViewModel>();
 
         public ObservableCollection<string> SubRepositories { get; }
         
@@ -88,21 +88,21 @@ namespace autoplaysharp.App.UI.Repository
                     return;
                 }
 
-                UIElements.Clear();
+                UiElements.Clear();
                 ReloadSubRepoItems();
-                SelectedElement = UIElements.First();
+                SelectedElement = UiElements.First();
                 RaisePropertyChanged();
             }
         }
 
         private void ReloadSubRepoItems()
         {
-            UIElements.Clear();
+            UiElements.Clear();
             var subRepo = _repository.SubRepositories.First(x => x.Name == _selectedSubRepository);
             var items = subRepo.Ids.Select(x => new UiElementViewModel(subRepo, subRepo[x], _areaPicker, _window, _game));
             foreach (var item in items)
             {
-                UIElements.Add(item);
+                UiElements.Add(item);
             }
         }
 
@@ -112,7 +112,7 @@ namespace autoplaysharp.App.UI.Repository
             set
             {
                 _selectedElement = value;
-                _overlay.SelectedUiElement = _selectedElement?.UIElement;
+                _overlay.SelectedUiElement = _selectedElement?.UiElement;
                 RaisePropertyChanged();
             }
         }

@@ -27,7 +27,7 @@ namespace autoplaysharp.Core.Game.UI
       
         }
 
-        public UIElement this[string id]
+        public UiElement this[string id]
         {
             get { return _subRepositories.First(x => x.Ids.Contains(id))[id]; }
             set 
@@ -37,12 +37,12 @@ namespace autoplaysharp.Core.Game.UI
             }
         }
 
-        public UIElement this[string id, int column, int row] => GetGridElement(id, column, row);
+        public UiElement this[string id, int column, int row] => GetGridElement(id, column, row);
 
-        public UIElement GetGridElement(string id, int column, int row)
+        public UiElement GetGridElement(string id, int column, int row)
         {
             var element = this[id];
-            var cloned = JsonConvert.DeserializeObject<UIElement>(JsonConvert.SerializeObject(element));
+            var cloned = JsonConvert.DeserializeObject<UiElement>(JsonConvert.SerializeObject(element));
             cloned.X += cloned.XOffset.HasValue ? cloned.XOffset.Value *  column : 0;
             cloned.Y += cloned.YOffset.HasValue ? cloned.YOffset.Value * row : 0;
             cloned.Id += $"_{column}_{row}";

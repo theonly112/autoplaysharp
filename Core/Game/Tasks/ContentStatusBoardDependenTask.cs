@@ -91,16 +91,16 @@ namespace autoplaysharp.Core.Game.Tasks
                     for (var col = 0; col < 3; col++)
                     {
                         var nameElement = Repository["CONTENT_STATUS_BOARD_ITEM_NAME_DYN", col, row];
-                        var mission_name = Game.GetText(nameElement);
+                        var missionName = Game.GetText(nameElement);
                         var nl = new NormalizedLevenshtein();
-                        var similarity = nl.Similarity(name, mission_name);
+                        var similarity = nl.Similarity(name, missionName);
                         if (similarity >= 0.8) // 80% should be fine. names are different enough.
                         {
                             var status = Game.GetText(Repository["CONTENT_STATUS_BOARD_ITEM_STATUS_DYN", col, row]);
                             var isCompleted = Game.IsVisible(Repository["CONTENT_STATUS_BOARD_ITEM_NAME_COMPLETED_DYN", col, row]);
                             var statusEntry = new ContentStatus(name, isCompleted, status);
 
-                            Logger.LogDebug($"Clicking on element because it matches expected: {name} actual: {mission_name} similarity: {similarity}");
+                            Logger.LogDebug($"Clicking on element because it matches expected: {name} actual: {missionName} similarity: {similarity}");
                             Game.Click(nameElement);
 
                             await Task.Delay(1000); // waiting briefly for page to change.
@@ -114,7 +114,7 @@ namespace autoplaysharp.Core.Game.Tasks
                         }
                         else
                         {
-                            Logger.LogDebug($"Found mission {mission_name}. But its not what we are looking for. Similarity {similarity}");
+                            Logger.LogDebug($"Found mission {missionName}. But its not what we are looking for. Similarity {similarity}");
                         }
                     }
                 }

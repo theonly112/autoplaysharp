@@ -1,18 +1,16 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 
 namespace autoplaysharp.App.UI.Repository
 {
     /// <summary>
     /// Interaction logic for FloatProperty.xaml
     /// </summary>
-    public partial class FloatProperty : UserControl
+    public partial class FloatProperty
     {
         public FloatProperty()
         {
             InitializeComponent();
         }
-
 
         public string Label
         {

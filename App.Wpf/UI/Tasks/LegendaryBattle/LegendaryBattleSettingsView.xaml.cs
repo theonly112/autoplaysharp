@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace autoplaysharp.App.UI.Tasks.LegendaryBattle
+﻿namespace autoplaysharp.App.UI.Tasks.LegendaryBattle
 {
     /// <summary>
     /// Interaction logic for LegendaryBattleSettingsView.xaml
     /// </summary>
-    public partial class LegendaryBattleSettingsView : UserControl
+    public partial class LegendaryBattleSettingsView
     {
         public LegendaryBattleSettingsView()
         {

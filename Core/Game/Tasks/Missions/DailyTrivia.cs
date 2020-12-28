@@ -1,4 +1,5 @@
-﻿using autoplaysharp.Contracts;
+﻿using System;
+using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
 using F23.StringSimilarity;
 using Microsoft.Extensions.Logging;
@@ -14,16 +15,15 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 {
     public class DailyTrivia : GameTask
     {
-        private record QuestionAnswerPair(string Question, string Answer);
-        private readonly List<QuestionAnswerPair> _questionsAndAnswers;
+        private readonly List<(string Question, string Answer)> _questionsAndAnswers;
 
         public DailyTrivia(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
             var resourceName = GetType().Namespace + ".DailyTriviaAnswers.json";
             using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-            using var reader = new StreamReader(stream);
+            using var reader = new StreamReader(stream ?? throw new InvalidOperationException());
             var json = reader.ReadToEnd();
-            _questionsAndAnswers = JsonConvert.DeserializeObject<List<QuestionAnswerPair>>(json);
+            _questionsAndAnswers = JsonConvert.DeserializeObject<List<(string Question, string Answer)>>(json);
         }
 
         protected override async Task RunCore(CancellationToken token)
@@ -99,7 +99,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Logger.LogDebug($"Expected answer is: {answer}");
 
                 double highestSimilarityAnswer = 0;
-                UIElement bestAnswerElement = null;
+                UiElement bestAnswerElement = null;
                 for (int i = 0; i < 4; i++)
                 {
                     var answerId = Repository[UIds.CHALLENGES_DAILY_TRIVIA_ANSWER_DYN, 0, i];

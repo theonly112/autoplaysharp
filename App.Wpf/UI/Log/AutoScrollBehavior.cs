@@ -23,7 +23,7 @@ namespace autoplaysharp.App.UI.Log
         {
             if (d is TextBox textbox && e.NewValue is bool mustAutoScroll && mustAutoScroll)
             {
-                textbox.TextChanged += (s, ee) => textbox.ScrollToEnd();
+                textbox.TextChanged += (_, _) => textbox.ScrollToEnd();
             }
         }
     }

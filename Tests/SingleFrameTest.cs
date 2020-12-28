@@ -36,8 +36,8 @@ namespace autoplaysharp.Tests
             _window.GrabScreen(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>())
                 .Returns(info =>
                 {
-                    using var bitmap = new Bitmap(fileName);
-                    return bitmap.Crop(info.ArgAt<int>(0), info.ArgAt<int>(1), info.ArgAt<int>(2), info.ArgAt<int>(3));
+                    using var bitmapLocal = new Bitmap(fileName);
+                    return bitmapLocal.Crop(info.ArgAt<int>(0), info.ArgAt<int>(1), info.ArgAt<int>(2), info.ArgAt<int>(3));
                 });
 
         }

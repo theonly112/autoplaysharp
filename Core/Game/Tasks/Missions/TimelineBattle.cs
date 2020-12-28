@@ -15,22 +15,22 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
     /// </summary>
     public class TimelineBattle : ContentStatusBoardDependenTask
     {
-        private const string _missionName = "TIMELINE BATTLE";
+        private const string MissionName = "TIMELINE BATTLE";
         public TimelineBattle(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
             Team = settings.TimelineBattle.Team;
         }
 
-        public int Team { get; set; } = 1;
+        private int Team { get; }
 
         protected override async Task RunCore(CancellationToken token)
         {
             while(true)
             {
-                var status = await StartContentBoardMission(_missionName);
+                var status = await StartContentBoardMission(MissionName);
                 if (status == null)
                 {
-                    Logger.LogError($"Failed to start {_missionName}");
+                    Logger.LogError($"Failed to start {MissionName}");
                     return;
                 }
 

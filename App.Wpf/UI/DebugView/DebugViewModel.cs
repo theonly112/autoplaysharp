@@ -30,9 +30,9 @@ namespace autoplaysharp.App.UI.DebugView
                 var type = AppDomain.CurrentDomain.GetAssemblies()
                     .Where(a => !a.IsDynamic)
                     .SelectMany(a => a.GetTypes())
-                    .FirstOrDefault(t => t.FullName.Equals(TaskName));
-                var task = (IGameTask)Activator.CreateInstance(type, _game, _repo, _settings);
-                await task.Run(CancellationToken.None);
+                    .FirstOrDefault(t => t.FullName != null && t.FullName.Equals(TaskName));
+                var task = (IGameTask)Activator.CreateInstance(type ?? throw new InvalidOperationException(), _game, _repo, _settings);
+                if (task != null) await task.Run(CancellationToken.None);
             }
             catch (Exception e)
             {

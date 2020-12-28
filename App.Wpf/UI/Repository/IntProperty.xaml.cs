@@ -1,12 +1,11 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 
 namespace autoplaysharp.App.UI.Repository
 {
     /// <summary>
     /// Interaction logic for FloatProperty.xaml
     /// </summary>
-    public partial class IntProperty : UserControl
+    public partial class IntProperty
     {
         public IntProperty()
         {

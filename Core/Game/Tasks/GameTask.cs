@@ -74,12 +74,12 @@ namespace autoplaysharp.Core.Game.Tasks
             return WaitUntilVisible(Repository[id], timeout, interval);
         }
 
-        protected Task<bool> WaitUntilVisible(UIElement element, float timeout = 5, float interval = 0.1f)
+        protected Task<bool> WaitUntilVisible(UiElement element, float timeout = 5, float interval = 0.1f)
         {
             return WaitUntilVisible(element, CancellationToken.None, timeout, interval);
         }
 
-        protected Task<bool> WaitUntilVisible(UIElement element, CancellationToken token, float timeout = 5, float interval = 0.1f)
+        protected Task<bool> WaitUntilVisible(UiElement element, CancellationToken token, float timeout = 5, float interval = 0.1f)
         {
             return WaitUntil(() => Game.IsVisible(element), token, timeout, interval);
         }

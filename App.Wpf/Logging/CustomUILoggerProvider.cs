@@ -3,13 +3,13 @@ using System;
 
 namespace autoplaysharp.App.Logging
 {
-    internal class CustomUILoggerProvider : ILoggerProvider, IUiLogger
+    internal class CustomUiLoggerProvider : ILoggerProvider, IUiLogger
     {
         public event Action<string> NewLogEntry;
 
         public ILogger CreateLogger(string categoryName)
         {
-            return new UILogger(categoryName, this); ;
+            return new UiLogger(categoryName, this);
         }
 
         public void Dispose()
@@ -21,15 +21,15 @@ namespace autoplaysharp.App.Logging
             NewLogEntry?.Invoke(v);
         }
 
-        private class UILogger : ILogger
+        private class UiLogger : ILogger
         {
-            private string _categoryName;
-            private readonly CustomUILoggerProvider _customUILoggerProvider;
+            private readonly string _categoryName;
+            private readonly CustomUiLoggerProvider _customUiLoggerProvider;
 
-            public UILogger(string categoryName, CustomUILoggerProvider customUILoggerProvider)
+            public UiLogger(string categoryName, CustomUiLoggerProvider customUiLoggerProvider)
             {
                 _categoryName = categoryName.Contains(".") ? categoryName.Substring(categoryName.LastIndexOf('.') + 1) : categoryName;
-                _customUILoggerProvider = customUILoggerProvider;
+                _customUiLoggerProvider = customUiLoggerProvider;
             }
 
             public IDisposable BeginScope<TState>(TState state)
@@ -44,7 +44,7 @@ namespace autoplaysharp.App.Logging
 
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
             {
-                _customUILoggerProvider.OnLog(CustomConsoleProvider.CustomConsoleLogger.FormatMessage<TState>(_categoryName, logLevel, state, exception, formatter));
+                _customUiLoggerProvider.OnLog(CustomConsoleProvider.CustomConsoleLogger.FormatMessage(_categoryName, logLevel, state, exception, formatter));
             }
         }
 

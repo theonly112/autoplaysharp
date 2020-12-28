@@ -13,7 +13,12 @@ namespace autoplaysharp.Build
     {
         private class Element
         {
-            public string Id { get; set; }
+            public Element(string id)
+            {
+                Id = id;
+            }
+
+            public string Id { get; }
         }
 
         public void Initialize(GeneratorInitializationContext context)

@@ -1,6 +1,5 @@
 ﻿using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
-using autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests;
 using autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests.Shifter;
 
 namespace autoplaysharp.App.UI.Tasks.EpicQuest

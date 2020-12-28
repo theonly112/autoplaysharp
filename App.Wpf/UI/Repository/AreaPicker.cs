@@ -37,6 +37,11 @@ namespace autoplaysharp.App.UI.Repository
             _taskCompletionSource = new TaskCompletionSource<(bool Cancelled, Vector2 Position, Vector2 Size)>();
             using var curProcess = Process.GetCurrentProcess();
             using var curModule = curProcess.MainModule;
+            if (curModule == null)
+            {
+                throw new InvalidOperationException();
+            }
+            
             using var modHandle = Kernel32.GetModuleHandle(curModule.ModuleName);
 
             _keyboardHook = KeyboardHook;

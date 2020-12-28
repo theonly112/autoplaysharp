@@ -138,7 +138,6 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Game.Click(UIds.WBI_HERO_START_MISSION);
 
                 await Fight(token);
-                return;
             }
             else
             {
@@ -154,7 +153,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
         private async Task SelectCharacters(SelectionMode selectionMode)
         {
-            UIElement FindTypeRow(string type)
+            UiElement FindTypeRow(string type)
             {
                 for (int i = 0; i < 10; i++)
                 {
@@ -260,7 +259,6 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 if (Game.IsVisible(chestEmpty))
                 {
                     availableChests++;
-                    continue;
                 }
             }
 

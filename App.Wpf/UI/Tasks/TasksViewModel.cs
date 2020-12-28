@@ -21,8 +21,6 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
-
 using autoplaysharp.App.UI.Tasks.EpicQuest;
 using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Core.Game.Tasks;
@@ -50,20 +48,25 @@ namespace autoplaysharp.App.UI.Tasks
             CancelCommand = new DelegateCommand(CancelAll, CanExecuteCancel);
             Add = new DelegateCommand<TaskBaseViewModel>(AddToRoutine, CanAddToRoutine);
             Remove = new DelegateCommand<RoutineViewModel>(RemoveFromRoutine, CanRemoveFromRoutine);
-            ExecuteSingleTaskCommand = new DelegateCommand<Type>(ExecuteSingleTask, CanExecuteSingleTask);
             _queue.PropertyChanged += (_, _) => OnQueueChanged();
             OnQueueChanged();
             
             var types = new List<Type>();
-            foreach (var referencedAssembly in Assembly.GetEntryAssembly()?.GetReferencedAssemblies()?.Select(Assembly.Load))
+
+            var entryAssembly = Assembly.GetEntryAssembly();
+            var referencedAssemblies = entryAssembly?.GetReferencedAssemblies();
+            if (referencedAssemblies == null)
             {
-                types.AddRange(referencedAssembly.GetTypes()
-                    .Where(x =>
-                    {
-                        return x.IsAssignableTo(typeof(IGameTask)) &&
-                               !x.IsAbstract &&
-                               x.IsPublic;
-                    }));
+                throw new Exception();
+            }
+
+            foreach (var referencedAssembly in referencedAssemblies)
+            {
+                var assembly = Assembly.Load(referencedAssembly);
+                types.AddRange(assembly.GetTypes()
+                    .Where(x => x.IsAssignableTo(typeof(IGameTask)) &&
+                                !x.IsAbstract &&
+                                x.IsPublic));
             }
 
             if (settings.RoutineItems != null)
@@ -92,30 +95,9 @@ namespace autoplaysharp.App.UI.Tasks
             _settings.RoutineItems = RoutineItems.Select(x => x.Name).ToArray();
         }
 
-        private async void ExecuteSingleTask(Type obj)
-        {
-            IsEnabled = false;
-            var t = (IGameTask)Activator.CreateInstance(obj, _game, _repo, _settings);
-            try
-            {
-                await t.Run(CancellationToken.None);
-            }
-            catch
-            {
-                // ignored
-            }
-
-            IsEnabled = true;
-        }
-
-        private bool CanExecuteSingleTask(Type arg)
-        {
-            return IsEnabled && ActiveTask == null && !_queue.Items.Any(); ;
-        }
-
         private bool CanRemoveFromRoutine(RoutineViewModel arg)
         {
-            return IsEnabled && ActiveTask == null && !_queue.Items.Any(); ;
+            return IsEnabled && ActiveTask == null && !_queue.Items.Any();
         }
 
         private void RemoveFromRoutine(RoutineViewModel obj)
@@ -223,8 +205,6 @@ namespace autoplaysharp.App.UI.Tasks
         public DelegateCommand<TaskBaseViewModel> Add { get; }
 
         public DelegateCommand<RoutineViewModel> Remove { get; }
-
-        public DelegateCommand<Type> ExecuteSingleTaskCommand { get; set; }
 
         internal static void ConfigureServices(ServiceCollection serviceCollection)
         {

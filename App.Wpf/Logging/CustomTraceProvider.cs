@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Logging;
 
@@ -7,8 +6,7 @@ namespace autoplaysharp.App.Logging
 {
     internal class CustomTraceProvider : ILoggerProvider
     {
-        private List<ILogger> _loggers = new List<ILogger>();
-        private StreamWriter _streamWriter;
+        private readonly StreamWriter _streamWriter;
 
         public CustomTraceProvider()
         {
@@ -26,10 +24,10 @@ namespace autoplaysharp.App.Logging
             _streamWriter.Dispose();
         }
 
-        class TraceLogger : ILogger
+        private class TraceLogger : ILogger
         {
-            private string _categoryName;
-            private StreamWriter _streamWriter;
+            private readonly string _categoryName;
+            private readonly StreamWriter _streamWriter;
 
             public TraceLogger(string categoryName, StreamWriter streamWriter)
             {
@@ -49,7 +47,7 @@ namespace autoplaysharp.App.Logging
 
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
             {
-                _streamWriter.WriteLine(CustomConsoleProvider.CustomConsoleLogger.FormatMessage<TState>(_categoryName, logLevel, state, exception, formatter));
+                _streamWriter.WriteLine(CustomConsoleProvider.CustomConsoleLogger.FormatMessage(_categoryName, logLevel, state, exception, formatter));
             }
         }
     }

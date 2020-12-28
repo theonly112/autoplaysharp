@@ -1,6 +1,6 @@
 ﻿namespace autoplaysharp.Contracts
 {
-    public class UIElement
+    public class UiElement
     {
         public string Id { get; set; }
         public float? X { get; set; }
@@ -36,6 +36,7 @@
         /// 13    Raw line. Treat the image as a single text line,
         ///      bypassing hacks that are Tesseract-specific.
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public int? PSM { get; set; }
 
         /// <summary>

@@ -34,7 +34,7 @@ namespace autoplaysharp.Tests
         [Test]
         public void QueueTask()
         {
-            var task = new TestTask(token => Task.Delay(500));
+            var task = new TestTask(token => Task.Delay(500, token));
             _executioner.QueueTask(task);
             Assert.That(() => _executioner.ActiveItem, Is.EqualTo(task).After(100));
             Assert.That(() => _executioner.ActiveItem, Is.EqualTo(null).After(1000));
@@ -44,7 +44,7 @@ namespace autoplaysharp.Tests
         [Test]
         public async Task CancelTask()
         {
-            var task = new TestTask(token => Task.Delay(1000));
+            var task = new TestTask(token => Task.Delay(1000, token));
             _executioner.QueueTask(task);
             Assert.That(() => _executioner.ActiveItem, Is.EqualTo(task).After(100));
             await _executioner.Cancel(task);

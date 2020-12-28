@@ -44,7 +44,7 @@ namespace autoplaysharp.App
 
         private void ConfigureSerivces(ServiceCollection serviceCollection)
         {
-            var uiLogger = new CustomUILoggerProvider();
+            var uiLogger = new CustomUiLoggerProvider();
             ILoggerFactory loggerFactory = LoggerFactory.Create(
                                 (builder) =>
                                 {

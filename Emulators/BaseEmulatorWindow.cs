@@ -57,21 +57,20 @@ namespace autoplaysharp.Emulators
 
         public void ClickAt(float x, float y)
         {
-            int x_relative = (int)(x * Width);
-            int y_realtive = (int)(y * Height);
-            var lparam = MakeLong(x_relative, y_realtive);
+            int xRelative = (int)(x * Width);
+            int yRelative = (int)(y * Height);
             VirtualMousePosition = new Vector2(x, y);
-            ClickAt(GameAreaHwnd, x_relative, y_realtive);
+            ClickAt(GameAreaHwnd, xRelative, yRelative);
         }
 
-        protected void ClickAt(IntPtr hwnd, int x, int y)
+        private void ClickAt(IntPtr hwnd, int x, int y)
         {
-            var lparam = MakeLong(x, y);
-            User32.SendMessage(hwnd, User32.WindowMessage.WM_MOUSEMOVE, IntPtr.Zero, new IntPtr(lparam));
+            var param = MakeLong(x, y);
+            User32.SendMessage(hwnd, User32.WindowMessage.WM_MOUSEMOVE, IntPtr.Zero, new IntPtr(param));
             Thread.Sleep(_random.Next(10, 50));
-            User32.SendMessage(hwnd, User32.WindowMessage.WM_LBUTTONDOWN, new IntPtr(1), new IntPtr(lparam));
+            User32.SendMessage(hwnd, User32.WindowMessage.WM_LBUTTONDOWN, new IntPtr(1), new IntPtr(param));
             Thread.Sleep(_random.Next(10, 50));
-            User32.SendMessage(hwnd, User32.WindowMessage.WM_LBUTTONUP, new IntPtr(0), new IntPtr(lparam));
+            User32.SendMessage(hwnd, User32.WindowMessage.WM_LBUTTONUP, new IntPtr(0), new IntPtr(param));
         }
 
         public Vector2 Denormalize(Vector2 normalized)
@@ -92,27 +91,27 @@ namespace autoplaysharp.Emulators
 
         public void Drag(Vector2 vectorStart, Vector2 vectorEnd)
         {
-            int x_start = (int)(vectorStart.X * Width);
-            int y_start = (int)(vectorStart.Y * Height);
-            var lparam = MakeLong(x_start, y_start);
+            int xStart = (int)(vectorStart.X * Width);
+            int yStart = (int)(vectorStart.Y * Height);
+            var param = MakeLong(xStart, yStart);
             VirtualMousePosition = new Vector2(vectorStart.X, vectorStart.Y);
-            User32.PostMessage(GameAreaHwnd, User32.WindowMessage.WM_MOUSEMOVE, IntPtr.Zero, new IntPtr(lparam));
-            User32.PostMessage(GameAreaHwnd, User32.WindowMessage.WM_LBUTTONDOWN, IntPtr.Zero, new IntPtr(lparam));
+            User32.PostMessage(GameAreaHwnd, User32.WindowMessage.WM_MOUSEMOVE, IntPtr.Zero, new IntPtr(param));
+            User32.PostMessage(GameAreaHwnd, User32.WindowMessage.WM_LBUTTONDOWN, IntPtr.Zero, new IntPtr(param));
             int duration = 500;
             int steps = 10;
             for (int i = 0; i < steps; i++)
             {
                 var delta = (vectorEnd - vectorStart) / steps;
-                x_start += (int)(delta.X * Width);
-                y_start += (int)(delta.Y * Height);
-                lparam = MakeLong(x_start, y_start);
+                xStart += (int)(delta.X * Width);
+                yStart += (int)(delta.Y * Height);
+                param = MakeLong(xStart, yStart);
 
-                VirtualMousePosition = new Vector2(x_start / (float)Width, y_start / (float)Height);
+                VirtualMousePosition = new Vector2(xStart / (float)Width, yStart / (float)Height);
                 var wParam = new IntPtr(1); // Left button down.
-                User32.PostMessage(GameAreaHwnd, User32.WindowMessage.WM_MOUSEMOVE, wParam, new IntPtr(lparam));
+                User32.PostMessage(GameAreaHwnd, User32.WindowMessage.WM_MOUSEMOVE, wParam, new IntPtr(param));
                 Thread.Sleep(duration / steps);
             }
-            User32.PostMessage(GameAreaHwnd, User32.WindowMessage.WM_LBUTTONUP, new IntPtr(0), new IntPtr(lparam));
+            User32.PostMessage(GameAreaHwnd, User32.WindowMessage.WM_LBUTTONUP, new IntPtr(0), new IntPtr(param));
         }
 
         private int MakeLong(int lo, int hi)
@@ -126,13 +125,13 @@ namespace autoplaysharp.Emulators
         {
             User32.GetWindowRect(ScreenshotHwnd, out var mainWindowRect);
 
-            var x_src = X - mainWindowRect.left + x;
-            var y_src = Y - mainWindowRect.top + y;
+            var xSrc = X - mainWindowRect.left + x;
+            var ySrc = Y - mainWindowRect.top + y;
 
-            return GrabScreen(ScreenshotHwnd, x_src, y_src, w, h);
+            return GrabScreenInt(xSrc, ySrc, w, h);
         }
 
-        protected Bitmap GrabScreen(IntPtr hwnd, int x, int y, int w, int h)
+        private Bitmap GrabScreenInt(int x, int y, int w, int h)
         {
             using var hdcSource = User32.GetWindowDC(ScreenshotHwnd);
             using var hdcMemory = Gdi32.CreateCompatibleDC(hdcSource);
@@ -144,7 +143,7 @@ namespace autoplaysharp.Emulators
             var hBitmap2 = Gdi32.SelectObject(hdcMemory, hBitmapOld);
             var bitmap = Image.FromHbitmap(hBitmap2);
 
-            var res = Gdi32.DeleteObject(hBitmap);
+            Gdi32.DeleteObject(hBitmap);
             Gdi32.DeleteDC(hdcMemory);
             return bitmap;
         }

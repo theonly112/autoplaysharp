@@ -84,14 +84,14 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 // TODO: for now we can skip character selection. Game does it for us.
                 //await SelectCharacter();
 
-                Task<bool> WaitingForHeroes = WaitUntilVisible(UIds.DANGER_ROOM_WAITING_FOR_HEROES, 60, 0.2f);
-                Task<bool> GameCanceled = WaitUntilVisible(UIds.DANGER_ROOM_GAME_CANCELED_NOTICE, 60, 0.2f);
-                Task<bool> TemporaryError = WaitUntilVisible(UIds.DANGER_ROOM_ERROR_OCCURED, 60, 0.2f);
+                Task<bool> waitingForHeroes = WaitUntilVisible(UIds.DANGER_ROOM_WAITING_FOR_HEROES, token, 60, 0.2f);
+                Task<bool> gameCanceled = WaitUntilVisible(UIds.DANGER_ROOM_GAME_CANCELED_NOTICE, token, 60, 0.2f);
+                Task<bool> temporaryError = WaitUntilVisible(UIds.DANGER_ROOM_ERROR_OCCURED, token, 60, 0.2f);
 
-                var completedTask = await Task.WhenAny(WaitingForHeroes, GameCanceled, TemporaryError);
+                var completedTask = await Task.WhenAny(waitingForHeroes, gameCanceled, temporaryError);
 
-                if (completedTask == GameCanceled ||
-                    completedTask == TemporaryError) // DANGER_ROOM_GAME_CANCELED_NOTICE_OK works for temporary error as well.
+                if (completedTask == gameCanceled ||
+                    completedTask == temporaryError) // DANGER_ROOM_GAME_CANCELED_NOTICE_OK works for temporary error as well.
                 {
                     Game.Click(UIds.DANGER_ROOM_GAME_CANCELED_NOTICE_OK);
                     await Task.Delay(2000, token);

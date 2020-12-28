@@ -13,39 +13,39 @@ namespace autoplaysharp.UiAutomation.OCR
 {
     public class TextRecognition : ITextRecognition
     {
-        private static readonly object _lock = new object();
-        private static readonly TesseractEngine _engine;
+        private static readonly object Lock = new object();
+        private static readonly TesseractEngine Engine;
 
 
-        public string GetText(Bitmap section, UIElement element)
+        public string GetText(Bitmap section, UiElement element)
         {
             // Preprocessing for OCR.
-            using var section_mat = section.ToMat();
+            using var sectionMat = section.ToMat();
 
-            using var scaled_section_mat = new Mat();
+            using var scaledSectionMat = new Mat();
             if (element.Scale.HasValue)
             {
                 var scale = element.Scale.Value;
-                Cv2.Resize(section_mat, scaled_section_mat, new OpenCvSharp.Size(section.Width * scale, section.Height * scale));
+                Cv2.Resize(sectionMat, scaledSectionMat, new OpenCvSharp.Size(section.Width * scale, section.Height * scale));
             }
 
-            using var grayscale_mat = new Mat();
-            Cv2.CvtColor(element.Scale.HasValue ? scaled_section_mat : section_mat, grayscale_mat, ColorConversionCodes.BGR2GRAY);
-            using var tresholded_mat = new Mat();
+            using var grayscaleMat = new Mat();
+            Cv2.CvtColor(element.Scale.HasValue ? scaledSectionMat : sectionMat, grayscaleMat, ColorConversionCodes.BGR2GRAY);
+            using var tresholdedMat = new Mat();
 
             if (element.Threshold.HasValue)
             {
                 var threshold = element.Threshold.Value;
-                Cv2.Threshold(grayscale_mat, tresholded_mat, threshold, 255, ThresholdTypes.Binary);
+                Cv2.Threshold(grayscaleMat, tresholdedMat, threshold, 255, ThresholdTypes.Binary);
             }
             else
             {
-                Cv2.Threshold(grayscale_mat, tresholded_mat, 0, 255, ThresholdTypes.Binary | ThresholdTypes.Otsu);
+                Cv2.Threshold(grayscaleMat, tresholdedMat, 0, 255, ThresholdTypes.Binary | ThresholdTypes.Otsu);
             }
 
-            using var inverted_mat = (~tresholded_mat).ToMat();
-            using var inverted_bitmap = inverted_mat.ToBitmap();
-            using var pix = ToPix(inverted_bitmap);
+            using var invertedMat = (~tresholdedMat).ToMat();
+            using var invertedBitmap = invertedMat.ToBitmap();
+            using var pix = ToPix(invertedBitmap);
 
             // TODO: debugging
             // for debugging ...
@@ -65,8 +65,8 @@ namespace autoplaysharp.UiAutomation.OCR
                 var results = new List<string>();
                 for (var threshold = 50; threshold < 200; threshold += 3)
                 {
-                    Cv2.Threshold(grayscale_mat, tresholded_mat, threshold, 255, ThresholdTypes.Binary);
-                    using var invertedMat2 = (~tresholded_mat).ToMat();
+                    Cv2.Threshold(grayscaleMat, tresholdedMat, threshold, 255, ThresholdTypes.Binary);
+                    using var invertedMat2 = (~tresholdedMat).ToMat();
                     using var invertedBitmap2 = invertedMat2.ToBitmap();
                     using var pix2 = ToPix(invertedBitmap2);
                     var result2 = GetText(pix2, element.PSM.HasValue ? element.PSM.Value : 3);
@@ -84,44 +84,44 @@ namespace autoplaysharp.UiAutomation.OCR
             // TODO: overlay...
             //Overlay?.ShowGetText(element);
 
-            return result.Text.Trim();
+            return result.Text?.Trim();
         }
 
         public Point LocateText(Bitmap image, string text)
         {
-            lock (_lock)
+            lock (Lock)
             {
 
                 //page.
 
-                using var section_mat = image.ToMat();
+                using var sectionMat = image.ToMat();
 
-                using var scaled_section_mat = new Mat();
-                using var grayscale_mat = new Mat();
-                Cv2.CvtColor(section_mat, grayscale_mat, ColorConversionCodes.BGR2GRAY);
-                using var tresholded_mat = new Mat();
+                using var scaledSectionMat = new Mat();
+                using var grayscaleMat = new Mat();
+                Cv2.CvtColor(sectionMat, grayscaleMat, ColorConversionCodes.BGR2GRAY);
+                using var tresholdedMat = new Mat();
 
-                Cv2.Threshold(grayscale_mat, tresholded_mat, 200, 255, ThresholdTypes.Binary);
+                Cv2.Threshold(grayscaleMat, tresholdedMat, 200, 255, ThresholdTypes.Binary);
 
-                using var inverted_mat = (~tresholded_mat).ToMat();
-                using var inverted_bitmap = inverted_mat.ToBitmap();
-                using var pix = ToPix(inverted_bitmap);
+                using var invertedMat = (~tresholdedMat).ToMat();
+                using var invertedBitmap = invertedMat.ToBitmap();
+                using var pix = ToPix(invertedBitmap);
 
-                using var page = _engine.Process(pix);
-                using (var iter = page.GetIterator())
+                using var page = Engine.Process(pix);
+                using (var iterate = page.GetIterator())
                 {
-                    iter.Begin();
+                    iterate.Begin();
                     do
                     {
-                        if (!iter.TryGetBoundingBox(PageIteratorLevel.Word, out var rect)) continue;
-                        if (iter.GetText(PageIteratorLevel.Word) != "Future") continue;
+                        if (!iterate.TryGetBoundingBox(PageIteratorLevel.Word, out var rect)) continue;
+                        if (iterate.GetText(PageIteratorLevel.Word) != "Future") continue;
                         
-                        iter.Next(PageIteratorLevel.Word);
-                        if (iter.GetText(PageIteratorLevel.Word) == "Fight")
+                        iterate.Next(PageIteratorLevel.Word);
+                        if (iterate.GetText(PageIteratorLevel.Word) == "Fight")
                         {
                             return new Point(rect.X1 + rect.Width / 2, rect.Y1);
                         }
-                    } while (iter.Next(PageIteratorLevel.Word));
+                    } while (iterate.Next(PageIteratorLevel.Word));
                 }
 
                 return new Point(0, 0);
@@ -139,15 +139,15 @@ namespace autoplaysharp.UiAutomation.OCR
 
         static TextRecognition()
         {
-            _engine = new TesseractEngine(@"./tessdata", "eng", EngineMode.LstmOnly);
-            _engine.SetVariable("debug_file", "/dev/null");
+            Engine = new TesseractEngine(@"./tessdata", "eng", EngineMode.LstmOnly);
+            Engine.SetVariable("debug_file", "/dev/null");
         }
 
         public static TextRecognitionResult GetText(Pix pix, int psm = 3)
         {
-            lock (_lock)
+            lock (Lock)
             {
-                using var page = _engine.Process(pix, (PageSegMode)psm);
+                using var page = Engine.Process(pix, (PageSegMode)psm);
                 return new TextRecognitionResult(page.GetMeanConfidence(), page.GetText());
             }
         }

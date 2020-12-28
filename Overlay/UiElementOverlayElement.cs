@@ -6,13 +6,13 @@ namespace autoplaysharp.Overlay
 {
     public class UiElementOverlayElement : OverlayElement
     {
-        public readonly UIElement UIElement;
+        public readonly UiElement UiElement;
         protected readonly IEmulatorWindow EmulatorWindow;
         protected uint Color = 0xff00FFFF;
 
-        public UiElementOverlayElement(UIElement uIElement, IEmulatorWindow emulatorWindow, int duration = 3000) : base(duration)
+        public UiElementOverlayElement(UiElement uIElement, IEmulatorWindow emulatorWindow, int duration = 3000) : base(duration)
         {
-            UIElement = uIElement;
+            UiElement = uIElement;
             EmulatorWindow = emulatorWindow;
         }
 
@@ -20,8 +20,8 @@ namespace autoplaysharp.Overlay
         {
             base.Render(delta);
             var drawList = ImGui.GetBackgroundDrawList();
-            drawList.AddRect(UIElement.GetDenormalizedLocation(EmulatorWindow), UIElement.GetDenormalizedLocationBottomRight(EmulatorWindow), Color);
-            drawList.AddText(ImGui.GetFont(), 16, UIElement.GetDenormalizedLocation(EmulatorWindow), Color, UIElement.Id);
+            drawList.AddRect(UiElement.GetDenormalizedLocation(EmulatorWindow), UiElement.GetDenormalizedLocationBottomRight(EmulatorWindow), Color);
+            drawList.AddText(ImGui.GetFont(), 16, UiElement.GetDenormalizedLocation(EmulatorWindow), Color, UiElement.Id);
         }
     }
 }

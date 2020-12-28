@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace autoplaysharp.App.UI.DebugView
+﻿namespace autoplaysharp.App.UI.DebugView
 {
     /// <summary>
     /// Interaction logic for DebugView.xaml
     /// </summary>
-    public partial class DebugView : UserControl
+    public partial class DebugView
     {
         public DebugView()
         {

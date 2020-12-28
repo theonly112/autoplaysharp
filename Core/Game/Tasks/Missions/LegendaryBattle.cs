@@ -16,8 +16,8 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             ClearCount = settings.LegendaryBattle.ClearCount;
         }
 
-        public string BattleName { get; set; } = "MARVEL'S AVENGERS: ENDGAME";
-        public int ClearCount { get; set; } = 5;
+        private string BattleName { get; } = "MARVEL'S AVENGERS: ENDGAME";
+        public int ClearCount { get; set; }
 
         protected override async Task RunCore(CancellationToken token)
         {

@@ -9,7 +9,7 @@ namespace autoplaysharp.Core.Game.UI
     internal class SubRepository : IUiSubRepository
     {
         private readonly string _path;
-        private Dictionary<string, UIElement> _repository = new Dictionary<string, UIElement>();
+        private Dictionary<string, UiElement> _repository = new Dictionary<string, UiElement>();
 
         public SubRepository(string path)
         {
@@ -26,7 +26,7 @@ namespace autoplaysharp.Core.Game.UI
 
         internal void Load()
         {
-            var elements = JsonConvert.DeserializeObject<List<UIElement>>(File.ReadAllText(_path));
+            var elements = JsonConvert.DeserializeObject<List<UiElement>>(File.ReadAllText(_path));
             foreach (var e in elements)
             {
                 _repository.Add(e.Id, e);
@@ -37,7 +37,7 @@ namespace autoplaysharp.Core.Game.UI
 
         public string Name => Path.GetFileNameWithoutExtension(_path);
 
-        public UIElement this[string id]
+        public UiElement this[string id]
         {
             get => _repository[id];
             set => _repository[id] = value;
@@ -45,10 +45,10 @@ namespace autoplaysharp.Core.Game.UI
 
         public void Add(string id)
         {
-            _repository.Add(id, new UIElement() { Id = id });
+            _repository.Add(id, new UiElement() { Id = id });
         }
 
-        public void Add(UIElement element)
+        public void Add(UiElement element)
         {
             if(string.IsNullOrWhiteSpace(element.Id))
             {

@@ -7,8 +7,8 @@ namespace autoplaysharp.Contracts
         string Name { get; }
         IEnumerable<string> Ids { get; }
         void Add(string id);
-        void Add(UIElement element);
+        void Add(UiElement element);
         void Remove(string id);
-        UIElement this[string id] { get; }
+        UiElement this[string id] { get; }
     }
 }

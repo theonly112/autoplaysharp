@@ -7,13 +7,11 @@ namespace autoplaysharp.App.UI.Log
     internal class LogViewModel : BindableBase
     {
         private string _logText;
-        private readonly IUiLogger _uiLogger;
         private readonly StringBuilder _builder = new StringBuilder();
 
         public LogViewModel(IUiLogger uiLogger)
         {
-            _uiLogger = uiLogger;
-            _uiLogger.NewLogEntry += _uiLogger_NewLogEntry;
+            uiLogger.NewLogEntry += _uiLogger_NewLogEntry;
         }
 
         private void _uiLogger_NewLogEntry(string entry)

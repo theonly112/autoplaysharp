@@ -18,8 +18,8 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             ShouldRunNormalMode = settings.AllianceBattle.RunNormalMode;
         }
 
-        public bool ShouldRunNormalMode { get; set; } = true;
-        public bool ShouldRunExtremeMode { get; set; } = true;
+        private bool ShouldRunNormalMode { get; }
+        private bool ShouldRunExtremeMode { get; }
         
         protected override async Task RunCore(CancellationToken token)
         {

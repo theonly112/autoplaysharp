@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:Tasks="clr-namespace:autoplaysharp.Core.Game.Tasks;assembly=autoplaysharp.Core"
              mc:Ignorable="d" 
              d:DesignHeight="250" d:DesignWidth="800"
              DataContext="{Binding Path=TasksViewModel, Source={StaticResource Locator}}"
@@ -28,7 +27,7 @@
                     <Button Margin="3" Command="{Binding Path=CancelCommand}">
                         <TextBlock Margin="3">Cancel</TextBlock>
                     </Button>
-                    <Button Margin="3" Width="15" x:Name="_addButton">
+                    <Button Margin="3" Width="15" x:Name="AddButton">
                         +
                         <Button.ContextMenu>
                             <ContextMenu ItemsSource="{Binding Tasks}">
@@ -48,16 +47,16 @@
                         </Button.ContextMenu>
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="Click">
-                                <b:ChangePropertyAction TargetObject="{Binding ContextMenu, ElementName=_addButton}" PropertyName="PlacementTarget" Value="{Binding ElementName=_addButton, Mode=OneWay}"/>
-                                <b:ChangePropertyAction TargetObject="{Binding ContextMenu, ElementName=_addButton}" PropertyName="IsOpen" Value="True"/>
+                                <b:ChangePropertyAction TargetObject="{Binding ContextMenu, ElementName=AddButton}" PropertyName="PlacementTarget" Value="{Binding ElementName=AddButton, Mode=OneWay}"/>
+                                <b:ChangePropertyAction TargetObject="{Binding ContextMenu, ElementName=AddButton}" PropertyName="IsOpen" Value="True"/>
                             </b:EventTrigger>
                         </b:Interaction.Triggers>
                     </Button>
                
                     <Button Margin="3" Width="15" Command="{Binding Path=Remove}"
-                            CommandParameter="{Binding Path=SelectedItem, ElementName=_routineListView}">-</Button>
+                            CommandParameter="{Binding Path=SelectedItem, ElementName=RoutineListView}">-</Button>
                 </StackPanel>
-                <ListBox Grid.Row="1" x:Name="_routineListView"
+                <ListBox Grid.Row="1" x:Name="RoutineListView"
                               ItemsSource="{Binding RoutineItems}"
                               dd:DragDrop.UseDefaultDragAdorner="True"
                               dd:DragDrop.UseDefaultEffectDataTemplate="True">
@@ -82,13 +81,14 @@
                                     </DataTrigger.Setters>
                                 </DataTrigger>
                             </Style.Triggers>
-                            <Setter Property="Tag" Value="{Binding Path=DataContext, ElementName=_routineListView}"/>
+                            <Setter Property="Tag" Value="{Binding Path=DataContext, ElementName=RoutineListView}"/>
                             <Setter Property="ContextMenu">
                                 <Setter.Value>
                                     <ContextMenu>
+                                        <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                                         <MenuItem Header="Remove" 
-                                                      Command="{Binding Path=PlacementTarget.Tag.Remove,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
-                                                      CommandParameter="{Binding}"/>
+                                                  Command="{Binding Path=PlacementTarget.Tag.Remove,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
+                                                  CommandParameter="{Binding}"/>
                                     </ContextMenu>
                                 </Setter.Value>
                             </Setter>
@@ -102,7 +102,7 @@
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=DataContext.ActiveTask, ElementName=_routineListView}"
+                                                <DataTrigger Binding="{Binding Path=DataContext.ActiveTask, ElementName=RoutineListView}"
                                                                  Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Visible"/>
                                                 </DataTrigger>

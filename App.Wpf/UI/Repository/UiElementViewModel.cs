@@ -20,24 +20,24 @@ namespace autoplaysharp.App.UI.Repository
         private ImageSource _image;
         private bool _hasImage;
 
-        public UiElementViewModel(IUiSubRepository repository, UIElement element, IAreaPicker areaPicker, IEmulatorWindow window, IGame game)
+        public UiElementViewModel(IUiSubRepository repository, UiElement element, IAreaPicker areaPicker, IEmulatorWindow window, IGame game)
         {
             _repository = repository;
-            UIElement = element;
+            UiElement = element;
             Id = element.Id;
             PickAreaCommand = new DelegateCommand(PickArea);
             PickImageCommand = new DelegateCommand(PickImage);
             _areaPicker = areaPicker;
             _window = window;
             _game = game;
-            Image = UIElement.Image == null ? null : ByteToImage(UIElement.Image);
+            Image = UiElement.Image == null ? null : ByteToImage(UiElement.Image);
             GetTextCommand = new DelegateCommand(GetText);
         }
 
         private void GetText()
         {
-            UIElement.Text = _game.GetText(UIElement);
-            RaisePropertyChanged(nameof(UIElement)); // so text is updated...
+            UiElement.Text = _game.GetText(UiElement);
+            RaisePropertyChanged(nameof(UiElement)); // so text is updated...
         }
 
         public static ImageSource ByteToImage(byte[] imageData)
@@ -55,12 +55,12 @@ namespace autoplaysharp.App.UI.Repository
         private async void PickImage()
         {
             await PickAreaAsync();
-            int x = (int)(UIElement.X * _window.Width), 
-                y = (int)(UIElement.Y * _window.Height), 
-                w = (int)(UIElement.W * _window.Width), 
-                h = (int)(UIElement.H * _window.Height);
-            UIElement.Image = _window.GrabScreen(x, y, w, h).ToByteArray();
-            Image = ByteToImage(UIElement.Image);
+            int x = (int)(UiElement.X.GetValueOrDefault() * _window.Width),
+                y = (int)(UiElement.Y.GetValueOrDefault() * _window.Height),
+                w = (int)(UiElement.W.GetValueOrDefault() * _window.Width),
+                h = (int)(UiElement.H.GetValueOrDefault() * _window.Height);
+            UiElement.Image = _window.GrabScreen(x, y, w, h).ToByteArray();
+            Image = ByteToImage(UiElement.Image);
         }
 
         private async void PickArea()
@@ -71,14 +71,14 @@ namespace autoplaysharp.App.UI.Repository
         private async Task PickAreaAsync()
         {
             var vec = await _areaPicker.PickArea();
-            UIElement.X = vec.Position.X;
-            UIElement.Y = vec.Position.Y;
-            UIElement.W = vec.Size.X;
-            UIElement.H = vec.Size.Y;
-            RaisePropertyChanged(nameof(UIElement));
+            UiElement.X = vec.Position.X;
+            UiElement.Y = vec.Position.Y;
+            UiElement.W = vec.Size.X;
+            UiElement.H = vec.Size.Y;
+            RaisePropertyChanged(nameof(UiElement));
         }
 
-        public UIElement UIElement { get; set; }
+        public UiElement UiElement { get; set; }
 
         public bool PreviewText { get; set; }
 
@@ -93,8 +93,8 @@ namespace autoplaysharp.App.UI.Repository
                 if (oldId != null)
                 {
                     _repository.Remove(oldId);
-                    UIElement.Id = value;
-                    _repository.Add(UIElement);
+                    UiElement.Id = value;
+                    _repository.Add(UiElement);
                 }
 
                 RaisePropertyChanged();
@@ -114,7 +114,7 @@ namespace autoplaysharp.App.UI.Repository
                 _hasImage = value;
                 if(!value)
                 {
-                    UIElement.Image = null;
+                    UiElement.Image = null;
                     Image = null;
                 }
                 RaisePropertyChanged();
