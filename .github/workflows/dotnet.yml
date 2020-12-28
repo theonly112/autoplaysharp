@@ -23,8 +23,8 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore
-    - name: Cleanup PDBs
-      run: Get-ChildItem * -Include *.pdb -Recurse | Remove-Item
+    - name: Clean up
+      run: powershell -file Cleanup.ps1
     - uses: papeloto/action-zip@v1
       with:
         files: App.Wpf/bin/
