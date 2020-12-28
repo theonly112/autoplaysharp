@@ -121,8 +121,8 @@ namespace autoplaysharp.Core.Game
 
         public async Task CancelAll()
         {
-            await Cancel(ActiveItem);
             _queue.Clear();
+            await Cancel(ActiveItem);
             OnPropertyChanged(nameof(ActiveItem));
             OnPropertyChanged(nameof(Items));
         }
