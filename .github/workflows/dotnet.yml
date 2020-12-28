@@ -16,7 +16,7 @@ jobs:
     - name: Setup .NET 5
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.100
+        dotnet-version: 5.0.101
     - name: Install dependencies
       run: dotnet restore
     - name: Build
@@ -24,7 +24,7 @@ jobs:
     - name: Test
       run: dotnet test --no-restore
     - name: Cleanup PDBs
-      run: DEL /Q /F /S "*.pdb"
+      run: Get-ChildItem * -Include *.pdb -Recurse | Remove-Item
     - uses: papeloto/action-zip@v1
       with:
         files: App.Wpf/bin/
