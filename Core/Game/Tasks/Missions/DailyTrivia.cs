@@ -15,7 +15,10 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 {
     public class DailyTrivia : GameTask
     {
-        private readonly List<(string Question, string Answer)> _questionsAndAnswers;
+        // ReSharper disable once UnusedMember.Local
+        // Used for deserialization.
+        private record QuestionAnswerPair(string Question, string Answer);
+        private readonly List<QuestionAnswerPair> _questionsAndAnswers;
 
         public DailyTrivia(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
@@ -23,7 +26,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
             using var reader = new StreamReader(stream ?? throw new InvalidOperationException());
             var json = reader.ReadToEnd();
-            _questionsAndAnswers = JsonConvert.DeserializeObject<List<(string Question, string Answer)>>(json);
+            _questionsAndAnswers = JsonConvert.DeserializeObject<List<QuestionAnswerPair>>(json);
         }
 
         protected override async Task RunCore(CancellationToken token)
