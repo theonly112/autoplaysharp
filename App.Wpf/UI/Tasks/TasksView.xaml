@@ -107,7 +107,7 @@
                                         &#9776;
                                 </TextBlock>
                                 <TextBlock DockPanel.Dock="Left" Margin="5,0,0,0" Text="{Binding Name}"/>
-                                <ToggleButton Name="SettingsButton" Margin="5,0,0,0">
+                                <ToggleButton IsEnabled="{Binding Path=DataContext.CanChangeSettings, ElementName=RoutineListView}" Name="SettingsButton" Margin="5,0,0,0">
                                     <TextBlock>&#x1F527;</TextBlock>
                                 </ToggleButton>
                                 <Popup AllowsTransparency="True" IsOpen="{Binding IsChecked, ElementName=SettingsButton}" StaysOpen="False">

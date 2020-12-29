@@ -21,6 +21,7 @@ namespace autoplaysharp.App.UI.Tasks
         private readonly ISettings _settings;
         private bool _isEnabled = true;
         private IGameTask _activeTask;
+        private bool _canChangeSettings;
 
         public TasksViewModel(ITaskQueue queue, IGame game, IUiRepository repo, ITaskExecutioner executioner, ISettings settings)
         {
@@ -149,6 +150,7 @@ namespace autoplaysharp.App.UI.Tasks
             AddAllToQueue.RaiseCanExecuteChanged();
             Remove.RaiseCanExecuteChanged();
             Add.RaiseCanExecuteChanged();
+            CanChangeSettings = IsEnabled && ActiveTask == null && !_queue.Items.Any();
         }
 
         public ObservableCollection<RoutineViewModel> RoutineItems { get; } = new();
@@ -157,6 +159,12 @@ namespace autoplaysharp.App.UI.Tasks
         {
             get => _isEnabled;
             set => SetProperty(ref _isEnabled, value);
+        }
+
+        public bool CanChangeSettings
+        {
+            get => _canChangeSettings;
+            set => SetProperty(ref _canChangeSettings, value);
         }
 
         public DelegateCommand<Type> Add { get; }
