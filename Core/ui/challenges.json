@@ -1,11 +1,11 @@
 [
   {
     "Id": "CHALLENGES_DAILY_TRIVIA_TAB",
-    "X": 0.438,
-    "Y": 0.12,
-    "W": 0.129,
-    "H": 0.068,
-    "Threshold": 175,
+    "X": 0.4415761,
+    "Y": 0.13542926,
+    "W": 0.11616847,
+    "H": 0.04594922,
+    "Threshold": 174,
     "Text": "DAILY TRIVIA"
   },
   {
