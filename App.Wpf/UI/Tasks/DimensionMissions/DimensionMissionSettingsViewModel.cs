@@ -10,7 +10,7 @@ namespace autoplaysharp.App.UI.Tasks.DimensionMissions
             IGame game,
             IUiRepository repo,
             ITaskExecutioner taskExecutioner,
-            ISettings settings) : base(game, repo, taskExecutioner, settings)
+            ISettings settings) : base()
         {
             Settings = settings.DimensionMission;
         }

@@ -5,6 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:app="clr-namespace:autoplaysharp.App"
+             xmlns:allianceBattle="clr-namespace:autoplaysharp.App.UI.Tasks.AllianceBattle"
+             xmlns:epicQuest="clr-namespace:autoplaysharp.App.UI.Tasks.EpicQuest"
+             xmlns:t="clr-namespace:autoplaysharp.App.UI.Tasks.TimelineBattle"
+             xmlns:dimensionMissions="clr-namespace:autoplaysharp.App.UI.Tasks.DimensionMissions"
+             xmlns:legendaryBattle="clr-namespace:autoplaysharp.App.UI.Tasks.LegendaryBattle"
              mc:Ignorable="d" 
              d:DesignHeight="250" d:DesignWidth="800"
              DataContext="{Binding Path=TasksViewModel, Source={StaticResource Locator}}"
@@ -81,22 +87,11 @@
                                     </DataTrigger.Setters>
                                 </DataTrigger>
                             </Style.Triggers>
-                            <Setter Property="Tag" Value="{Binding Path=DataContext, ElementName=RoutineListView}"/>
-                            <Setter Property="ContextMenu">
-                                <Setter.Value>
-                                    <ContextMenu>
-                                        <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
-                                        <MenuItem Header="Remove" 
-                                                  Command="{Binding Path=PlacementTarget.Tag.Remove,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}"
-                                                  CommandParameter="{Binding}"/>
-                                    </ContextMenu>
-                                </Setter.Value>
-                            </Setter>
                         </Style>
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <DockPanel Margin="3">
+                            <DockPanel Margin="3" HorizontalAlignment="Stretch">
                                 <TextBlock DockPanel.Dock="Left">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
@@ -112,51 +107,57 @@
                                         &#9776;
                                 </TextBlock>
                                 <TextBlock DockPanel.Dock="Left" Margin="5,0,0,0" Text="{Binding Name}"/>
+                                <ToggleButton Name="SettingsButton" Margin="5,0,0,0">
+                                    <TextBlock>&#x1F527;</TextBlock>
+                                </ToggleButton>
+                                <Popup AllowsTransparency="True" IsOpen="{Binding IsChecked, ElementName=SettingsButton}" StaysOpen="False">
+                                    <Popup.Resources>
+                                        <ResourceDictionary>
+                                            <DataTemplate x:Key="AllianceBattleTemplate">
+                                                <allianceBattle:AllianceBattleSettings/>
+                                            </DataTemplate>
+                                            <DataTemplate x:Key="TimelineBattleTemplate">
+                                                <t:TimelineBattleSettings/>
+                                            </DataTemplate>
+                                            <DataTemplate x:Key="DimensionMissionTemplate">
+                                                <dimensionMissions:DimensionMissionSettings/>
+                                            </DataTemplate>
+                                            <DataTemplate x:Key="PlaceHolder">
+                                                <TextBlock>No settings available.</TextBlock>
+                                            </DataTemplate>
+                                            <DataTemplate x:Key="LegendaryBattleTemplate">
+                                                <legendaryBattle:LegendaryBattleSettingsView/>
+                                            </DataTemplate>
+                                            <DataTemplate x:Key="EpicQuestTemplate">
+                                                <epicQuest:EpicQuestSettings />
+                                            </DataTemplate>
+                                            <app:SettingsTemplateSelector x:Key="SettingsTemplateSelector"
+                                                                          AllianceBattleTemplate="{StaticResource AllianceBattleTemplate}"
+                                                                          TimelineBattleTemplate="{StaticResource TimelineBattleTemplate}"
+                                                                          DimensionMissionTemplate="{StaticResource DimensionMissionTemplate}"
+                                                                          LegendaryBattleTemplate="{StaticResource LegendaryBattleTemplate}"
+                                                                          StupidXMenTemplate="{StaticResource EpicQuestTemplate}"
+                                                                          PlaceHolderTemplate="{StaticResource PlaceHolder}"/>
+                                        </ResourceDictionary>
+                                    </Popup.Resources>
+                                    <Border BorderBrush="Gray" BorderThickness="1" Background="White" CornerRadius="4">
+                                        <GroupBox Header="{Binding Name}" Margin="5">
+                                            <ContentControl 
+                                                Margin="5"
+                                                Content="{Binding}" 
+                                                ContentTemplateSelector="{StaticResource SettingsTemplateSelector}">
+                                            </ContentControl>
+                                        </GroupBox>
+                                    </Border>
+                                </Popup>
+                                <Button Margin="5,0,0,0" Command="{Binding Path=DataContext.Remove, ElementName=RoutineListView}"
+                                        CommandParameter="{Binding}">
+                                    <TextBlock>&#x1f5d1;</TextBlock>
+                                </Button>
                             </DockPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-
-                <!--<ContentControl Content="{Binding Path=SelectedItem, ElementName=_tasksComboBox}">
-                        <ContentControl.Resources>
-                            <DataTemplate DataType="{x:Type a:AllianceBattleSettingsViewModel}">
-                                <a:AllianceBattleSettings/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type t:TimelineBattleSettingsViewModel}">
-                                <t:TimelineBattleSettings/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type dimension:DimensionMissionSettingsViewModel}">
-                                <dimension:DimensionMissionSettings/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type coop:CoopMissionSettingsViewModel}">
-                                <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type danger:DangerRoomSettingsViewModel}">
-                                <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type heroic:HeroicQuestSettingsViewModel}">
-                                <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type legendary:LegendaryBattleSettingsViewModel}">
-                                <legendary:LegendaryBattleSettingsView/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type squad:SquadBattleSettingsViewModel}">
-                                <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type wbi:WorldBossInvasionSettingsViewModel}">
-                                <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type worldBoss:WorldBossSettingsViewModel}">
-                                <ContentControl ContentTemplate="{StaticResource PlaceHolder}"/>
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type epicQuest:StupidXMenViewModel}">
-                                <epicQuest:EpicQuestSettings />
-                            </DataTemplate>
-                            <DataTemplate DataType="{x:Type epicQuest:TheFaultViewModel}">
-                                <epicQuest:EpicQuestSettings />
-                            </DataTemplate>
-                        </ContentControl.Resources>
-                    </ContentControl>-->
             </Grid>
         </GroupBox>
         <!--<GroupBox Grid.Column="1" Header="Single Tasks">

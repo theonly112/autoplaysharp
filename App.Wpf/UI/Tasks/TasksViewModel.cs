@@ -1,18 +1,4 @@
-﻿using autoplaysharp.App.UI.Tasks.AllianceBattle;
-using autoplaysharp.App.UI.Tasks.CoopMission;
-using autoplaysharp.App.UI.Tasks.DangerRoom;
-using autoplaysharp.App.UI.Tasks.DimensionMissions;
-using autoplaysharp.App.UI.Tasks.HeroicQuest;
-using autoplaysharp.App.UI.Tasks.LegendaryBattle;
-using autoplaysharp.App.UI.Tasks.SquadBattle;
-using autoplaysharp.App.UI.Tasks.TimelineBattle;
-using autoplaysharp.App.UI.Tasks.WorldBoss;
-using autoplaysharp.App.UI.Tasks.WorldBossInvasion;
-using autoplaysharp.Contracts;
-using autoplaysharp.Core.Game.Tasks.Missions;
-using autoplaysharp.Core.Game.Tasks.Missions.DeluxeEpicQuests;
-using autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests;
-using Microsoft.Extensions.DependencyInjection;
+﻿using autoplaysharp.Contracts;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -21,7 +7,6 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
-using autoplaysharp.App.UI.Tasks.EpicQuest;
 using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Core.Game.Tasks;
 
@@ -46,7 +31,7 @@ namespace autoplaysharp.App.UI.Tasks
             _settings = settings;
             AddAllToQueue = new DelegateCommand(AddAll, CanExecuteRunRoutine);
             CancelCommand = new DelegateCommand(CancelAll, CanExecuteCancel);
-            Add = new DelegateCommand<TaskBaseViewModel>(AddToRoutine, CanAddToRoutine);
+            Add = new DelegateCommand<Type>(AddToRoutine, CanAddToRoutine);
             Remove = new DelegateCommand<RoutineViewModel>(RemoveFromRoutine, CanRemoveFromRoutine);
             _queue.PropertyChanged += (_, _) => OnQueueChanged();
             OnQueueChanged();
@@ -67,6 +52,11 @@ namespace autoplaysharp.App.UI.Tasks
                     .Where(x => x.IsAssignableTo(typeof(IGameTask)) &&
                                 !x.IsAbstract &&
                                 x.IsPublic));
+            }
+
+            foreach (var type in types)
+            {
+                Tasks.Add(type);
             }
 
             if (settings.RoutineItems != null)
@@ -105,14 +95,14 @@ namespace autoplaysharp.App.UI.Tasks
             RoutineItems.Remove(obj);
         }
 
-        private bool CanAddToRoutine(TaskBaseViewModel taskBaseViewModel)
+        private bool CanAddToRoutine(Type _)
         {
             return IsEnabled && ActiveTask == null && !_queue.Items.Any();
         }
 
-        private void AddToRoutine(TaskBaseViewModel arg)
+        private void AddToRoutine(Type taskType)
         {
-            RoutineItems.Add(new RoutineViewModel(arg.TaskType, _game, _repo, _executioner, _settings, _queue));
+            RoutineItems.Add(new RoutineViewModel(taskType, _game, _repo, _executioner, _settings, _queue));
         }
 
         private bool CanExecuteCancel()
@@ -161,39 +151,6 @@ namespace autoplaysharp.App.UI.Tasks
             Add.RaiseCanExecuteChanged();
         }
 
-        private static readonly Type[] ViewModelTypes =
-        {
-            typeof(AllianceBattleSettingsViewModel),
-            typeof(CoopMissionSettingsViewModel),
-            typeof(DangerRoomSettingsViewModel),
-            typeof(DimensionMissionSettingsViewModel),
-            typeof(HeroicQuestSettingsViewModel),
-            typeof(LegendaryBattleSettingsViewModel),
-            typeof(SquadBattleSettingsViewModel),
-            typeof(TimelineBattleSettingsViewModel),
-            typeof(WorldBossInvasionSettingsViewModel),
-            typeof(WorldBossSettingsViewModel),
-            
-            // Epic Quest
-            typeof(StupidXMenViewModel),
-            typeof(TheFaultViewModel),
-            typeof(TwistedWorldViewModel),
-            typeof(TaskBaseViewModel<TheBigTwin>),
-            typeof(TaskBaseViewModel<VeiledSecret>),
-
-            // Deluxe 
-            typeof(TaskBaseViewModel<BeginningOfTheChaos>),
-            typeof(TaskBaseViewModel<DoomsDay>),
-            typeof(TaskBaseViewModel<FateOfTheUniverse>),
-            typeof(TaskBaseViewModel<MutualEnemy>),
-
-            // Misc
-            typeof(TaskBaseViewModel<DailyTrivia>),
-            typeof(TaskBaseViewModel<AutoFight>),
-        };
-
-        public ObservableCollection<TaskBaseViewModel> Tasks { get; set; } = new(TaskViewModels());
-
         public ObservableCollection<RoutineViewModel> RoutineItems { get; } = new();
 
         public bool IsEnabled
@@ -202,21 +159,10 @@ namespace autoplaysharp.App.UI.Tasks
             set => SetProperty(ref _isEnabled, value);
         }
 
-        public DelegateCommand<TaskBaseViewModel> Add { get; }
+        public DelegateCommand<Type> Add { get; }
 
         public DelegateCommand<RoutineViewModel> Remove { get; }
 
-        internal static void ConfigureServices(ServiceCollection serviceCollection)
-        {
-            foreach (var item in ViewModelTypes)
-            {
-                serviceCollection.AddSingleton(item);
-            }
-        }
-
-        private static IEnumerable<TaskBaseViewModel> TaskViewModels()
-        {
-            return ViewModelTypes.Select(item => (TaskBaseViewModel)App.ServiceProvider.GetService(item));
-        }
+        public ObservableCollection<Type> Tasks { get; } = new();
     }
 }

@@ -14,7 +14,6 @@ namespace autoplaysharp.App.UI
         public LogViewModel LogViewModel => App.ServiceProvider.GetService<LogViewModel>();
         public TasksViewModel TasksViewModel => App.ServiceProvider.GetService<TasksViewModel>();
         public DebugViewModel DebugViewModel => App.ServiceProvider.GetService<DebugViewModel>();
-        public SetupViewModel SetupViewModel => App.ServiceProvider.GetService<SetupViewModel>();
 
         internal static void ConfigureServices(ServiceCollection serviceCollection)
         {
@@ -25,8 +24,7 @@ namespace autoplaysharp.App.UI
             serviceCollection.AddSingleton<DebugViewModel>();
             serviceCollection.AddSingleton<SetupViewModel>();
 
-            // Tasks
-            TasksViewModel.ConfigureServices(serviceCollection);
+            SettingsViewModels.ConfigureServices(serviceCollection);
         }
     }
 }

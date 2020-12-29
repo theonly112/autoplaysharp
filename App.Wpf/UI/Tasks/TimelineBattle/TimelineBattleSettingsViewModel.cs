@@ -12,7 +12,7 @@ namespace autoplaysharp.App.UI.Tasks.TimelineBattle
             IGame game,
             IUiRepository repo,
             ITaskExecutioner taskExecutioner,
-            ISettings settings) : base(game, repo, taskExecutioner, settings)
+            ISettings settings) : base()
         {
             _settings = settings;
         }

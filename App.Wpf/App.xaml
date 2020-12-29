@@ -4,5 +4,6 @@
              Startup="Application_Startup">
     <Application.Resources>
         <vm:ViewModelLocator x:Key="Locator" />
+        <vm:SettingsViewModels x:Key="SettingsViewModels" />
     </Application.Resources>
 </Application>

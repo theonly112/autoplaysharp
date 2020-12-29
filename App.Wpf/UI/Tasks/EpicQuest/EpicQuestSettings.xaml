@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:autoplaysharp.App.UI.Tasks.EpicQuest"
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="250"
-             d:DataContext="{d:DesignInstance local:StupidXMenViewModel}">
+             d:DataContext="{d:DesignInstance local:EpicQuestSettingsViewModel}"
+             DataContext="{Binding EpicQuest, Source={StaticResource SettingsViewModels}}">
     <Grid>
         <CheckBox IsChecked="{Binding Settings.RestartForBioFarming}">Enable Bio-Farming (Restart Game)</CheckBox>
     </Grid>

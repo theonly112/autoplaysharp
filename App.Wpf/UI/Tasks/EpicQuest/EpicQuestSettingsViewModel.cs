@@ -1,18 +1,19 @@
-﻿using autoplaysharp.Contracts;
+﻿using System;
 using autoplaysharp.Contracts.Configuration;
 using autoplaysharp.Contracts.Configuration.Tasks;
-using autoplaysharp.Core.Game.Tasks.Missions;
 
 namespace autoplaysharp.App.UI.Tasks.EpicQuest
 {
-    internal class EpicQuestSettingsViewModel<T> : TaskBaseViewModel<T> where  T : GenericEpicQuest
+    internal class EpicQuestSettingsViewModel : TaskBaseViewModel
     {
-        public EpicQuestSettingsViewModel(IGame game, IUiRepository repo, ITaskExecutioner taskExecutioner, ISettings settings) : base(game, repo, taskExecutioner, settings)
+        public EpicQuestSettingsViewModel(ISettings settings)
         {
             Settings = settings.EpicQuest;
         }
 
         public IEpicQuestSettings Settings { get; }
 
+        public override string Name { get; }
+        public override Type TaskType { get; }
     }
 }
