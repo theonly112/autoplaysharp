@@ -48,7 +48,8 @@ namespace autoplaysharp.Emulators
             var ptr = new User32.WNDENUMPROC((hwnd, _) =>
             {
                 var className = User32.GetClassName(hwnd);
-                if (!className.Contains("Bluestacks", StringComparison.CurrentCultureIgnoreCase))
+                if (!className.Contains("Bluestacks", StringComparison.CurrentCultureIgnoreCase) && 
+                   !className.Contains("Qt5151QWindowOwnDCIcon", StringComparison.CurrentCultureIgnoreCase))
                 {
                     return true;
                 }
@@ -60,6 +61,12 @@ namespace autoplaysharp.Emulators
                     return false;
                 }
 
+                childHwnd = User32.FindWindowEx(hwnd, IntPtr.Zero, null, "plrNativeInputWindow");
+                if(childHwnd != IntPtr.Zero)
+                {
+                    windowList.Add((hwnd, childHwnd));
+                    return false;
+                }
                 return true;
             });
            
