@@ -43,9 +43,8 @@ namespace autoplaysharp.UiAutomation.OCR
                 Cv2.Threshold(grayscaleMat, tresholdedMat, 0, 255, ThresholdTypes.Binary | ThresholdTypes.Otsu);
             }
 
-            using var invertedMat = (~tresholdedMat).ToMat();
-            using var invertedBitmap = invertedMat.ToBitmap();
-            using var pix = ToPix(invertedBitmap);
+            using var tresholdBitmap = tresholdedMat.ToBitmap();
+            using var pix = ToPix(tresholdBitmap);
 
             // TODO: debugging
             // for debugging ...
@@ -54,8 +53,17 @@ namespace autoplaysharp.UiAutomation.OCR
             //    SaveImage(element.Id, pix);
             //}
 
-
             var result = GetText(pix, element.PSM.HasValue ? element.PSM.Value : 3);
+            if (result.Confidence < 0.5)
+            {
+                using var invertedMat = tresholdedMat;
+                using var invertedBitmap = invertedMat.ToBitmap();
+                var result2 = GetText(pix, element.PSM.HasValue ? element.PSM.Value : 3);
+                if (result2.Confidence > result.Confidence)
+                {
+                    result = result2;
+                }
+            }
 
             Debug.WriteLine($"{element.Id} - {result.Confidence}");
 
