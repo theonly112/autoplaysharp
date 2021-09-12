@@ -56,9 +56,10 @@ namespace autoplaysharp.UiAutomation.OCR
             var result = GetText(pix, element.PSM.HasValue ? element.PSM.Value : 3);
             if (result.Confidence < 0.5)
             {
-                using var invertedMat = tresholdedMat;
+                using var invertedMat = (~tresholdedMat).ToMat();
                 using var invertedBitmap = invertedMat.ToBitmap();
-                var result2 = GetText(pix, element.PSM.HasValue ? element.PSM.Value : 3);
+                using var pix2 = ToPix(invertedBitmap);
+                var result2 = GetText(pix2, element.PSM.HasValue ? element.PSM.Value : 3);
                 if (result2.Confidence > result.Confidence)
                 {
                     result = result2;
