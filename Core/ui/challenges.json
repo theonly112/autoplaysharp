@@ -9,11 +9,10 @@
   },
   {
     "Id": "CHALLENGES_DAILY_START_BUTTON",
-    "X": 0.719,
-    "Y": 0.806,
-    "W": 0.101,
-    "H": 0.068,
-    "Threshold": 150,
+    "X": 0.74654657,
+    "Y": 0.8130342,
+    "W": 0.067867875,
+    "H": 0.05448717,
     "Text": "START"
   },
   {
@@ -42,14 +41,14 @@
   },
   {
     "Id": "CHALLENGES_DAILY_TRIVIA_QUESTION_STATUS",
-    "X": 0.248,
+    "X": 0.245,
     "Y": 0.413,
-    "W": 0.039,
+    "W": 0.042,
     "H": 0.044
   },
   {
     "Id": "CHALLENGES_DAILY_TRIVIA_BASIC_REWARD",
-    "X": 0.14375,
+    "X": 0.142,
     "Y": 0.6888889,
     "W": 0.0890625,
     "H": 0.028703704,
