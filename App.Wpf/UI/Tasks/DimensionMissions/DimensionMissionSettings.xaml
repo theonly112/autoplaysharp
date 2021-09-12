@@ -7,20 +7,46 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding DimensionMissions, Source={StaticResource SettingsViewModels}}">
-    <StackPanel Orientation="Horizontal">
-        <Label>How many rewards shall be collected:</Label>
-        <ComboBox SelectedValue="{Binding Settings.RewardsToCollect}">
-            <ComboBox.ItemsSource>
-                <x:Array Type="{x:Type sys:Int32}">
-                    <sys:Int32>1</sys:Int32>
-                    <sys:Int32>2</sys:Int32>
-                    <sys:Int32>3</sys:Int32>
-                    <sys:Int32>4</sys:Int32>
-                    <sys:Int32>5</sys:Int32>
-                    <sys:Int32>6</sys:Int32>
-                    <sys:Int32>7</sys:Int32>
-                </x:Array>
-            </ComboBox.ItemsSource>
-        </ComboBox>
+    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal">
+            <Label>How many rewards shall be collected:</Label>
+            <ComboBox SelectedValue="{Binding Settings.RewardsToCollect}">
+                <ComboBox.ItemsSource>
+                    <x:Array Type="{x:Type sys:Int32}">
+                        <sys:Int32>1</sys:Int32>
+                        <sys:Int32>2</sys:Int32>
+                        <sys:Int32>3</sys:Int32>
+                        <sys:Int32>4</sys:Int32>
+                        <sys:Int32>5</sys:Int32>
+                        <sys:Int32>6</sys:Int32>
+                        <sys:Int32>7</sys:Int32>
+                    </x:Array>
+                </ComboBox.ItemsSource>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label>Stage : </Label>
+            <ComboBox SelectedValue="{Binding Settings.Stage}">
+                <ComboBox.ItemsSource>
+                    <x:Array Type="{x:Type sys:Int32}">
+                        <sys:Int32>1</sys:Int32>
+                        <sys:Int32>2</sys:Int32>
+                        <sys:Int32>3</sys:Int32>
+                        <sys:Int32>4</sys:Int32>
+                        <sys:Int32>5</sys:Int32>
+                        <sys:Int32>6</sys:Int32>
+                        <sys:Int32>7</sys:Int32>
+                        <sys:Int32>8</sys:Int32>
+                        <sys:Int32>9</sys:Int32>
+                        <sys:Int32>10</sys:Int32>
+                        <sys:Int32>11</sys:Int32>
+                        <sys:Int32>12</sys:Int32>
+                        <sys:Int32>13</sys:Int32>
+                        <sys:Int32>14</sys:Int32>
+                        <sys:Int32>15</sys:Int32>
+                    </x:Array>
+                </ComboBox.ItemsSource>
+            </ComboBox>
+        </StackPanel>
     </StackPanel>
 </UserControl>

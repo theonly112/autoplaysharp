@@ -3,5 +3,6 @@
     public interface IDimensionMissionSettings
     {
         int RewardsToCollect { get; set; }
+        int Stage { get; set; }
     }
 }

@@ -13,8 +13,10 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         public DimensionMission(IGame game, IUiRepository repository, ISettings settings) : base(game, repository, settings)
         {
             CollectRewardCount = settings.DimensionMission.RewardsToCollect;
+            Stage = settings.DimensionMission.Stage;
             Mode = DimensionMissionRunMode.CollectRewards;
         }
+
 
         /*
          * TODO: allow settings:
@@ -22,6 +24,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
          */
 
         public int CollectRewardCount { get; set; }
+        public int Stage { get; set; }
         public DimensionMissionRunMode Mode { get; set; }
         public int MissionCount { get; set; }
         public enum DimensionMissionRunMode
@@ -82,13 +85,13 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
             else if(Mode == DimensionMissionRunMode.RunXMissions)
             {
-                await RunXMission();
+                await RunXMission(MissionCount);
             }
    
 
         }
 
-        private async Task RunXMission()
+        private async Task RunXMission(int count)
         {
             Game.Click(UIds.DIMENSION_MISSION_READY_BUTTON);
 
@@ -103,17 +106,17 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             await Task.Delay(1000);
 
-            while (MissionCount > 0)
+            while (count > 0)
             {
-                if (MissionCount >= 10)
+                if (count >= 10)
                 {
                     Game.Click(UIds.DIMENSION_MISSION_USE_10_CLEAR_TICKET_BUTTON);
-                    MissionCount -= 10;
+                    count -= 10;
                 }
                 else
                 {
                     Game.Click(UIds.DIMENSION_MISSION_USE_1_CLEAR_TICKET_BUTTON);
-                    MissionCount -= 1;
+                    count -= 1;
                 }
 
                 await Task.Delay(2000);
