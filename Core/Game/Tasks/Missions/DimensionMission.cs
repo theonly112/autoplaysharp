@@ -76,7 +76,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                     return;
                 }
 
-                while (CollectRewardCount > 0)
+                while (CollectRewardCount > 0 && !token.IsCancellationRequested)
                 {
                     await RunDimensionMissionsWithSingleClearTicket();
 
