@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
@@ -86,18 +87,21 @@ namespace autoplaysharp.Core.Game.Tasks
 
             for (int i = 0; i < 3; i++)
             {
-                for (var row = 0; row < 12; row++)
+                for (var row = 0; row < 5; row++)
                 {
                     for (var col = 0; col < 3; col++)
                     {
                         var nameElement = Repository["CONTENT_STATUS_BOARD_ITEM_NAME_DYN", col, row];
                         var missionName = Game.GetText(nameElement);
+                        missionName = missionName.Contains("\n") ? missionName.Split('\n')[0] : missionName;
                         var nl = new NormalizedLevenshtein();
                         var similarity = nl.Similarity(name, missionName);
                         if (similarity >= 0.8) // 80% should be fine. names are different enough.
                         {
                             var status = Game.GetText(Repository["CONTENT_STATUS_BOARD_ITEM_STATUS_DYN", col, row]);
-                            var isCompleted = Game.IsVisible(Repository["CONTENT_STATUS_BOARD_ITEM_NAME_COMPLETED_DYN", col, row]);
+                            var isCompleted = missionName.Contains("\n") && 
+                                              nl.Similarity("RESETS IN", missionName.TrimEnd().Split('\n').Last()) > 0.8;
+                            //var isCompleted = Game.IsVisible(Repository["CONTENT_STATUS_BOARD_ITEM_NAME_COMPLETED_DYN", col, row]);
                             var statusEntry = new ContentStatus(name, isCompleted, status);
 
                             Logger.LogDebug($"Clicking on element because it matches expected: {name} actual: {missionName} similarity: {similarity}");
