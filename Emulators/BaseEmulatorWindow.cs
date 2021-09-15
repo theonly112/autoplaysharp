@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows.Forms;
 using autoplaysharp.Contracts;
 using PInvoke;
 
@@ -12,7 +13,7 @@ namespace autoplaysharp.Emulators
 {
     public abstract class BaseEmulatorWindow : IEmulatorWindow
     {
-        private readonly Random _random = new Random();
+        private readonly Random _random = new();
 
         public Vector2 VirtualMousePosition { get; set; } = Vector2.Zero;
 
@@ -91,12 +92,19 @@ namespace autoplaysharp.Emulators
 
         public void Drag(Vector2 vectorStart, Vector2 vectorEnd)
         {
+            User32.SetForegroundWindow(ScreenshotHwnd);
             int xStart = (int)(vectorStart.X * Width);
             int yStart = (int)(vectorStart.Y * Height);
-            var param = MakeLong(xStart, yStart);
             VirtualMousePosition = new Vector2(vectorStart.X, vectorStart.Y);
-            User32.PostMessage(GameAreaHwnd, User32.WindowMessage.WM_MOUSEMOVE, IntPtr.Zero, new IntPtr(param));
-            User32.PostMessage(GameAreaHwnd, User32.WindowMessage.WM_LBUTTONDOWN, IntPtr.Zero, new IntPtr(param));
+
+            var bounds = Screen.FromHandle(GameAreaHwnd).Bounds;
+            User32.SetCursorPos(X + xStart, Y + yStart);
+            User32.mouse_event(User32.mouse_eventFlags.MOUSEEVENTF_LEFTDOWN |
+                User32.mouse_eventFlags.MOUSEEVENTF_ABSOLUTE,
+                (int)((X + xStart) / (float)bounds.Width * 65535),
+                (int)((Y + yStart) / (float)bounds.Height * 65535),
+                0,
+                IntPtr.Zero);
             int duration = 500;
             int steps = 10;
             for (int i = 0; i < steps; i++)
@@ -104,14 +112,18 @@ namespace autoplaysharp.Emulators
                 var delta = (vectorEnd - vectorStart) / steps;
                 xStart += (int)(delta.X * Width);
                 yStart += (int)(delta.Y * Height);
-                param = MakeLong(xStart, yStart);
 
                 VirtualMousePosition = new Vector2(xStart / (float)Width, yStart / (float)Height);
-                var wParam = new IntPtr(1); // Left button down.
-                User32.PostMessage(GameAreaHwnd, User32.WindowMessage.WM_MOUSEMOVE, wParam, new IntPtr(param));
+                User32.mouse_event(User32.mouse_eventFlags.MOUSEEVENTF_MOVE |
+                    User32.mouse_eventFlags.MOUSEEVENTF_ABSOLUTE,
+                    (int)((X + xStart) / (float)bounds.Width * 65535), 
+                    (int)((Y + yStart) / (float)bounds.Height * 65535),
+                    0,
+                    IntPtr.Zero);
                 Thread.Sleep(duration / steps);
             }
-            User32.PostMessage(GameAreaHwnd, User32.WindowMessage.WM_LBUTTONUP, new IntPtr(0), new IntPtr(param));
+
+            User32.mouse_event(User32.mouse_eventFlags.MOUSEEVENTF_LEFTUP, 0, 0, 0, IntPtr.Zero);
         }
 
         private int MakeLong(int lo, int hi)

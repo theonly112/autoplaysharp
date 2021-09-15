@@ -12,6 +12,7 @@
             <TextBox Text="{Binding TaskName}"/>
             <Button Command="{Binding Run}">Run</Button>
             <CheckBox Content="Enable Overlay? (restart to apply)" IsChecked="{Binding EnableOverlay}"/>
+            <Button Command="{Binding Drag}">Drag</Button>
         </StackPanel>
     </Grid>
 </UserControl>

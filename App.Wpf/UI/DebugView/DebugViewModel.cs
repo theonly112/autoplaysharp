@@ -18,9 +18,16 @@ namespace autoplaysharp.App.UI.DebugView
         public DebugViewModel(IGame game, IUiRepository repo, ISettings settings)
         {
             Run = new DelegateCommand(RunCommand);
+            Drag = new DelegateCommand(ExecuteDrag);
             _repo = repo;
             _game = game;
             _settings = settings;
+        }
+
+        private void ExecuteDrag()
+        {
+            _game.Drag(UIds.MAIN_MENU_SELECT_MISSION_DRAG_RIGHT,
+                UIds.MAIN_MENU_SELECT_MISSION_DRAG_LEFT);
         }
 
         private async void RunCommand()
@@ -47,6 +54,11 @@ namespace autoplaysharp.App.UI.DebugView
         {
             get => _settings.EnableOverlay;
             set => _settings.EnableOverlay = value;
+        }
+
+        public ICommand Drag
+        {
+            get;
         }
     }
 }
