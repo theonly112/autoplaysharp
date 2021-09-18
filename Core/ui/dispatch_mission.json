@@ -1,0 +1,34 @@
+[
+  {
+    "Id": "DISPATCH_MISSION_HEADER",
+    "X": 0.51769334,
+    "Y": 0.27389276,
+    "W": 0.1644823,
+    "H": 0.053613067,
+    "Text": "DISPATCH MISSION"
+  },
+  {
+    "Id": "DISPATCH_MISSION_ACQUIRE",
+    "X": 0.07929227,
+    "Y": 0.518648,
+    "W": 0.06749672,
+    "H": 0.043123543,
+    "Text": "ACQUIRE"
+  },
+  {
+    "Id": "DISPATCH_MISSION_NEXT_REWARD",
+    "X": 0.51441675,
+    "Y": 0.74125874,
+    "W": 0.13040632,
+    "H": 0.06410259,
+    "Text": "NEXT REWARD"
+  },
+  {
+    "Id": "DISPATCH_MISSION_REWARD_ACQUIRED_OK",
+    "X": 0.47771952,
+    "Y": 0.7470862,
+    "W": 0.049803406,
+    "H": 0.057109594,
+    "Text": "OK"
+  }
+]
