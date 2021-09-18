@@ -56,6 +56,12 @@ namespace autoplaysharp.App.UI.DebugView
             set => _settings.EnableOverlay = value;
         }
 
+        public bool RestartOnError
+        {
+            get => _settings.RestartOnError;
+            set => _settings.RestartOnError = value;
+        }
+
         public ICommand Drag
         {
             get;

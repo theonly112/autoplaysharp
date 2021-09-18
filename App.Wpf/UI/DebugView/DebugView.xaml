@@ -13,6 +13,7 @@
             <Button Command="{Binding Run}">Run</Button>
             <CheckBox Content="Enable Overlay? (restart to apply)" IsChecked="{Binding EnableOverlay}"/>
             <Button Command="{Binding Drag}">Drag</Button>
+            <CheckBox Content="Restart on error" IsChecked="{Binding RestartOnError}"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -181,7 +181,10 @@ namespace autoplaysharp.Core.Game
         
         public void OnError(TaskError taskError)
         {
-            RestartGame();
+            if (_settings.RestartOnError)
+            {
+                RestartGame();
+            }
             switch (taskError)
             {
                 case ElementNotFoundError elementNotFoundError:
