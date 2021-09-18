@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="OpenCvSharp4.Windows" Version="4.5.0.20201013" />
-    <PackageReference Include="Tesseract" Version="4.1.0-beta1" />
+    <PackageReference Include="Tesseract" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>
