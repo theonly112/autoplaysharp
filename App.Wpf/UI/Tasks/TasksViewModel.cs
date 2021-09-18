@@ -108,7 +108,7 @@ namespace autoplaysharp.App.UI.Tasks
 
         private bool CanExecuteCancel()
         {
-            return _queue.Items.Any();
+            return _queue.Items.Any() || _queue.ActiveItem != null;
         }
 
         private async void CancelAll()
