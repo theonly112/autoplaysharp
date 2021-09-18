@@ -16,7 +16,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             ClearCount = settings.LegendaryBattle.ClearCount;
         }
 
-        private string BattleName { get; } = "MARVEL'S AVENGERS: ENDGAME";
+        private string BattleName { get; } = "MARVELS STUDIOS': BLACK WINDOW";
         public int ClearCount { get; set; }
 
         protected override async Task RunCore(CancellationToken token)
@@ -52,7 +52,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             {
                 var mission = Repository["LEGENDARY_BATTLE_NAME_DYN", 0, y];
                 var missionText = Game.GetText(mission);
-                if (missionText.Similarity(BattleName) > 0.9) // Accept small changes. TODO: figure out if this is sufficent.
+                if (missionText.Similarity(BattleName) > 0.8) // Accept small changes. TODO: figure out if this is sufficent.
                 {
                     found = true;
                     Game.Click(mission);
@@ -94,10 +94,15 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
                 Logger.LogDebug("Starting mission.");
                 Game.Click("LEGENDARY_BATTLE_MISSION_START");
-                
-                
+
+                await Task.Delay(1000, token);
+                if (Game.IsVisible(UIds.LEGENDARY_BATTLE_CHARACTER_NOTICE_IGNORE))
+                {
+                    Logger.LogDebug("Ignoring character requirement message");
+                    Game.Click(UIds.LEGENDARY_BATTLE_CHARACTER_NOTICE_IGNORE);
+                }
+
                 Logger.LogDebug("Waiting for skip into button");
-                
                 if (await WaitUntilVisible("LEGENDARY_BATTLE_MISSION_SKIP_INTRO", 10))
                 {
                     Game.Click("LEGENDARY_BATTLE_MISSION_SKIP_INTRO");
