@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using autoplaysharp.Contracts.Configuration;
@@ -65,6 +66,7 @@ namespace autoplaysharp.App.UI.Tasks
                 foreach (var routineViewModel in settings.RoutineItems.Where(x => types.Any(t => t.Name == x))
                     .Select(x => new RoutineViewModel(types.FirstOrDefault(t => t.Name == x), game, repo, executioner, settings, queue)))
                 {
+                    routineViewModel.PropertyChanged += RoutineViewModelOnPropertyChanged;
                     RoutineItems.Add(routineViewModel);
                 }
             }
@@ -76,8 +78,20 @@ namespace autoplaysharp.App.UI.Tasks
                 foreach (var routineViewModel in types.Where(x => x != typeof(AutoFight))
                     .Select(t => new RoutineViewModel(t, game, repo, executioner, settings, queue)))
                 {
+                    routineViewModel.PropertyChanged += RoutineViewModelOnPropertyChanged;
                     RoutineItems.Add(routineViewModel);
                 }
+            }
+
+            AddAllToQueue.RaiseCanExecuteChanged();
+        }
+
+        private void RoutineViewModelOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(RoutineViewModel.IsChecked))
+            {
+                RaisePropertyChanged(nameof(CheckAll));
+                AddAllToQueue.RaiseCanExecuteChanged();
             }
         }
 
@@ -103,7 +117,9 @@ namespace autoplaysharp.App.UI.Tasks
 
         private void AddToRoutine(Type taskType)
         {
-            RoutineItems.Add(new RoutineViewModel(taskType, _game, _repo, _executioner, _settings, _queue));
+            var routineViewModel = new RoutineViewModel(taskType, _game, _repo, _executioner, _settings, _queue);
+            routineViewModel.PropertyChanged += RoutineViewModelOnPropertyChanged;
+            RoutineItems.Add(routineViewModel);
         }
 
         private bool CanExecuteCancel()
@@ -120,7 +136,7 @@ namespace autoplaysharp.App.UI.Tasks
 
         private bool CanExecuteRunRoutine()
         {
-            return !_queue.Items.Any() && _queue.ActiveItem == null;
+            return !_queue.Items.Any() && _queue.ActiveItem == null && RoutineItems.Any(i => i.IsChecked);
         }
 
         private void AddAll()
@@ -172,5 +188,24 @@ namespace autoplaysharp.App.UI.Tasks
         public DelegateCommand<RoutineViewModel> Remove { get; }
 
         public ObservableCollection<Type> Tasks { get; } = new();
+
+        public bool? CheckAll
+        {
+            get
+            {
+                if (RoutineItems.Select(item => item.IsChecked).Distinct().Count() == 2)
+                {
+                    return null;
+                }
+                return RoutineItems.All(item => item.IsChecked);
+            }
+            set
+            {
+                foreach (var routineViewModel in RoutineItems)
+                {
+                    routineViewModel.IsChecked = value.GetValueOrDefault();
+                }
+            }
+        }
     }
 }

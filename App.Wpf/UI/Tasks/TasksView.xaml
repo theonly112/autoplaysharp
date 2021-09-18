@@ -24,6 +24,7 @@
             <Grid Margin="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
@@ -62,10 +63,12 @@
                     <Button Margin="3" Width="15" Command="{Binding Path=Remove}"
                             CommandParameter="{Binding Path=SelectedItem, ElementName=RoutineListView}">-</Button>
                 </StackPanel>
-                <ListBox Grid.Row="1" x:Name="RoutineListView"
+                <CheckBox Grid.Row="1" IsChecked="{Binding CheckAll}">Select all</CheckBox>
+                <ListBox Grid.Row="2" x:Name="RoutineListView"
                               ItemsSource="{Binding RoutineItems}"
                               dd:DragDrop.UseDefaultDragAdorner="True"
-                              dd:DragDrop.UseDefaultEffectDataTemplate="True">
+                              dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                              SelectionMode="Extended">
                     <ListBox.Style>
                         <Style TargetType="ListBox">
                             <Setter Property="dd:DragDrop.IsDragSource" Value="False"/>
@@ -106,7 +109,10 @@
                                     </TextBlock.Style>
                                         &#9776;
                                 </TextBlock>
-                                <TextBlock DockPanel.Dock="Left" Margin="5,0,0,0" Text="{Binding Name}"/>
+                                <CheckBox DockPanel.Dock="Left" 
+                                          Margin="5,0,0,0" 
+                                          Content="{Binding Name}"
+                                          IsChecked="{Binding IsChecked}"/>
                                 <ToggleButton IsEnabled="{Binding Path=DataContext.CanChangeSettings, ElementName=RoutineListView}" Name="SettingsButton" Margin="5,0,0,0">
                                     <TextBlock>&#x1F527;</TextBlock>
                                 </ToggleButton>

@@ -16,6 +16,7 @@ namespace autoplaysharp.App.UI.Tasks
         private readonly ITaskQueue _queue;
         private IGameTask _task;
         private bool _isActive;
+        private bool _isChecked = true;
 
         public RoutineViewModel(Type taskType, IGame game, IUiRepository repo, 
                                 ITaskExecutioner taskExecutioner, ISettings settings, ITaskQueue queue)
@@ -35,7 +36,17 @@ namespace autoplaysharp.App.UI.Tasks
         }
 
         public string Name => TaskType.Name;
-        public bool IsChecked { get; set; } = true;
+
+        public bool IsChecked
+        {
+            get => _isChecked;
+            set
+            {
+                _isChecked = value;
+                OnPropertyChanged();
+            }
+        }
+
         public Type TaskType { get; }
 
         public bool IsActive
