@@ -51,7 +51,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             SelectActiveOpponent();
 
-            await Task.Delay(1000);
+            await Task.Delay(1000, token);
 
             // TODO: this info is unsed at the moment.
             var activeQuest = Game.GetText(UIds.WBI_COOP_ACTIVE_QUEST);
@@ -123,9 +123,10 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
         private async Task Fight(CancellationToken token)
         {
-            Func<bool> slotChest = () => { return Game.IsVisible(UIds.WBI_SLOT_CHEST_IN_INVENTORY); };
+            Func<bool> chestDropped = () => { return Game.IsVisible(UIds.WBI_SUPPLY_CHEST); };
             Func<bool> disconnected = () => { return Game.IsVisible(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED); };
-            var fightBot = new AutoFight(Game, Repository, Settings, 90, slotChest, disconnected);
+
+            var fightBot = new AutoFight(Game, Repository, Settings, 90, chestDropped, disconnected);
             await fightBot.Run(token);
 
             if (Game.IsVisible(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED))
@@ -141,10 +142,6 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
             else
             {
-                await Task.Delay(2000, token);
-
-                Game.Click(UIds.WBI_SLOT_CHEST_IN_INVENTORY);
-
                 await Task.Delay(2000, token);
 
                 Game.Click(UIds.WBI_NEXT_RUN);
