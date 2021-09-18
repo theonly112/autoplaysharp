@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="FlaUI.UIA3" Version="3.2.0" />
-    <PackageReference Include="PInvoke.Gdi32" Version="0.6.49" />
-    <PackageReference Include="PInvoke.User32" Version="0.6.49" />
+    <PackageReference Include="PInvoke.Gdi32" Version="0.7.104" />
+    <PackageReference Include="PInvoke.User32" Version="0.7.104" />
   </ItemGroup>
 
   <ItemGroup>

@@ -42,12 +42,12 @@ namespace autoplaysharp.App.UI.Repository
                 throw new InvalidOperationException();
             }
             
-            using var modHandle = Kernel32.GetModuleHandle(curModule.ModuleName);
+            var modHandle = Kernel32.GetModuleHandle(curModule.ModuleName);
 
             _keyboardHook = KeyboardHook;
             _mouseHook = MouseHook;
-            _keyboardHookId = User32.SetWindowsHookEx(User32.WindowsHookType.WH_KEYBOARD_LL, _keyboardHook, modHandle.DangerousGetHandle(), 0);
-            _mouseHookId = User32.SetWindowsHookEx(User32.WindowsHookType.WH_MOUSE_LL, _mouseHook, modHandle.DangerousGetHandle(), 0);
+            _keyboardHookId = User32.SetWindowsHookEx(User32.WindowsHookType.WH_KEYBOARD_LL, _keyboardHook, modHandle, 0);
+            _mouseHookId = User32.SetWindowsHookEx(User32.WindowsHookType.WH_MOUSE_LL, _mouseHook, modHandle, 0);
 
             return _taskCompletionSource.Task;
         }

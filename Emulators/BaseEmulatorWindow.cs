@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using autoplaysharp.Contracts;
@@ -112,7 +111,7 @@ namespace autoplaysharp.Emulators
                 var delta = (vectorEnd - vectorStart) / steps;
                 xStart += (int)(delta.X * Width);
                 yStart += (int)(delta.Y * Height);
-
+                
                 VirtualMousePosition = new Vector2(xStart / (float)Width, yStart / (float)Height);
                 User32.mouse_event(User32.mouse_eventFlags.MOUSEEVENTF_MOVE |
                     User32.mouse_eventFlags.MOUSEEVENTF_ABSOLUTE,
@@ -159,13 +158,5 @@ namespace autoplaysharp.Emulators
             Gdi32.DeleteDC(hdcMemory);
             return bitmap;
         }
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool EnumChildWindows(IntPtr hwndParent, User32.WNDENUMPROC lpEnumFunc, IntPtr lParam);
-
-        [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
-        public static extern IntPtr GetParent(IntPtr hWnd);
-
     }
 }

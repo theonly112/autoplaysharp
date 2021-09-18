@@ -86,7 +86,7 @@ namespace autoplaysharp.App.UI.Tasks
             AddAllToQueue.RaiseCanExecuteChanged();
         }
 
-        private void RoutineViewModelOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        private void RoutineViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(RoutineViewModel.IsChecked))
             {
