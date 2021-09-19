@@ -61,5 +61,29 @@
     "H": 0.0753769,
     "Text": "An Ally Shifter Appeared!",
     "TryHard": false
+  },
+  {
+    "Id": "EPIC_QUEST_CLEAR_BUTTON",
+    "X": 0.41677588,
+    "Y": 0.9289044,
+    "W": 0.045216262,
+    "H": 0.039627075,
+    "Text": "CLEAR"
+  },
+  {
+    "Id": "EPIC_QUEST_CLEAR_DIALOG_MIDDLE_BUTTON",
+    "X": 0.44495413,
+    "Y": 0.7470862,
+    "W": 0.06684139,
+    "H": 0.0501166,
+    "Text": "USE UP"
+  },
+  {
+    "Id": "EPIC_QUEST_CLEAR_RESULT_CLOSE",
+    "X": 0.6566186,
+    "Y": 0.9149184,
+    "W": 0.06487548,
+    "H": 0.04545456,
+    "Text": "CLOSE"
   }
 ]

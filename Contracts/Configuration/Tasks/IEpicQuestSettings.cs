@@ -3,5 +3,6 @@
     public interface IEpicQuestSettings
     {
         bool RestartForBioFarming { get; set; }
+        bool UseClearTickets { get; set; }
     }
 }

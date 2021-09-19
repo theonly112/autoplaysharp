@@ -142,7 +142,7 @@
                                                                           TimelineBattleTemplate="{StaticResource TimelineBattleTemplate}"
                                                                           DimensionMissionTemplate="{StaticResource DimensionMissionTemplate}"
                                                                           LegendaryBattleTemplate="{StaticResource LegendaryBattleTemplate}"
-                                                                          StupidXMenTemplate="{StaticResource EpicQuestTemplate}"
+                                                                          EpicQuestTemplate="{StaticResource EpicQuestTemplate}"
                                                                           PlaceHolderTemplate="{StaticResource PlaceHolder}"/>
                                         </ResourceDictionary>
                                     </Popup.Resources>

@@ -64,6 +64,13 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             return true;
         }
 
+        protected async Task UseClearTickets()
+        {
+            await ClickWhenVisible(UIds.EPIC_QUEST_CLEAR_BUTTON);
+            await ClickWhenVisible(UIds.EPIC_QUEST_CLEAR_DIALOG_MIDDLE_BUTTON);
+            await ClickWhenVisible(UIds.EPIC_QUEST_CLEAR_RESULT_CLOSE, 10);
+        }
+
         protected virtual Task<bool> OnGameStart()
         {
             return Task.FromResult(true);

@@ -23,12 +23,20 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DeluxeEpicQuests
                 return;
             }
 
-            for (int i = 0; i < status.Available; i++)
+            if (Settings.EpicQuest.UseClearTickets && status.Available > 0)
             {
-                await RunMissionCore(token);
-
-                await StartContentBoardMission(MissionName);
+                await UseClearTickets();
             }
+            else
+            {
+                for (int i = 0; i < status.Available; i++)
+                {
+                    await RunMissionCore(token);
+
+                    await StartContentBoardMission(MissionName);
+                }
+            }
+            
 
             await Task.Delay(2000, token);
             await GoToMainScreen(token);

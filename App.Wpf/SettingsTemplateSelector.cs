@@ -13,8 +13,8 @@ namespace autoplaysharp.App
         public DataTemplate TimelineBattleTemplate { get; set; }
         public DataTemplate DimensionMissionTemplate { get; set; }
         public DataTemplate LegendaryBattleTemplate { get; set; }
-        public DataTemplate StupidXMenTemplate { get; set; }
         public DataTemplate PlaceHolderTemplate { get; set; }
+        public DataTemplate EpicQuestTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -26,7 +26,7 @@ namespace autoplaysharp.App
                     _ when vm.TaskType == typeof(TimelineBattle) => TimelineBattleTemplate,
                     _ when vm.TaskType == typeof(DimensionMission) => DimensionMissionTemplate,
                     _ when vm.TaskType == typeof(LegendaryBattle) => LegendaryBattleTemplate,
-                    _ when vm.TaskType == typeof(StupidXMen) => StupidXMenTemplate,
+                    _ when vm.TaskType.IsAssignableTo(typeof(GenericEpicQuest)) => EpicQuestTemplate,
                     _ => PlaceHolderTemplate
                 },
                 _ => null

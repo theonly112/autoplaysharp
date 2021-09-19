@@ -8,7 +8,8 @@
              d:DesignHeight="20" d:DesignWidth="250"
              d:DataContext="{d:DesignInstance local:EpicQuestSettingsViewModel}"
              DataContext="{Binding EpicQuest, Source={StaticResource SettingsViewModels}}">
-    <Grid>
+    <StackPanel Orientation="Vertical">
         <CheckBox IsChecked="{Binding Settings.RestartForBioFarming}">Enable Bio-Farming (Restart Game)</CheckBox>
-    </Grid>
+        <CheckBox IsChecked="{Binding Settings.UseClearTickets}">Use Clear Tickets</CheckBox>
+    </StackPanel>
 </UserControl>

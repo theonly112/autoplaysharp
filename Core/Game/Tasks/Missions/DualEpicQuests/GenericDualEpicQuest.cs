@@ -23,16 +23,50 @@ namespace autoplaysharp.Core.Game.Tasks.Missions.DualEpicQuests
                 return;
             }
 
-            for (int i = 0; i < status.Available; i++)
+            if (Settings.EpicQuest.UseClearTickets)
             {
-                if (!await RunMission(token))
+                await ClearDualMission();
+            }
+            else
+            {
+                for (int i = 0; i < status.Available; i++)
                 {
-                    Logger.LogError("Failed to run mission...");
-                    break;
+                    if (!await RunMission(token))
+                    {
+                        Logger.LogError("Failed to run mission...");
+                        break;
+                    }
                 }
             }
 
+            
+
             Logger.LogInformation($"Done running {MissionName}");
+        }
+
+        private async Task ClearDualMission()
+        {
+            var status = Game.GetText(UIds.EPIC_QUEST_DUAL_MISSION_LEFT).TryParseStatus();
+            if (status.Success)
+            {
+                if (status.Current > 0)
+                {
+                    Game.Click(UIds.EPIC_QUEST_DUAL_MISSION_LEFT);
+                    await UseClearTickets();
+                }
+            }
+
+            await StartContentBoardMission(MissionName);
+
+            status = Game.GetText(UIds.EPIC_QUEST_DUAL_MISSION_RIGHT).TryParseStatus();
+            if (status.Success)
+            {
+                if (status.Current > 0)
+                {
+                    Game.Click(UIds.EPIC_QUEST_DUAL_MISSION_RIGHT);
+                    await UseClearTickets();
+                }
+            }
         }
 
         protected virtual async Task<bool> RunMission(CancellationToken token)

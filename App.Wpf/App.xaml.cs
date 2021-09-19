@@ -162,7 +162,8 @@ namespace autoplaysharp.App
             settings.AllianceBattle.RunNormalMode = true;
             settings.AllianceBattle.RunExtremeMode = true;
 
-            settings.EpicQuest.RestartForBioFarming = true;
+            settings.EpicQuest.RestartForBioFarming = false;
+            settings.EpicQuest.UseClearTickets = true;
 
             settings.RoutineItems = new[]
                 {
