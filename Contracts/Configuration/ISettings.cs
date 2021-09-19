@@ -8,6 +8,7 @@ namespace autoplaysharp.Contracts.Configuration
         bool RestartOnError { get; set; }
         string WindowName { get; set; }
         string[] RoutineItems { get; set; }
+        string[] RoutineItemsState { get; set; }
         EmulatorType EmulatorType { get; set; }
         ITimelineBattleSettings TimelineBattle { get; }
         IAllianceBattleSettings AllianceBattle { get; }

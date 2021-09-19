@@ -192,6 +192,7 @@ namespace autoplaysharp.App
                     typeof(Core.Game.Tasks.Missions.DualEpicQuests.VeiledSecret),
                 }
                 .Select(x => x.Namespace).ToArray();
+            settings.RoutineItemsState = Enumerable.Repeat("true", settings.RoutineItems.Length).ToArray();
         }
     }
 }

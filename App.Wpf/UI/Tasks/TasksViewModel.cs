@@ -64,7 +64,15 @@ namespace autoplaysharp.App.UI.Tasks
             if (settings.RoutineItems != null)
             {
                 foreach (var routineViewModel in settings.RoutineItems.Where(x => types.Any(t => t.Name == x))
-                    .Select(x => new RoutineViewModel(types.FirstOrDefault(t => t.Name == x), game, repo, executioner, settings, queue)))
+                    .Select((x,idx) =>
+                    {
+                        var vm = new RoutineViewModel(types.FirstOrDefault(t => t.Name == x), game, repo, executioner,
+                                settings, queue);
+                        var state = settings.RoutineItemsState?.ElementAtOrDefault(idx);
+                        bool.TryParse(state, out var isChecked);
+                        vm.IsChecked = isChecked;
+                        return vm;
+                    }))
                 {
                     routineViewModel.PropertyChanged += RoutineViewModelOnPropertyChanged;
                     RoutineItems.Add(routineViewModel);
@@ -92,12 +100,14 @@ namespace autoplaysharp.App.UI.Tasks
             {
                 RaisePropertyChanged(nameof(CheckAll));
                 AddAllToQueue.RaiseCanExecuteChanged();
+                _settings.RoutineItemsState = RoutineItems.Select(x => x.IsChecked.ToString()).ToArray();
             }
         }
 
         private void RoutineItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             _settings.RoutineItems = RoutineItems.Select(x => x.Name).ToArray();
+            _settings.RoutineItemsState = RoutineItems.Select(x => x.IsChecked.ToString()).ToArray();
         }
 
         private bool CanRemoveFromRoutine(RoutineViewModel arg)
