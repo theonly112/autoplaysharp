@@ -120,6 +120,7 @@ namespace autoplaysharp.App.UI.Tasks
             var routineViewModel = new RoutineViewModel(taskType, _game, _repo, _executioner, _settings, _queue);
             routineViewModel.PropertyChanged += RoutineViewModelOnPropertyChanged;
             RoutineItems.Add(routineViewModel);
+            AddAllToQueue.RaiseCanExecuteChanged();
         }
 
         private bool CanExecuteCancel()
