@@ -135,6 +135,11 @@ namespace autoplaysharp.Core.Game.Tasks
             // TOOD: is this the right place?
             await HandleEndNotices();
 
+            if (Game.IsVisible(UIds.MAIN_MENU_MENU_HEADER))
+            {
+                Game.Click(UIds.MAIN_MENU_MENU_BOTTON);
+            }
+
             if (Game.IsVisible(UIds.MAIN_MENU_HOME_BUTTON_IMAGE))
             {
                 Game.Click(UIds.MAIN_MENU_HOME_BUTTON_IMAGE);
