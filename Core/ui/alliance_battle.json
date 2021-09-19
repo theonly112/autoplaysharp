@@ -1,12 +1,12 @@
 [
   {
     "Id": "ALLIANCE_BATTLE_CLEAR_MESSAGE",
-    "X": 0.385,
-    "Y": 0.068,
-    "W": 0.235,
-    "H": 0.107,
+    "X": 0.32241154,
+    "Y": 0.08158508,
+    "W": 0.3610747,
+    "H": 0.07575758,
     "PSM": 3,
-    "Text": "ALLIANCE BATTLE\nCLEAR"
+    "Text": "ALLIANCE BATTLE CLEAR"
   },
   {
     "Id": "ALLIANCE_BATTLE_ENDED_MESSAGE",
