@@ -25,12 +25,11 @@
   },
   {
     "Id": "INVENTORY_TAB_MATERIAL_URU_COMBINE_ALL",
-    "X": 0.7140625,
-    "Y": 0.89444447,
-    "W": 0.108854175,
-    "H": 0.059259236,
-    "Text": "Combine All",
-    "Scale": 2
+    "X": 0.71035385,
+    "Y": 0.9009324,
+    "W": 0.090432525,
+    "H": 0.044289052,
+    "Text": "Combine All"
   },
   {
     "Id": "INVENTORY_TAB_MATERIAL_URU_COMBINE_X_TIMES_BUTTON",
