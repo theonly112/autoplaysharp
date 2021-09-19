@@ -32,7 +32,7 @@ namespace autoplaysharp.App.UI.Tasks
 
         private void QueueOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            IsActive = _queue.ActiveItem == _task;
+            IsActive = _queue.ActiveItem == _task && _task != null;
         }
 
         public string Name => TaskType.Name;
