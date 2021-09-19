@@ -1,0 +1,51 @@
+[
+  {
+    "Id": "FRIENDS_ACQUIRE_ALL",
+    "X": 0.2863696,
+    "Y": 0.8892774,
+    "W": 0.100262135,
+    "H": 0.04662001,
+    "PSM": 8,
+    "Text": "ACQUIRE ALL"
+  },
+  {
+    "Id": "FRIENDS_SEND_ALL",
+    "X": 0.1146789,
+    "Y": 0.8857809,
+    "W": 0.08060289,
+    "H": 0.053613067,
+    "Text": "SEND ALL"
+  },
+  {
+    "Id": "FRIENDS_ACQUIRE_OK",
+    "X": 0.48492792,
+    "Y": 0.72843826,
+    "W": 0.032110065,
+    "H": 0.038461506,
+    "Text": "OK"
+  },
+  {
+    "Id": "FRIENDS_ACQUIRE_NOTICE_CANNOT_HAVE_MORE",
+    "X": 0.33093053,
+    "Y": 0.27389276,
+    "W": 0.3348624,
+    "H": 0.04545456,
+    "Text": "Cannot have more than 2000 Assemble Points."
+  },
+  {
+    "Id": "FRIENDS_ACQUIRE_NOTICE_CANNOT_HAVE_MORE_OK",
+    "X": 0.64285713,
+    "Y": 0.75641024,
+    "W": 0.037352562,
+    "H": 0.05128205,
+    "Text": "OK"
+  },
+  {
+    "Id": "FRIENDS_ACQUIRE_PURCHASE_OK",
+    "X": 0.48296198,
+    "Y": 0.7610723,
+    "W": 0.03538665,
+    "H": 0.045454502,
+    "Text": "OK"
+  }
+]
