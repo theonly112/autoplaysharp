@@ -167,6 +167,9 @@ namespace autoplaysharp.App
 
             settings.RoutineItems = new[]
                 {
+                    typeof(Core.Game.Tasks.AllianceCheckIn),
+                    typeof(Core.Game.Tasks.CollectAssemblePoints),
+                    typeof(Core.Game.Tasks.Missions.AllianceBattle),
                     typeof(Core.Game.Tasks.Missions.AllianceBattle),
                     typeof(Core.Game.Tasks.Missions.CoopMission),
                     typeof(Core.Game.Tasks.Missions.DailyTrivia),
