@@ -21,11 +21,11 @@
   },
   {
     "Id": "CONTENT_STATUS_BOARD_ITEM_STATUS_DYN",
-    "X": 0.282,
-    "Y": 0.24,
-    "W": 0.044,
+    "X": 0.277,
+    "Y": 0.245,
+    "W": 0.048,
     "H": 0.13,
-    "XOffset": 0.299,
+    "XOffset": 0.297,
     "YOffset": 0.145,
     "Scale": 4
   },
