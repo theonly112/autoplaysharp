@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using autoplaysharp.Contracts;
 using autoplaysharp.Contracts.Configuration;
-using autoplaysharp.Contracts.Errors;
 using Microsoft.Extensions.Logging;
-using OpenCvSharp;
 
 namespace autoplaysharp.Core.Game.Tasks.Missions
 {

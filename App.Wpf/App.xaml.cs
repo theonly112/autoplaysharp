@@ -169,6 +169,7 @@ namespace autoplaysharp.App
                 {
                     typeof(Core.Game.Tasks.AllianceCheckIn),
                     typeof(Core.Game.Tasks.CollectAssemblePoints),
+                    typeof(Core.Game.Tasks.Missions.DispatchMission),
                     typeof(Core.Game.Tasks.Missions.AllianceBattle),
                     typeof(Core.Game.Tasks.Missions.AllianceBattle),
                     typeof(Core.Game.Tasks.Missions.CoopMission),
