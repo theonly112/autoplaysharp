@@ -27,6 +27,14 @@ namespace autoplaysharp.Core.Game.Tasks.Inventory
                 return;
             }
 
+            await Task.Delay(1000, token);
+            if (Game.IsVisible(UIds.INVENTORY_TAB_CUSTOM_GEAR_INSUFFICIENT_MATS))
+            {
+                Game.Click(UIds.INVENTORY_TAB_CUSTOM_GEAR_INSUFFICIENT_MATS_OK);
+                Logger.LogError("Insufficient materials for upgrade");
+                return;
+            }
+
             if (!await ClickWhenVisible(UIds.INVENTORY_TAB_CUSTOM_GEAR_QUICK_UPGRADE_OK))
             {
                 Logger.LogError("Quick Upgrade dialog OK button not visible.");

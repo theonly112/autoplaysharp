@@ -88,10 +88,10 @@
   },
   {
     "Id": "INVENTORY_TAB_CUSTOM_GEAR_QUICK_UPGRADE_RESULT_OK",
-    "X": 0.40520832,
-    "Y": 0.8787037,
-    "W": 0.0390625,
-    "H": 0.041666687,
+    "X": 0.40432504,
+    "Y": 0.8251748,
+    "W": 0.036041945,
+    "H": 0.05011654,
     "Text": "OK"
   },
   {
@@ -166,5 +166,22 @@
     "W": 0.08177084,
     "H": 0.05740744,
     "Text": "CANCEL"
+  },
+  {
+    "Id": "INVENTORY_TAB_CUSTOM_GEAR_INSUFFICIENT_MATS",
+    "X": 0.370249,
+    "Y": 0.44405594,
+    "W": 0.2542595,
+    "H": 0.06293705,
+    "Text": "Insufficient Upgrade Materials."
+  },
+  {
+    "Id": "INVENTORY_TAB_CUSTOM_GEAR_INSUFFICIENT_MATS_OK",
+    "X": 0.4836173,
+    "Y": 0.72494173,
+    "W": 0.033420682,
+    "H": 0.043123543,
+    "Text": "OK",
+    "Scale": 2
   }
 ]
