@@ -51,20 +51,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                     return;
                 }
 
-                if (Game.IsVisible(UIds.COOP_REWARD_ACQUIRED))
-                {
-                    Game.Click(UIds.COOP_REWARD_ACQUIRED);
-                    await Task.Delay(5000);
-                    Game.Click(UIds.COOP_REWARD_ACQUIRE_REWARD);
-                    await Task.Delay(5000);
-                    Game.Click(UIds.COOP_REWARD_ACQUIRE_REWARD_OK);
-                    await Task.Delay(5000);
-                    RewardCount--;
-                    if(RewardCount == 0)
-                    {
-                        break;
-                    }
-                }
+                if (await AcquireReward()) break;
 
                 if (Game.IsVisible(UIds.COOP_AUTO_REPEAT_IMAGE))
                 {
@@ -83,6 +70,13 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 }
                 Game.Click(UIds.COOP_START);
 
+                await Task.Delay(1000);
+
+                if (Game.IsVisible(UIds.COOP_NOTICE_AUTOREPEAT))
+                {
+                    Game.Click(UIds.COOP_NOTICE_AUTOREPEAT_OK);
+                }
+
                 if (!await HandleStartNotices())
                 {
                     Logger.LogError("Unable to handle mission start notice.");
@@ -97,6 +91,26 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
                 await Task.Delay(5000);
             }
+        }
+
+        private async Task<bool> AcquireReward()
+        {
+            if (Game.IsVisible(UIds.COOP_REWARD_ACQUIRED))
+            {
+                Game.Click(UIds.COOP_REWARD_ACQUIRED);
+                await Task.Delay(5000);
+                Game.Click(UIds.COOP_REWARD_ACQUIRE_REWARD);
+                await Task.Delay(5000);
+                Game.Click(UIds.COOP_REWARD_ACQUIRE_REWARD_OK);
+                await Task.Delay(5000);
+                RewardCount--;
+                if (RewardCount == 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         protected async Task WaitForMissionEnd(CancellationToken token)
