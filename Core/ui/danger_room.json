@@ -231,5 +231,21 @@
     "W": 0.25937498,
     "H": 0.05185187,
     "Text": "A temporary error has occurred."
+  },
+  {
+    "Id": "DANGER_ROOM_WEEKLY_RESULTS_TAP_THE_SCREEN",
+    "X": 0.84272605,
+    "Y": 0.9277389,
+    "W": 0.14351249,
+    "H": 0.060606062,
+    "Text": "TAP THE SCREEN"
+  },
+  {
+    "Id": "DANGER_ROOM_WEEKLY_RESULTS_CLOSE",
+    "X": 0.46330276,
+    "Y": 0.85314685,
+    "W": 0.078636974,
+    "H": 0.04662007,
+    "Text": "CLOSE"
   }
 ]

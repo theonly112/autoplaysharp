@@ -28,14 +28,22 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                     return;
                 }
 
-                if (!await WaitUntilVisible(UIds.DANGER_ROOM_EXTREMEL_MODE))
+                await Task.Delay(1000, token);
+                if (Game.IsVisible(UIds.DANGER_ROOM_WEEKLY_RESULTS_TAP_THE_SCREEN))
+                {
+                    Logger.LogDebug("Confirming weekly results.");
+                    Game.Click(UIds.DANGER_ROOM_WEEKLY_RESULTS_TAP_THE_SCREEN);
+                    await ClickWhenVisible(UIds.DANGER_ROOM_WEEKLY_RESULTS_CLOSE);
+                }
+
+                if (!await WaitUntilVisible(UIds.DANGER_ROOM_EXTREMEL_MODE, token))
                 {
                     Logger.LogError("Could not find extreme mode selection");
                     return;
                 }
 
                 // Wait briefly for UI to load.
-                await Task.Delay(1000);
+                await Task.Delay(1000, token);
 
                 var dailyRewardStatus = Game.GetText(UIds.DANGER_ROOM_DAILY_ENTRY_REWARD_COUNT).TryParseStatus();
                 var dailyVictoryStatus = Game.GetText(UIds.DANGER_ROOM_DAILY_VICTORY_REWARD_COUNT).TryParseStatus();
