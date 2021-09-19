@@ -25,10 +25,10 @@
   },
   {
     "Id": "COOP_ENDSCREEN_MISSION_SUCCESS",
-    "X": 0.34993446,
+    "X": 0.36,
     "Y": 0.027972028,
-    "W": 0.32437748,
-    "H": 0.12470862,
+    "W": 0.29,
+    "H": 0.09,
     "PSM": 8,
     "Text": "MISSION SUCCESS"
   },
