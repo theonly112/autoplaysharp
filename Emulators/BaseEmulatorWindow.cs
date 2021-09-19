@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Windows.Forms;
+
 using autoplaysharp.Contracts;
 using PInvoke;
 
@@ -94,12 +95,11 @@ namespace autoplaysharp.Emulators
             User32.SetForegroundWindow(ScreenshotHwnd);
             int xStart = (int)(vectorStart.X * Width);
             int yStart = (int)(vectorStart.Y * Height);
-            VirtualMousePosition = new Vector2(vectorStart.X, vectorStart.Y);
 
             var bounds = Screen.FromHandle(GameAreaHwnd).Bounds;
             User32.SetCursorPos(X + xStart, Y + yStart);
             User32.mouse_event(User32.mouse_eventFlags.MOUSEEVENTF_LEFTDOWN |
-                User32.mouse_eventFlags.MOUSEEVENTF_ABSOLUTE,
+                               User32.mouse_eventFlags.MOUSEEVENTF_ABSOLUTE,
                 (int)((X + xStart) / (float)bounds.Width * 65535),
                 (int)((Y + yStart) / (float)bounds.Height * 65535),
                 0,
@@ -111,11 +111,10 @@ namespace autoplaysharp.Emulators
                 var delta = (vectorEnd - vectorStart) / steps;
                 xStart += (int)(delta.X * Width);
                 yStart += (int)(delta.Y * Height);
-                
-                VirtualMousePosition = new Vector2(xStart / (float)Width, yStart / (float)Height);
+
                 User32.mouse_event(User32.mouse_eventFlags.MOUSEEVENTF_MOVE |
-                    User32.mouse_eventFlags.MOUSEEVENTF_ABSOLUTE,
-                    (int)((X + xStart) / (float)bounds.Width * 65535), 
+                                   User32.mouse_eventFlags.MOUSEEVENTF_ABSOLUTE,
+                    (int)((X + xStart) / (float)bounds.Width * 65535),
                     (int)((Y + yStart) / (float)bounds.Height * 65535),
                     0,
                     IntPtr.Zero);
@@ -123,6 +122,7 @@ namespace autoplaysharp.Emulators
             }
 
             User32.mouse_event(User32.mouse_eventFlags.MOUSEEVENTF_LEFTUP, 0, 0, 0, IntPtr.Zero);
+            VirtualMousePosition = vectorEnd;
         }
 
         private int MakeLong(int lo, int hi)
