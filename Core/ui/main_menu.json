@@ -58,11 +58,12 @@
     "H": 0.076
   },
   {
-    "Id": "MAIN_MENU_SHIELD_LAB_BUTTON",
-    "X": 0.756,
-    "Y": 0.484,
-    "W": 0.111,
-    "H": 0.164
+    "Id": "MAIN_MENU_ALLIANCE_BUTTON",
+    "X": 0.69069463,
+    "Y": 0.7377622,
+    "W": 0.06749672,
+    "H": 0.041958094,
+    "Text": "ALLIANCE"
   },
   {
     "Id": "MAIN_MENU_CHALLENGES_BUTTON",
