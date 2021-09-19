@@ -58,6 +58,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             Logger.LogDebug(activeQuest);
 
             SelectionMode selectionMode = SelectionMode.Any;
+            bool useCoopSkill = false;
             switch (activeQuest)
             {
                 case "Clear the stage with less than 3 Male Characters.":
@@ -80,7 +81,8 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                     selectionMode = SelectionMode.SelectVillain;
                     break;
                 case "Clear the stage while using Co-op Skills more than 1 times.":
-                    Logger.LogError("cannot use co-op skill at the moment... unhandled quest");
+                    useCoopSkill = true;
+                    Logger.LogDebug("Will try to use coop skill for WBI mission.");
                     break;
             }
 
@@ -89,12 +91,13 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             Game.Click(UIds.WBI_OPPONENT_ENTER);
             await Task.Delay(2000, token);
 
-            await CollectNewChests(emptySlots, selectionMode, token);
+            await CollectNewChests(emptySlots, selectionMode, token, useCoopSkill);
 
             await GoToMainScreen(token);
         }
 
-        private async Task CollectNewChests(int emptySlots, SelectionMode selectionMode, CancellationToken token)
+        private async Task CollectNewChests(int emptySlots, SelectionMode selectionMode, CancellationToken token,
+            bool useCoopSkill)
         {
             for (var i = 0; i < emptySlots; i++)
             {
@@ -109,7 +112,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Logger.LogDebug("Starting mission");
                 Game.Click(UIds.WBI_HERO_START_MISSION);
 
-                await Fight(token);
+                await Fight(token, useCoopSkill);
 
                 if(await HandleHeroicQuestNotice())
                 {
@@ -121,12 +124,13 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
         }
 
-        private async Task Fight(CancellationToken token)
+        private async Task Fight(CancellationToken token, bool useCoopSkill)
         {
             Func<bool> chestDropped = () => { return Game.IsVisible(UIds.WBI_SUPPLY_CHEST); };
             Func<bool> disconnected = () => { return Game.IsVisible(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED); };
 
             var fightBot = new AutoFight(Game, Repository, Settings, 90, chestDropped, disconnected);
+            fightBot.UseCoopSkill = useCoopSkill;
             await fightBot.Run(token);
 
             if (Game.IsVisible(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED))
@@ -138,7 +142,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
                 Game.Click(UIds.WBI_HERO_START_MISSION);
 
-                await Fight(token);
+                await Fight(token, useCoopSkill);
             }
             else
             {

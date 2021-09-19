@@ -42,6 +42,8 @@ namespace autoplaysharp.Core.Game.Tasks
             _maxWaitTime = maxWaitTime;
         }
 
+        public bool UseCoopSkill { get; set; }= false;
+
         private bool BattleHasStarted()
         {
             // Flashing text is hard for OCR, so 50/50 match seems sufficent here.
@@ -152,6 +154,12 @@ namespace autoplaysharp.Core.Game.Tasks
 
         private string GetBestAvailableSkill()
         {
+            if (UseCoopSkill && Game.IsVisible(UIds.BATTLE_SKILL_COOP))
+            {
+                // TODO: Right now this will just loop on coop skill...
+                // Which is fine for WBI, but otherwise that's not great....
+                return UIds.BATTLE_SKILL_COOP;
+            }
             var availableSkills = GetAvailableSkills();
             foreach(var s in availableSkills.OrderByDescending(x => x))
             {
