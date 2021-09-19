@@ -180,6 +180,7 @@ namespace autoplaysharp.App
                     typeof(Core.Game.Tasks.Missions.DeluxeEpicQuests.DoomsDay),
                     typeof(Core.Game.Tasks.Missions.DeluxeEpicQuests.FateOfTheUniverse),
                     typeof(Core.Game.Tasks.Missions.DeluxeEpicQuests.MutualEnemy),
+                    typeof(Core.Game.Tasks.Missions.DeluxeEpicQuests.PlayingHero),
                     typeof(Core.Game.Tasks.Missions.DualEpicQuests.Shifter.StupidXMen),
                     typeof(Core.Game.Tasks.Missions.DualEpicQuests.Shifter.TheFault),
                     typeof(Core.Game.Tasks.Missions.DualEpicQuests.Shifter.TwistedWorld),
