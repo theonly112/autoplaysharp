@@ -41,15 +41,15 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Logger.LogError($"Failed to go to {MissionName}");
                 return;
             }
-            await WaitUntilVisible(UIds.ALLIANCE_BATTLE_MODE_HEADER);
+            await WaitUntilVisible(UIds.ALLIANCE_BATTLE_MODE_HEADER, token);
 
-            if (!await WaitUntilVisible(UIds.ALLIANCE_BATTLE_EXTREME_MODE_READY))
+            if (!await WaitUntilVisible(UIds.ALLIANCE_BATTLE_EXTREME_MODE_READY, token))
             {
                 Logger.LogError("Extreme mode not available.");
                 return;
             }
 
-            await Task.Delay(1000);
+            await Task.Delay(1000, token);
 
             Game.Click(UIds.ALLIANCE_BATTLE_EXTREME_MODE_READY);
 
@@ -57,14 +57,14 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             Game.Click(UIds.ALLIANCE_BATTLE_EXTREME_MODE_START);
 
-            await Task.Delay(1000);
+            await Task.Delay(1000, token);
 
             if (Game.IsVisible(UIds.ALLIANCE_BATTLE_NOTICE_THREE_CHARACTERS_REQUIRED))
             {
                 Game.Click(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED_OK);
-                await Task.Delay(1000);
+                await Task.Delay(1000, token);
                 await SelectHeroes();
-                await Task.Delay(1000);
+                await Task.Delay(1000, token);
                 Game.Click(UIds.ALLIANCE_BATTLE_EXTREME_MODE_START);
             }
 
@@ -80,7 +80,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 return;
             }
 
-            await Task.Delay(1000);
+            await Task.Delay(1000, token);
 
             if(!await ClickWhenVisible(UIds.ALLIANCE_BATTLE_END_SCREEN_HOME))
             {
@@ -98,7 +98,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 Logger.LogError($"Failed to go to {MissionName}");
                 return;
             }
-            await WaitUntilVisible(UIds.ALLIANCE_BATTLE_MODE_HEADER);
+            await WaitUntilVisible(UIds.ALLIANCE_BATTLE_MODE_HEADER, token);
 
             if (!await WaitUntilVisible(UIds.ALLIANCE_BATTLE_NORMAL_MODE_READY, token))
             {
@@ -106,7 +106,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                 return;
             }
 
-            await Task.Delay(1000);
+            await Task.Delay(1000, token);
 
             Game.Click(UIds.ALLIANCE_BATTLE_NORMAL_MODE_READY);
 
@@ -121,14 +121,14 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
             Game.Click(UIds.ALLIANCE_BATTLE_NORMAL_MODE_START);
 
-            await Task.Delay(1000);
+            await Task.Delay(1000, token);
 
             if (Game.IsVisible(UIds.ALLIANCE_BATTLE_NOTICE_THREE_CHARACTERS_REQUIRED))
             {
                 Game.Click(UIds.GENERIC_MISSION_NOTICE_DISCONNECTED_OK);
-                await Task.Delay(1000);
+                await Task.Delay(1000, token);
                 await SelectHeroes();
-                await Task.Delay(1000);
+                await Task.Delay(1000, token);
                 Game.Click(UIds.ALLIANCE_BATTLE_NORMAL_MODE_START);
             }
 
@@ -141,11 +141,11 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             var autoFight = new AutoFight(Game, Repository, Settings);
             await autoFight.Run(token);
 
-            await Task.Delay(1000);
+            await Task.Delay(1000, token);
 
             Game.Click(UIds.ALLIANCE_BATTLE_END_SCREEN_HOME);
 
-            await Task.Delay(1000);
+            await Task.Delay(1000, token);
 
             await HandleHeroicQuestNotice();
         }
@@ -176,14 +176,14 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             var autoFightTask = autoFight.Run(token);
 
             // TODO: is timeout fallback even necessary?
-            if(await Task.WhenAny(autoFightTask, Task.Delay(300*1000)) == autoFightTask)
+            if(await Task.WhenAny(autoFightTask, Task.Delay(300 * 1000, token)) == autoFightTask)
             {
                 await autoFightTask; // catch exception if thrown...
 
                 if(Game.IsVisible(UIds.ALLIANCE_BATTLE_SELECT_NEW_CHARACTER_AND_CONTINUE))
                 {
                     Game.Click(UIds.ALLIANCE_BATTLE_SELECT_NEW_CHARACTER_AND_CONTINUE_CANCEL);
-                    await Task.Delay(2000);
+                    await Task.Delay(2000, token);
                 }
 
                 return true;
