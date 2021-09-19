@@ -82,10 +82,11 @@
   },
   {
     "Id": "MAIN_MENU_INVENTORY_BUTTON",
-    "X": 0.63645834,
-    "Y": 0.3037037,
-    "W": 0.11510414,
-    "H": 0.16851851
+    "X": 0.89908254,
+    "Y": 0.3892774,
+    "W": 0.06815207,
+    "H": 0.027972013,
+    "Text": "INVENTORY"
   },
   {
     "Id": "MAIN_MENU_STARTUP_UPDATE_NOTICE_X",
