@@ -22,7 +22,8 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             SelectCombat,
             SelectSpeed,
             SelectBlast,
-            SelectVillain
+            SelectVillain,
+            SelectHero
         }
 
         protected override async Task RunCore(CancellationToken token)
@@ -79,6 +80,9 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                     break;
                 case "Clear the stage with less than 5 Super Heroes.":
                     selectionMode = SelectionMode.SelectVillain;
+                    break;
+                case "Clear the stage with less than 5 Super Villains.":
+                    selectionMode = SelectionMode.SelectHero;
                     break;
                 case "Clear the stage while using Co-op Skills more than 1 times.":
                     useCoopSkill = true;
@@ -192,6 +196,9 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                     break;
                 case SelectionMode.SelectVillain:
                     Game.Click(FindTypeRow("SUPER VILLAIN"));
+                    break;
+                case SelectionMode.SelectHero:
+                    Game.Click(FindTypeRow("HERO"));
                     break;
             }
 
