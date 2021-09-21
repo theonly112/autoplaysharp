@@ -80,7 +80,8 @@ namespace autoplaysharp.App
             var executioner = new TaskExecutioner(loggerFactory.CreateLogger<TaskExecutioner>());
             var window = SetupWindow(settings, loggerFactory, recognition);
             var videoProvider = new VideoProvider(window, settings.VideoCapture.FrameRate);
-            var videoCapture = new VideoCapture(window, videoProvider, executioner, settings);
+            serviceCollection.AddSingleton<IVideoProvider>(videoProvider);
+            serviceCollection.AddSingleton<IVideoCapture, VideoCapture>();
 
             var repository = new Repository();
             repository.Load();

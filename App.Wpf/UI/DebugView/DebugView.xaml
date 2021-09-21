@@ -16,6 +16,9 @@
             <CheckBox Content="Restart on error" IsChecked="{Binding RestartOnError}"/>
             <CheckBox Content="Enable recording" IsChecked="{Binding EnableRecording}"/>
             <TextBox Text="{Binding FrameRate}"/>
+            <Button Command="{Binding StartRecording}">Start recording</Button>
+            <Button Command="{Binding EndRecording}">End recording</Button>
+
         </StackPanel>
     </Grid>
 </UserControl>

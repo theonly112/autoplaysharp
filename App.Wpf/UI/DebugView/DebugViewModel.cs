@@ -15,14 +15,31 @@ namespace autoplaysharp.App.UI.DebugView
         private readonly IUiRepository _repo;
         private readonly IGame _game;
         private readonly ISettings _settings;
+        private readonly IVideoCapture _capture;
 
-        public DebugViewModel(IGame game, IUiRepository repo, ISettings settings)
+        public DebugViewModel(IGame game,
+            IUiRepository repo,
+            ISettings settings,
+            IVideoCapture capture)
         {
             Run = new DelegateCommand(RunCommand);
             Drag = new DelegateCommand(ExecuteDrag);
+            StartRecording = new DelegateCommand(ExecuteStartRecording);
+            EndRecording = new DelegateCommand(ExecuteEndRecording);
             _repo = repo;
             _game = game;
             _settings = settings;
+            _capture = capture;
+        }
+
+        private void ExecuteEndRecording()
+        {
+            _capture.End();
+        }
+
+        private void ExecuteStartRecording()
+        {
+            _capture.Start("Debug Recording");
         }
 
         private void ExecuteDrag()
@@ -82,6 +99,16 @@ namespace autoplaysharp.App.UI.DebugView
         }
 
         public ICommand Drag
+        {
+            get;
+        }
+
+        public ICommand StartRecording
+        {
+            get;
+        }
+
+        public ICommand EndRecording
         {
             get;
         }
