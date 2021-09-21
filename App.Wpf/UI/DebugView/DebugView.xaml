@@ -14,6 +14,8 @@
             <CheckBox Content="Enable Overlay? (restart to apply)" IsChecked="{Binding EnableOverlay}"/>
             <Button Command="{Binding Drag}">Drag</Button>
             <CheckBox Content="Restart on error" IsChecked="{Binding RestartOnError}"/>
+            <CheckBox Content="Enable recording" IsChecked="{Binding EnableRecording}"/>
+            <TextBox Text="{Binding FrameRate}"/>
         </StackPanel>
     </Grid>
 </UserControl>

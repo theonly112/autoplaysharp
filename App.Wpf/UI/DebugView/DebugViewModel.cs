@@ -2,6 +2,7 @@
 using autoplaysharp.Contracts.Configuration;
 using Prism.Commands;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -60,6 +61,24 @@ namespace autoplaysharp.App.UI.DebugView
         {
             get => _settings.RestartOnError;
             set => _settings.RestartOnError = value;
+        }
+
+        public bool EnableRecording
+        {
+            get => _settings.VideoCapture.Enabled;
+            set => _settings.VideoCapture.Enabled = value;
+        }
+
+        public string FrameRate
+        {
+            get => _settings.VideoCapture.FrameRate.ToString(CultureInfo.InvariantCulture);
+            set
+            {
+                if (double.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var newValue))
+                {
+                    _settings.VideoCapture.FrameRate = newValue;
+                }
+            }
         }
 
         public ICommand Drag

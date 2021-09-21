@@ -16,6 +16,7 @@ namespace autoplaysharp.Tests
         protected GameImpl Game;
         private IEmulatorWindow _window;
         protected Repository Repository;
+        private IVideoProvider _videoProvider;
         public void Setup(string fileName)
         {
             Repository = new Repository();
@@ -24,7 +25,8 @@ namespace autoplaysharp.Tests
             var settings = Substitute.For<ISettings>();
             var recognition = new TextRecognition();
             var loggerFactory = Substitute.For<ILoggerFactory>();
-            Game = new GameImpl(_window, Repository, loggerFactory, recognition, settings);
+            _videoProvider = Substitute.For<IVideoProvider>();
+            Game = new GameImpl(_window, _videoProvider, Repository, loggerFactory, recognition, settings);
 #if DEBUG
             Settings.SaveImages = true;
             Settings.SaveRawImages = true;
@@ -39,7 +41,7 @@ namespace autoplaysharp.Tests
                     using var bitmapLocal = new Bitmap(fileName);
                     return bitmapLocal.Crop(info.ArgAt<int>(0), info.ArgAt<int>(1), info.ArgAt<int>(2), info.ArgAt<int>(3));
                 });
-
+            _videoProvider.GetCurrentFrame().Returns(info => bitmap);
         }
     }
 }
