@@ -68,6 +68,10 @@ namespace autoplaysharp.App
             {
                 SetupDefaultConfiguration(settings);
             }
+            else
+            {
+                EnsureValidValues(settings);
+            }
 
             serviceCollection.AddSingleton(settings);
 
@@ -75,10 +79,13 @@ namespace autoplaysharp.App
 
             var executioner = new TaskExecutioner(loggerFactory.CreateLogger<TaskExecutioner>());
             var window = SetupWindow(settings, loggerFactory, recognition);
+            var videoProvider = new VideoProvider(window, settings.VideoCapture.FrameRate);
+            serviceCollection.AddSingleton<IVideoProvider>(videoProvider);
+            serviceCollection.AddSingleton<IVideoCapture, VideoCapture>();
 
             var repository = new Repository();
             repository.Load();
-            var game = new GameImpl(window, repository, loggerFactory, recognition, settings);
+            var game = new GameImpl(window, videoProvider, repository, loggerFactory, recognition, settings);
            
             var overlay = new ImGuiOverlay(game, window, repository);
 
@@ -105,6 +112,12 @@ namespace autoplaysharp.App
             {
                 Dispatcher.BeginInvoke(async () => await UpdateOverlay(overlay));
             }
+        }
+
+        private static void EnsureValidValues(ISettings settings)
+        {
+            settings.VideoCapture.RecordingDir ??= "recording";
+            settings.VideoCapture.FrameRate = Math.Max(10, settings.VideoCapture.FrameRate);
         }
 
         private async Task UpdateOverlay(ImGuiOverlayBase overlay)
@@ -156,7 +169,8 @@ namespace autoplaysharp.App
         {
             settings.WindowName = "NoxPlayer";
             settings.EmulatorType = EmulatorType.NoxPlayer;
-
+            settings.VideoCapture.RecordingDir = "recording";
+            settings.VideoCapture.FrameRate = 30;
             settings.TimelineBattle.Team = 1;
 
             settings.AllianceBattle.RunNormalMode = true;

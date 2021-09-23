@@ -15,5 +15,6 @@ namespace autoplaysharp.Contracts.Configuration
         IDimensionMissionSettings DimensionMission { get; }
         ILegendaryBattleSettings LegendaryBattle { get; }
         IEpicQuestSettings EpicQuest { get; }
+        IVideoCaptureSettings VideoCapture { get; }
     }
 }

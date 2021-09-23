@@ -18,6 +18,7 @@ namespace autoplaysharp.Core.Game
     public class GameImpl : IGame
     {
         private readonly IEmulatorWindow _window;
+        private readonly IVideoProvider _videoProvider;
         private readonly IUiRepository _repository;
         private readonly ILoggerFactory _loggerFactory;
         private readonly ITextRecognition _recognition;
@@ -27,9 +28,11 @@ namespace autoplaysharp.Core.Game
 
         public IEmulatorOverlay Overlay { get; set; }
 
-        public GameImpl(IEmulatorWindow window, IUiRepository repository, ILoggerFactory loggerFactory, ITextRecognition recognition, ISettings settings)
+        public GameImpl(IEmulatorWindow window, IVideoProvider videoProvider, IUiRepository repository,
+            ILoggerFactory loggerFactory, ITextRecognition recognition, ISettings settings)
         {
             _window = window;
+            _videoProvider = videoProvider;
             _repository = repository;
             _loggerFactory = loggerFactory;
             _recognition = recognition;
@@ -189,7 +192,7 @@ namespace autoplaysharp.Core.Game
             {
                 case ElementNotFoundError elementNotFoundError:
                     {
-                        using var screen = _window.GrabScreen(0, 0, _window.Width, _window.Height);
+                        using var screen = _videoProvider.GetCurrentFrame().Crop(0, 0, _window.Width, _window.Height);
                         using var screenMat = screen.ToMat();
 
                         var missingElement = elementNotFoundError.MissingElement;

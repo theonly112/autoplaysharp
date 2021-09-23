@@ -23,6 +23,7 @@ namespace autoplaysharp.Tests
         public void Setup()
         {
             var logger = Substitute.For<ILogger<TaskExecutioner>>();
+            var capture = Substitute.For<IVideoCapture>();
             //logger.Log<object>(Arg.Any<LogLevel>(), 
             //           Arg.Any<EventId>(), 
             //           Arg.Any<object>(),
