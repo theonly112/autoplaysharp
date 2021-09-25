@@ -188,56 +188,57 @@ namespace autoplaysharp.Core.Game
             {
                 RestartGame();
             }
+
             switch (taskError)
             {
                 case ElementNotFoundError elementNotFoundError:
+                {
+                    using var screen = _videoProvider.GetCurrentFrame().Crop(0, 0, _window.Width, _window.Height);
+                    using var screenMat = screen.ToMat();
+
+                    var missingElement = elementNotFoundError.MissingElement;
+                    var x = (int)(missingElement.X.GetValueOrDefault() * _window.Width);
+                    var y = (int)(missingElement.Y.GetValueOrDefault() * _window.Height);
+                    var w = (int)(missingElement.W.GetValueOrDefault() * _window.Width);
+                    var h = (int)(missingElement.H.GetValueOrDefault() * _window.Height);
+
+
+                    var timeStamp = $"{DateTime.Now:yyyyMMddTHHmmss}";
+                    var screenFileName = Path.Combine("logs", $"ElementNotFound {timeStamp} - Screen.bmp");
+
+                    if (missingElement.XOffset.HasValue || missingElement.YOffset.HasValue)
                     {
-                        using var screen = _videoProvider.GetCurrentFrame().Crop(0, 0, _window.Width, _window.Height);
-                        using var screenMat = screen.ToMat();
-
-                        var missingElement = elementNotFoundError.MissingElement;
-                        var x = (int)(missingElement.X.GetValueOrDefault() * _window.Width);
-                        var y = (int)(missingElement.Y.GetValueOrDefault() * _window.Height);
-                        var w = (int)(missingElement.W.GetValueOrDefault() * _window.Width);
-                        var h = (int)(missingElement.H.GetValueOrDefault() * _window.Height);
-
-
-                        var timeStamp = $"{DateTime.Now:yyyyMMddTHHmmss}";
-                        var screenFileName = Path.Combine("logs", $"ElementNotFound {timeStamp} - Screen.bmp");
-
-                        if (missingElement.XOffset.HasValue || missingElement.YOffset.HasValue)
-                        {
-                            DrawElementGrid(screenMat, missingElement);
-                        }
-                        else
-                        {
-                            DrawElement(screenMat, missingElement);
-                        }
-
-
-                        using var cropped = screen.Crop(x, y, w, h);
-
-
-                        if (missingElement.Image == null)
-                        {
-                            var foundText = _recognition.GetText(cropped, missingElement);
-                            var text = $"Found Text: {foundText}";
-                            var size = GetTextSize(text);
-                            DrawText(screenMat, x, y + size.Height, text);
-                        }
-                        else
-                        {
-                            var missingElementFileName = Path.Combine("logs", $"ElementNotFound {timeStamp} - MissingElement.bmp");
-                            cropped.Save(missingElementFileName);
-                        }
-#if DEBUG
-                        //Cv2.ImShow("Error", screenMat);
-                        //Cv2.WaitKey();
-#endif
-                        screenMat.SaveImage(screenFileName);
+                        DrawElementGrid(screenMat, missingElement);
                     }
-                    break;
+                    else
+                    {
+                        DrawElement(screenMat, missingElement);
+                    }
 
+
+                    using var cropped = screen.Crop(x, y, w, h);
+
+
+                    if (missingElement.Image == null)
+                    {
+                        var foundText = _recognition.GetText(cropped, missingElement);
+                        var text = $"Found Text: {foundText}";
+                        var size = GetTextSize(text);
+                        DrawText(screenMat, x, y + size.Height, text);
+                    }
+                    else
+                    {
+                        var missingElementFileName =
+                            Path.Combine("logs", $"ElementNotFound {timeStamp} - MissingElement.bmp");
+                        cropped.Save(missingElementFileName);
+                    }
+#if DEBUG
+                    //Cv2.ImShow("Error", screenMat);
+                    //Cv2.WaitKey();
+#endif
+                    screenMat.SaveImage(screenFileName);
+                }
+                    break;
             }
 
             throw new Exception("Cancelling task by throwing exception?");

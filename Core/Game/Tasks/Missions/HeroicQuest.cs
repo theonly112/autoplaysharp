@@ -26,8 +26,13 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             }
 
             Game.Click(UIds.MAIN_MENU_ENTER);
+
+            await WaitUntilVisible(UIds.MAIN_MENU_SELECT_MISSION, token);
+
+            Game.Drag(UIds.MAIN_MENU_SELECT_MISSION_DRAG_RIGHT,
+                UIds.MAIN_MENU_SELECT_MISSION_DRAG_LEFT);
             
-            if(!await WaitUntilVisible(UIds.HEROIC_QUEST_HEADER))
+            if(!await WaitUntilVisible(UIds.HEROIC_QUEST_HEADER, token))
             {
                 Logger.LogError("Could not find heroic quest");
                 Game.OnError(new ElementNotFoundError(Repository[UIds.HEROIC_QUEST_HEADER]));
@@ -215,7 +220,6 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
         private async Task HandleTimelineBattle(CancellationToken token)
         {
             var timelineBattle = new TimelineBattle(Game, Repository, Settings);
-            // TODO: settings?!?!?!
             await timelineBattle.Run(token);
         }
 
@@ -338,11 +342,9 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
         private async Task TabToContinue(CancellationToken token)
         {
-            if (Game.IsVisible(UIds.HEROIC_QUEST_TAB_THE_SCREEN_TO_CONTINUE))
+            if (await ClickIfBecomesVisible(UIds.HEROIC_QUEST_TAB_THE_SCREEN_TO_CONTINUE))
             {
                 Logger.LogDebug("Taping screen to continue.");
-                Game.Click(UIds.HEROIC_QUEST_TAB_THE_SCREEN_TO_CONTINUE);
-                await Task.Delay(1000, token);
             }
         }
     }

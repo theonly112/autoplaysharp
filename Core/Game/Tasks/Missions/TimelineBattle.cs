@@ -42,41 +42,41 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
                     return;
                 }
 
-                if (!await WaitUntilVisible("TIMELINE_GET_READY"))
+                if (!await WaitUntilVisible("TIMELINE_GET_READY", token))
                 {
                     return;
                 }
 
-                await Task.Delay(1000);
+                await Task.Delay(1000, token);
                 Game.Click("TIMELINE_GET_READY");
 
-                if (!await WaitUntilVisible("TIMELINE_SEARCH_FOR_OPPONENT"))
+                if (!await WaitUntilVisible("TIMELINE_SEARCH_FOR_OPPONENT", token))
                 {
                     return;
                 }
 
-                await Task.Delay(1000);
+                await Task.Delay(1000, token);
 
                 var team = Repository[UIds.TIMELINE_TEAM_SELECTION_DYN, 0, Team - 1];
                 Game.Click(team);
 
-                await Task.Delay(1000);
+                await Task.Delay(1000, token);
 
                 if (Game.IsVisible(UIds.TIMELINE_AUTO_REPEAT))
                 {
                     Logger.LogDebug("Disabling auto-repeat");
                     Game.Click(UIds.TIMELINE_AUTO_REPEAT);
-                    await Task.Delay(250);
+                    await Task.Delay(250, token);
                 }
 
                 Game.Click("TIMELINE_SEARCH_FOR_OPPONENT");
 
-                if (!await WaitUntilVisible("TIMELINE_FIGHT"))
+                if (!await WaitUntilVisible("TIMELINE_FIGHT", token))
                 {
                     return;
                 }
 
-                await Task.Delay(2000);
+                await Task.Delay(2000, token);
                 Game.Click("TIMELINE_FIGHT");
 
 
@@ -89,10 +89,10 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
 
                 Game.Click("TIMELINE_ENDSCREEN_HOME_BUTTON_IMAGE");
 
-                await Task.Delay(1000);
+                await Task.Delay(1000, token);
 
                 await HandleEndNotices();
-                await Task.Delay(1000);
+                await Task.Delay(1000, token);
             }
 
         }
