@@ -52,7 +52,7 @@ namespace autoplaysharp.Core.Game.Tasks.Missions
             {
                 var mission = Repository["LEGENDARY_BATTLE_NAME_DYN", 0, y];
                 var missionText = Game.GetText(mission);
-                if (missionText.Similarity(BattleName) > 0.8) // Accept small changes. TODO: figure out if this is sufficent.
+                if (missionText.Similarity(BattleName) > 0.75) // Accept small changes. TODO: figure out if this is sufficent.
                 {
                     found = true;
                     Game.Click(mission);
