@@ -3,6 +3,7 @@ using autoplaysharp.Contracts.Configuration;
 using Prism.Commands;
 using System;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -111,6 +112,19 @@ namespace autoplaysharp.App.UI.DebugView
         public ICommand EndRecording
         {
             get;
+        }
+
+        public string RecordingDirectory
+        {
+            get => _settings.VideoCapture.RecordingDir;
+            set
+            {
+                if (!Directory.Exists(value))
+                {
+                    return;
+                }
+                _settings.VideoCapture.RecordingDir = value;
+            }
         }
     }
 }

@@ -18,6 +18,7 @@
             <TextBox Text="{Binding FrameRate}"/>
             <Button Command="{Binding StartRecording}">Start recording</Button>
             <Button Command="{Binding EndRecording}">End recording</Button>
+            <TextBox Text="{Binding RecordingDirectory}"/>
 
         </StackPanel>
     </Grid>
