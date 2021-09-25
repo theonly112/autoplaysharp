@@ -22,7 +22,7 @@ namespace autoplaysharp.Core.Game.Tasks.Inventory
             await ClickWhenVisible(UIds.INVENTORY_TAB_CARDS);
             await ClickWhenVisible(UIds.INVENTORY_TAB_CARDS_UPGRADE_ALL);
             await Task.Delay(1000);
-            for(int x = 0; x < 3; x++)
+            for(int x = 0; x < 5; x++) // TODO: make configurable which ones to use.
             {
                 var text = Game.GetText(Repository[UIds.INVENTORY_TAB_CARDS_UPGRADE_AMOUNT_DYN, x, 0]);
                 int.TryParse(text, out var num);
