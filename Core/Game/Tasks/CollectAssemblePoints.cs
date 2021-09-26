@@ -28,6 +28,7 @@ namespace autoplaysharp.Core.Game.Tasks
             }
 
             await ClickWhenVisible(UIds.MAIN_MENU_FRIENDS_BUTTON);
+            await Task.Delay(2000, token); // TODO: what would be a good trigger here?
             await ClickWhenVisible(UIds.FRIENDS_SEND_ALL);
             await HandleEndNotices();
             for (int i = 0; i < 4; i++) // TODO: is 3 good here? what should we use?
