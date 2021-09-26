@@ -13,15 +13,13 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <CheckBox VerticalAlignment="Center" MinWidth="20" Content="{Binding Label, RelativeSource={RelativeSource AncestorType=local:FloatProperty}}" IsChecked="{Binding HasValue, RelativeSource={RelativeSource AncestorType=local:FloatProperty}}"/>
-                                <TextBox VerticalAlignment="Center" Width="40" Text="{Binding Value, RelativeSource={RelativeSource AncestorType=local:FloatProperty}, StringFormat=N3}"/>
-                                <Slider VerticalAlignment="Center"
-                                        Width="120"
-                                        Minimum="{Binding MinValue, RelativeSource={RelativeSource AncestorType=local:FloatProperty}}"
+                            <DockPanel LastChildFill="True">
+                                <CheckBox DockPanel.Dock="Left" VerticalAlignment="Center" MinWidth="20" Content="{Binding Label, RelativeSource={RelativeSource AncestorType=local:FloatProperty}}" IsChecked="{Binding HasValue, RelativeSource={RelativeSource AncestorType=local:FloatProperty}}"/>
+                                <TextBox DockPanel.Dock="Left" VerticalAlignment="Center" Width="40" Text="{Binding Value, RelativeSource={RelativeSource AncestorType=local:FloatProperty}, StringFormat=N3}"/>
+                                <Slider Minimum="{Binding MinValue, RelativeSource={RelativeSource AncestorType=local:FloatProperty}}"
                                         Maximum="{Binding MaxValue, RelativeSource={RelativeSource AncestorType=local:FloatProperty}}"
                                         Value="{Binding Value, RelativeSource={RelativeSource AncestorType=local:FloatProperty}}"/>
-                            </StackPanel>
+                            </DockPanel>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
