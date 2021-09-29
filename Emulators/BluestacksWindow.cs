@@ -49,7 +49,7 @@ namespace autoplaysharp.Emulators
             {
                 var className = User32.GetClassName(hwnd);
                 if (!className.Contains("Bluestacks", StringComparison.CurrentCultureIgnoreCase) && 
-                   !className.Contains("Qt5151QWindowOwnDCIcon", StringComparison.CurrentCultureIgnoreCase))
+                   !className.Contains("QWindowOwnDCIcon", StringComparison.CurrentCultureIgnoreCase))
                 {
                     return true;
                 }
